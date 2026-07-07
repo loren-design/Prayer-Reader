@@ -12,10 +12,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Prayer Reader — Know God Better</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M14 58 V30 a18 18 0 0 1 36 0 V58' fill='none' stroke='%23c9a24b' stroke-width='4' stroke-linecap='round'/%3E%3Crect x='29.5' y='22' width='5' height='36' rx='2.5' fill='%23e6c987'/%3E%3Crect x='22' y='34' width='20' height='5' rx='2.5' fill='%23e6c987'/%3E%3C/svg%3E" />
-<meta name="description" content="Speak who God says you are. 120 scripture declarations, read out loud, one day at a time. Free from Know God Better." />
+<meta name="description" content="For everyone who was never taught how to pray - and wants to. Free scripture declarations, read out loud, from Know God Better." />
 <meta property="og:title" content="Prayer Reader — Know God Better" />
 <meta property="og:description" content="Speak who God says you are. Scripture declarations read out loud — anxiety, freedom, identity, fully recovered. Free, always." />
 <meta property="og:type" content="website" />
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%20%22Prayer%20Reader%20-%20Know%20God%20Better%22%2C%20%22short_name%22%3A%20%22Prayer%20Reader%22%2C%20%22start_url%22%3A%20%22.%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22background_color%22%3A%20%22%2312100e%22%2C%20%22theme_color%22%3A%20%22%2312100e%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A//www.w3.org/2000/svg%2527%2520viewBox%253D%25270%25200%252064%252064%2527%253E%253Crect%2520width%253D%252764%2527%2520height%253D%252764%2527%2520rx%253D%252714%2527%2520fill%253D%2527%252312100e%2527/%253E%253Cpath%2520d%253D%2527M18%252052%2520V30%2520a14%252014%25200%25200%25201%252028%25200%2520V52%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523c9a24b%2527%2520stroke-width%253D%25274%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Crect%2520x%253D%252729.8%2527%2520y%253D%252724%2527%2520width%253D%25274.4%2527%2520height%253D%252728%2527%2520rx%253D%25272.2%2527%2520fill%253D%2527%2523e6c987%2527/%253E%253Crect%2520x%253D%252724%2527%2520y%253D%252734%2527%2520width%253D%252716%2527%2520height%253D%25274.4%2527%2520rx%253D%25272.2%2527%2520fill%253D%2527%2523e6c987%2527/%253E%253C/svg%253E%22%2C%20%22sizes%22%3A%20%22any%22%2C%20%22type%22%3A%20%22image/svg%2Bxml%22%2C%20%22purpose%22%3A%20%22any%22%7D%5D%7D" />
+<meta name="theme-color" content="#12100e" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Prayer Reader" />
+
 
 <style>
   :root{--bg:#12100e;--bg2:#1b1815;--ink:#f4efe7;--muted:#a89f92;--gold:#c9a24b;--gold-soft:#e6c987;--line:#2c2823;}
@@ -119,7 +125,10 @@
   .safety.on{display:block;}
   .supportlink{background:transparent;border:none;color:var(--muted);font-size:12px;letter-spacing:.06em;
     padding:4px 18px 16px;opacity:.85;text-decoration:underline;text-underline-offset:3px;}
-  .brand{color:var(--muted);font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:18px;opacity:.7;}
+  .brand{color:var(--ink);font-size:13.5px;letter-spacing:.03em;padding:18px;opacity:.75;font-family:Georgia,serif;font-style:italic;text-align:center;}
+  .steps{max-width:300px;margin:0 auto 26px;display:flex;flex-direction:column;gap:11px;text-align:left;}
+  .step{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink);}
+  .stepnum{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#241d0c;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:0 0 22px;}
 </style>
 </head>
 <body>
@@ -147,6 +156,7 @@
       <p class="verse" id="entryVerse"></p>
       <p class="ref" id="entryRef"></p>
       <button class="primary breathe" onclick="goName()">Come to the table</button>
+      <button class="ghost" onclick="show('s-install')">&#128241; Put this on your phone</button>
     </section>
 
     <section id="s-name" class="screen">
@@ -160,6 +170,11 @@
     <section id="s-greet" class="screen">
       <p class="big" id="greetHi"></p>
       <p class="sub" id="greetLine"></p>
+      <div class="steps">
+        <div class="step"><span class="stepnum">1</span><span>Pick what you need.</span></div>
+        <div class="step"><span class="stepnum">2</span><span>Say the words out loud.</span></div>
+        <div class="step"><span class="stepnum">3</span><span>That's praying. That's the whole thing.</span></div>
+      </div>
       <p class="sub" style="margin-bottom:14px;">Want me to read the prayers out loud, or read them quietly yourself?</p>
       <button class="primary" onclick="voiceOn()">&#128266; Read them to me</button>
       <button class="ghost" onclick="voiceOff()">I'll read them quietly</button>
@@ -295,7 +310,8 @@
       <div class="chunk"><strong>That's why Know God Better exists.</strong> Your sin is not your identity. Your past doesn't define you. We solve one problem &mdash; hopelessness &mdash; with one solution: knowing Jesus, through daily engagement with the Holy Spirit. From hopeless to hope-filled.</div>
       <div class="rule"></div>
       <div class="chunk"><strong>The mission is One Billion for Jesus.</strong> Every zip code. Every language. Every mailable address on earth &mdash; and everywhere a phone can be held, the Word can be handed. Know God Better Ministries &mdash; A Global Project of Ten2 Harvest Media.</div>
-      <button class="ghost" style="margin-top:14px;" onclick="show('s-story')">How this started &mdash; Loren's story &#8594;</button>
+      <p class="topiccount" style="margin-top:22px;">Pray always &mdash; Ephesians 6:18</p>
+      <button class="ghost" style="margin-top:6px;" onclick="show('s-story')">How this started &mdash; Loren's story &#8594;</button>
       <button class="primary" style="margin-top:10px;" onclick="show('s-support')">Help us build it</button>
       <button class="ghost backlink" onclick="goNeeds()">Back to the table</button>
     </section>
@@ -313,15 +329,32 @@
       <button class="primary" style="margin-top:26px;" onclick="goNeeds()">Come to the table</button>
       <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
     </section>
+
+    <section id="s-install" class="screen">
+      <div class="kicker sm">Take it with you</div>
+      <p class="topictitle">Put it on your phone.</p>
+      <div class="chunk"><strong>No app store. No account. No cost.</strong> Thirty seconds and this lives on your home screen like any app &mdash; full screen, one tap, always there when you need the table.</div>
+      <button class="primary" id="installBtn" style="display:none;margin-top:20px;" onclick="installNow()">Install now</button>
+      <div class="rule"></div>
+      <div class="chunk"><strong>iPhone:</strong> Open this page in Safari. Tap the Share button &mdash; the little square with the arrow. Scroll down. Tap <em>Add to Home Screen</em>. Tap <em>Add</em>. Done.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>Android:</strong> Tap the three-dot menu in the top right. Tap <em>Add to Home screen</em> (some phones say <em>Install app</em>). Tap <em>Add</em>. Done.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>That's it.</strong> The door sits on your home screen now. One tap, any hour, and you're back at the table.</div>
+      <button class="ghost backlink" onclick="show('s-entry')">&#8592; Back</button>
+    </section>
   </div>
-  <div class="brand">Pray always &middot; Ephesians 6:18 &middot; One day at a time</div>
-  <div style="text-align:center;"><button class="supportlink" onclick="show('s-support')">Built free by Ten2 Harvest Media &mdash; keep the tools free &#9829;</button></div>
+  <div class="brand">For everyone who was never taught how to pray &mdash; and wants to.</div>
+  <div id="footExtra1" style="text-align:center;display:none;"><button class="supportlink" onclick="show('s-support')">Built free by Ten2 Harvest Media &mdash; keep the tools free &#9829;</button></div>
 
 <script>
 try{
 console.log("%cThe door is open.","color:#c9a24b;font-size:22px;font-family:Georgia,serif;");
 console.log("%cThis tool belongs to Know God Better Ministries, A Global Project of Ten2 Harvest Media.\nThe prayers? Share them with everybody - they were never ours to begin with.\nThe code, the design, the brand? Those are proprietary. Copying or rebranding them without written permission is theft, and we'd rather you just talk to us.\nWant to build Kingdom tools together? Come through the front door: knowgodbetter.com","color:#a89f92;font-size:13px;line-height:1.5;");
 }catch(e){}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=document.getElementById('installBtn');if(b)b.style.display='inline-block';});
+function installNow(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt=null;var b=document.getElementById('installBtn');if(b)b.style.display='none';}
 const entryVerses=[
   ["There is now no condemnation for those who are in Christ Jesus.","Romans 8:1"],
   ["The name of the Lord is a strong tower. The righteous run to it and are safe.","Proverbs 18:10"],
@@ -557,6 +590,10 @@ function show(id){
   const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');
   const hb=document.getElementById('homeBtn');
   if(hb){if(["s-entry","s-name","s-greet"].includes(id))hb.classList.remove('on');else hb.classList.add('on');}
+  const f1=document.getElementById('footExtra1'),f2=document.getElementById('footExtra2');
+  const hideFoot=(id==="s-entry");
+  if(f1)f1.style.display=hideFoot?"none":"block";
+  if(f2)f2.style.display=hideFoot?"none":"block";
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
 (function(){const v=entryVerses[Math.floor(Math.random()*entryVerses.length)];document.getElementById('entryVerse').textContent=v[0];document.getElementById('entryRef').textContent=v[1];})();
 
@@ -699,6 +736,6 @@ function toggleSpeak(line){
 }
 function replay(){if(currentList.length)toggleSpeak(currentList[idx].t);}
 </script>
-<div class="copyright">&copy; 2026 Know God Better Ministries&nbsp;&nbsp;|&nbsp;&nbsp;A Global Project of Ten2 Harvest Media</div>
+<div class="copyright" id="footExtra2" style="display:none;">&copy; 2026 Know God Better Ministries&nbsp;&nbsp;|&nbsp;&nbsp;A Global Project of Ten2 Harvest Media</div>
 </body>
 </html>
