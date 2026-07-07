@@ -67,6 +67,8 @@
   .tier .tname{font-weight:700;font-size:15px;letter-spacing:.04em;margin:2px 0 4px;}
   .tier .tmean{color:var(--muted);font-size:13.5px;line-height:1.45;}
   .tier.custom{background:#221d15;border-color:#3a3122;}
+  .heb{color:var(--gold);font-size:16.5px;line-height:1.6;margin:0 auto 12px;max-width:460px;font-family:Georgia,serif;}
+  .grk{color:var(--gold-soft);font-size:16.5px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
   .safety{display:none;background:#1c1a24;border:1px solid #35314a;border-radius:16px;color:#c9c4e0;
     font-size:14px;line-height:1.55;padding:16px 18px;margin:0 auto 24px;max-width:440px;text-align:left;}
   .safety.on{display:block;}
@@ -147,8 +149,9 @@
     <section id="s-word" class="screen">
       <div class="kicker sm">The Word Bank</div>
       <p class="topictitle" id="wordTitle"></p>
-      <p class="wordlang" id="wordLang"></p>
       <p class="worddef" id="wordDef"></p>
+      <p class="heb" id="wordHeb"></p>
+      <p class="grk" id="wordGrk"></p>
       <p class="wordana" id="wordAna"></p>
       <div class="row" style="margin-top:26px;">
         <button class="speaker" onclick="speakWord()">&#128266;</button>
@@ -215,50 +218,80 @@ const RESET="I can start over right now. Not tomorrow. Not after I clean up. Rig
 
 
 const GLOSSARY={
-repentance:{rx:/\brepent/i,word:"Repentance",lang:"Greek: metanoia \u2014 a change of mind that turns you around",
-def:"Repentance is not groveling and it is not beating yourself up. It means to change your mind and turn around. You were headed one way. You stop, you turn, you head home.",
+repentance:{rx:/\brepent/i,word:"Repentance",
+def:"Repentance is not groveling and it is not beating yourself up. It means to turn around and head home. You were going one way. You stop, you turn, you come back.",
+heb:"In Hebrew it's <strong>shuv</strong> \u2014 to turn around and return. It's the word the prophets used every time they called God's people home.",
+grk:"In Greek it's <strong>metanoia</strong> \u2014 a changed mind. New thinking that turns into a new direction.",
 ana:"It is a U-turn, not a courtroom. The same move you made the day you got honest: I was wrong about the direction. Turn the car around."},
-justified:{rx:/\bjustif/i,word:"Justified",lang:"Greek: dikaio\u014d \u2014 declared righteous, legally",
+justified:{rx:/\bjustif/i,word:"Justified",
 def:"Justified means the Judge banged the gavel and said not guilty \u2014 and it is on the books. Your record did not get hidden. It got settled.",
+heb:"In Hebrew it's <strong>tsadaq</strong> \u2014 to be declared in the right. A courtroom word: the verdict comes down in your favor.",
+grk:"In Greek it's <strong>dikaio\u014d</strong> \u2014 to be declared righteous. Not made to feel righteous. Declared. Legally.",
 ana:"Just as if I had never done it. Somebody else paid the whole bill, and the court stamped it paid in full."},
-sanctified:{rx:/\bsanctif/i,word:"Sanctified",lang:"Greek: hagiaz\u014d \u2014 set apart for a purpose",
+sanctified:{rx:/\bsanctif/i,word:"Sanctified",
 def:"Sanctified means set apart. God took you out of general circulation and marked you for Himself. It is about who owns you, not how polished you are.",
+heb:"In Hebrew it's <strong>qadash</strong> \u2014 to be set apart as sacred. The temple tools were qadash: ordinary metal with a holy assignment.",
+grk:"In Greek it's <strong>hagiaz\u014d</strong> \u2014 made holy, set apart for God's own use.",
 ana:"Like your grandmother's good dishes. Not better china \u2014 set apart for something special. That is you."},
-redeemed:{rx:/\bredeem|redempt/i,word:"Redeemed",lang:"Greek: exagoraz\u014d / Hebrew: ga'al \u2014 bought back",
+redeemed:{rx:/\bredeem|redempt/i,word:"Redeemed",
 def:"Redeemed means bought back. You were on the block and Somebody paid the full price and took you home. The deed changed hands.",
+heb:"In Hebrew it's <strong>ga'al</strong> \u2014 the kinsman-redeemer. A family member with the right to buy you back. It's the whole story of Ruth, and it's what Jesus is to you: family who paid.",
+grk:"In Greek it's <strong>exagoraz\u014d</strong> \u2014 bought out of the marketplace. Off the block. Never for sale again.",
 ana:"Like getting something precious out of the pawn shop. It was His, it got lost, and He paid to bring it home. The price was blood."},
-grace:{rx:/\bgrace/i,word:"Grace",lang:"Greek: charis \u2014 a gift you did not earn",
+grace:{rx:/\bgrace/i,word:"Grace",
 def:"Grace is God giving you what you could never earn and never pay back. It is not a wage. It is a gift.",
+heb:"In Hebrew it's <strong>chen</strong> \u2014 favor you did not work for. Noah found chen in the eyes of the Lord \u2014 he didn't earn it, he found it.",
+grk:"In Greek it's <strong>charis</strong> \u2014 the gift itself, given freely, with joy attached.",
 ana:"Not a paycheck. A present. You do not work for it. You just have the guts to receive it."},
-mercy:{rx:/\bmerc(y|iful|ies)/i,word:"Mercy",lang:"Hebrew: chesed / Greek: eleos \u2014 loyal, rescuing love",
+mercy:{rx:/\bmerc(y|iful|ies)/i,word:"Mercy",
 def:"Mercy is God not giving you what you did earn. Grace hands you the gift. Mercy tears up the sentence.",
+heb:"In Hebrew it's <strong>chesed</strong> \u2014 loyal covenant love that keeps showing up when it has every reason to quit. The Bible says it's new every morning.",
+grk:"In Greek it's <strong>eleos</strong> \u2014 compassion that doesn't just feel something. It steps in and helps.",
 ana:"You walked in expecting the hammer and walked out with your Father's arm around you. That is mercy."},
-righteousness:{rx:/\brighteous/i,word:"Righteousness",lang:"Greek: dikaiosyn\u0113 \u2014 right standing",
-def:"Righteousness is not being a goody two shoes. It is right standing with God. The relationship is right and the account is right \u2014 because of Jesus, not your scorecard.",
+righteousness:{rx:/\brighteous/i,word:"Righteousness",
+def:"Righteousness is not being a goody two shoes. It is right standing with God \u2014 the relationship is right and the account is right \u2014 because of Jesus, not your scorecard.",
+heb:"In Hebrew it's <strong>tsedaqah</strong> \u2014 being truly in the right. Honest scales, straight dealing, nothing crooked between you and God.",
+grk:"In Greek it's <strong>dikaiosyn\u0113</strong> \u2014 right standing. Your position in the family, not your performance for the family.",
 ana:"It is your standing in the house, not a performance chart on the fridge. Sons do not audition to stay in the family."},
-salvation:{rx:/\bsav(ed|es|ing)|salvation/i,word:"Saved",lang:"Greek: s\u014dz\u014d \u2014 rescued, healed, delivered, made whole",
+salvation:{rx:/\bsav(ed|es|ing)|salvation/i,word:"Saved",
 def:"One word that means four things at once: rescued, healed, delivered, and made whole. God does not do partial rescues.",
+heb:"In Hebrew it's <strong>yasha</strong> \u2014 to rescue, to deliver. And here's the part that'll stop you: yasha is the root of the name <strong>Yeshua</strong> \u2014 Jesus. His own name literally means: the Lord saves.",
+grk:"In Greek it's <strong>s\u014dz\u014d</strong> \u2014 rescued, healed, delivered, and made whole. All four in one word.",
 ana:"Pulled out of the water, dried off, patched up, and driven home. The whole rescue \u2014 not just the life ring."},
-faith:{rx:/\bfaith/i,word:"Faith",lang:"Greek: pistis \u2014 trust you put your weight on",
+faith:{rx:/\bfaith/i,word:"Faith",
 def:"Faith is not a feeling you work up. It is trust with your weight on it \u2014 acting like God told the truth.",
+heb:"In Hebrew it's <strong>emunah</strong> \u2014 steady, faithful trust. Something solid you can lean on that holds. It's the root of the word <strong>amen</strong>: so be it, it stands.",
+grk:"In Greek it's <strong>pistis</strong> \u2014 trust, confidence, conviction you act on.",
 ana:"You do not feel a chair. You sit in it. Faith is sitting down on what God said."},
-confess:{rx:/\bconfess/i,word:"Confess",lang:"Greek: homologe\u014d \u2014 to say the same thing",
-def:"Confess literally means to say the same thing as God \u2014 agree with Him out loud. About what you did, and about who you are now.",
+confess:{rx:/\bconfess/i,word:"Confess",
+def:"Confess means to agree with God out loud \u2014 about what you did, and about who you are now.",
+heb:"In Hebrew it's <strong>yadah</strong> \u2014 to own it out loud with your hands thrown up. The same word is used for praise. Owning your stuff and praising God are closer cousins than you think.",
+grk:"In Greek it's <strong>homologe\u014d</strong> \u2014 literally, to say the same thing. You say about it what God says about it.",
 ana:"It is the admitted step in one word. Get it out of the dark and into the light, and it loses its grip."},
-atonement:{rx:/\baton/i,word:"Atonement",lang:"Hebrew: kaphar \u2014 to cover completely",
+atonement:{rx:/\baton/i,word:"Atonement",
 def:"Atonement means the covering. The debt gets covered so completely it is like it was never on the books.",
+heb:"In Hebrew it's <strong>kaphar</strong> \u2014 to cover. It's where Yom Kippur, the Day of Atonement, gets its name: the day the whole nation's debt got covered.",
+grk:"In Greek it's <strong>hilasmos</strong> \u2014 the sacrifice that satisfies. The payment that closes the case for good.",
 ana:"Somebody walked into the bank and paid off a loan you could not touch. Covered means covered."},
-holy:{rx:/\bhol(y|iness)/i,word:"Holy",lang:"Hebrew: qadosh \u2014 set apart, one of a kind",
+holy:{rx:/\bhol(y|iness)/i,word:"Holy",
 def:"Holy does not mean stuffy. It means set apart \u2014 one of a kind, on purpose, for a purpose.",
+heb:"In Hebrew it's <strong>qadosh</strong> \u2014 set apart, unlike anything else. When the angels cry qadosh, qadosh, qadosh, they're saying: there is nothing and no one like Him.",
+grk:"In Greek it's <strong>hagios</strong> \u2014 set apart for God. Same word that gives us saints: the set-apart ones.",
 ana:"Not better than everybody. Different assignment. A tool set aside for the Master's own hand."},
-gospel:{rx:/\bgospel/i,word:"Gospel",lang:"Greek: euangelion \u2014 good news",
+gospel:{rx:/\bgospel/i,word:"Gospel",
 def:"Gospel just means good news \u2014 the announcement that the war is over and the King already won.",
+heb:"The Old Testament root is <strong>basar</strong> \u2014 to carry good news. Isaiah 52 paints it: the runner coming over the mountains, feet flying, shouting that peace has come.",
+grk:"In Greek it's <strong>euangelion</strong> \u2014 the victory announcement. The word they used when a battle was won and a runner brought word back to the city.",
 ana:"Not good advice. Good news. Advice tells you what to do. News tells you what has been done."},
-reconciled:{rx:/\breconcil/i,word:"Reconciled",lang:"Greek: katallass\u014d \u2014 brought back together",
+reconciled:{rx:/\breconcil/i,word:"Reconciled",
 def:"Reconciled means the relationship got restored. The fight between you and God is over \u2014 and He is the one who ended it.",
+heb:"The Hebrew idea is <strong>shalam</strong> \u2014 the root of shalom. Made whole. Peace restored. Nothing missing, nothing broken between you.",
+grk:"In Greek it's <strong>katallass\u014d</strong> \u2014 enemies brought back to the same table. The exchange that makes two parties one again.",
 ana:"The amends got made. Except God made them toward you first, while you were still mad at Him."},
-covenant:{rx:/\bcovenant/i,word:"Covenant",lang:"Hebrew: berith \u2014 a blood-sealed promise",
+covenant:{rx:/\bcovenant/i,word:"Covenant",
 def:"A covenant is stronger than a contract. Contracts have exit clauses. Covenants are cut in blood and do not expire.",
+heb:"In Hebrew it's <strong>berith</strong> \u2014 a covenant you cut, not one you sign. Blood sealed it, because it was meant to hold for life.",
+grk:"In Greek it's <strong>diath\u0113k\u0113</strong> \u2014 a testament. A will. It goes into effect through a death \u2014 and Jesus supplied the death that put yours into effect.",
 ana:"A contract says: as long as you hold up your end. A covenant says: even if you do not. God cut a covenant."}
 };
 let currentWord=null, wordReturn="pray";
@@ -466,8 +499,9 @@ function goWord(){
 function renderWord(key){
   const g=GLOSSARY[key];
   document.getElementById('wordTitle').textContent=g.word;
-  document.getElementById('wordLang').textContent=g.lang;
   document.getElementById('wordDef').textContent=g.def;
+  document.getElementById('wordHeb').innerHTML=g.heb;
+  document.getElementById('wordGrk').innerHTML=g.grk;
   document.getElementById('wordAna').textContent=g.ana;
   document.getElementById('wordBackBtn').textContent=wordReturn==="pray"?"Back to the prayer":"Back to the words";
   show('s-word');
@@ -492,7 +526,8 @@ function speakWord(){
   const entry=Object.values(GLOSSARY).find(g=>g.word===key);
   if(!entry)return;
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(entry.word+". "+entry.def+" "+entry.ana);
+  const strip=h=>h.replace(/<[^>]+>/g,"");
+  const u=new SpeechSynthesisUtterance(entry.word+". "+entry.def+" "+strip(entry.heb)+" "+strip(entry.grk)+" "+entry.ana);
   if(voice)u.voice=voice;u.rate=.9;
   speechSynthesis.speak(u);
 }
