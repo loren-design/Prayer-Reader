@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Prayer Reader — Know God Better</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M14 58 V30 a18 18 0 0 1 36 0 V58' fill='none' stroke='%23c9a24b' stroke-width='4' stroke-linecap='round'/%3E%3Crect x='29.5' y='22' width='5' height='36' rx='2.5' fill='%23e6c987'/%3E%3Crect x='22' y='34' width='20' height='5' rx='2.5' fill='%23e6c987'/%3E%3C/svg%3E" />
+<meta name="description" content="Speak who God says you are. 120 scripture declarations, read out loud, one day at a time. Free from Know God Better." />
+<meta property="og:title" content="Prayer Reader — Know God Better" />
+<meta property="og:description" content="Speak who God says you are. Scripture declarations read out loud — anxiety, freedom, identity, fully recovered. Free, always." />
+<meta property="og:type" content="website" />
+
 <style>
   :root{--bg:#12100e;--bg2:#1b1815;--ink:#f4efe7;--muted:#a89f92;--gold:#c9a24b;--gold-soft:#e6c987;--line:#2c2823;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -58,6 +64,13 @@
   .wordlang{color:var(--muted);font-size:15px;font-style:italic;margin:0 0 22px;}
   .worddef{color:var(--ink);font-size:18px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
   .wordana{color:var(--gold-soft);font-size:16px;line-height:1.6;margin:0 auto 8px;max-width:440px;}
+  .logo{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:30px;}
+  .logo svg{width:88px;height:88px;filter:drop-shadow(0 0 18px rgba(230,201,135,.25));}
+  .logo > div{display:flex;flex-direction:column;gap:10px;}
+  .logo .wordmark{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+  .logo .tagline{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .logo .welcome{font-size:13px;color:var(--gold-soft);font-family:Georgia,serif;font-style:italic;letter-spacing:.02em;}
+  .copyright{color:var(--muted);font-size:11px;letter-spacing:.05em;text-align:center;padding:0 18px 20px;opacity:.6;}
   .tiers{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:22px auto 6px;}
   .tier{display:block;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
     padding:18px 20px;text-align:left;text-decoration:none;color:var(--ink);}
@@ -67,8 +80,11 @@
   .tier .tname{font-weight:700;font-size:15px;letter-spacing:.04em;margin:2px 0 4px;}
   .tier .tmean{color:var(--muted);font-size:13.5px;line-height:1.45;}
   .tier.custom{background:#221d15;border-color:#3a3122;}
-  .heb{color:var(--gold);font-size:16.5px;line-height:1.6;margin:0 auto 12px;max-width:460px;font-family:Georgia,serif;}
-  .grk{color:var(--gold-soft);font-size:16.5px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
+  .heb{color:var(--gold-soft);font-size:16.5px;line-height:1.6;margin:0 auto 12px;max-width:460px;font-family:Georgia,serif;}
+  .heb strong{color:#f2debf;}
+  .grk{color:var(--ink);font-size:16.5px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
+  .grk strong{color:var(--gold-soft);}
+  .wordana{color:var(--gold-soft) !important;}
   .safety{display:none;background:#1c1a24;border:1px solid #35314a;border-radius:16px;color:#c9c4e0;
     font-size:14px;line-height:1.55;padding:16px 18px;margin:0 auto 24px;max-width:440px;text-align:left;}
   .safety.on{display:block;}
@@ -80,7 +96,18 @@
 <body>
   <div class="wrap">
     <section id="s-entry" class="screen on">
-      <div class="kicker">Know God Better</div>
+      <div class="logo">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 58 V30 a18 18 0 0 1 36 0 V58" fill="none" stroke="#c9a24b" stroke-width="4" stroke-linecap="round"/>
+          <rect x="29.5" y="22" width="5" height="36" rx="2.5" fill="#e6c987"/>
+          <rect x="22" y="34" width="20" height="5" rx="2.5" fill="#e6c987"/>
+        </svg>
+        <div>
+          <div class="wordmark">Know God Better</div>
+          <div class="tagline">The door is open</div>
+          <div class="welcome">Come on in. You're welcome anytime.</div>
+        </div>
+      </div>
       <p class="verse" id="entryVerse"></p>
       <p class="ref" id="entryRef"></p>
       <button class="primary" onclick="goName()">Pray with me</button>
@@ -582,5 +609,6 @@ function toggleSpeak(line){
 }
 function replay(){if(currentList.length)toggleSpeak(currentList[idx].t);}
 </script>
+<div class="copyright">&copy; 2026 Know God Better Ministries &middot; a Ten2 Harvest Media tool &middot; knowgodbetter</div>
 </body>
 </html>
