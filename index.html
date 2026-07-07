@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Prayer Reader — Know God Better</title>
+<style>
+  :root{--bg:#12100e;--bg2:#1b1815;--ink:#f4efe7;--muted:#a89f92;--gold:#c9a24b;--gold-soft:#e6c987;--line:#2c2823;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{background:radial-gradient(120% 90% at 50% 0%, #1d1a16 0%, var(--bg) 60%);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100dvh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
+  .wrap{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    padding:32px 26px calc(28px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;width:100%;text-align:center;}
+  .screen{display:none;width:100%;animation:rise .5s ease both;}
+  .screen.on{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .kicker{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:26px;font-weight:600;}
+  .kicker.sm{margin-bottom:14px;}
+  .verse{font-family:Georgia,serif;font-size:26px;line-height:1.5;margin:0 0 12px;font-weight:400;}
+  .ref{color:var(--muted);font-size:14px;letter-spacing:.04em;margin-bottom:40px;}
+  h2{font-family:Georgia,serif;font-weight:400;font-size:24px;line-height:1.4;margin:0 0 8px;}
+  .big{font-family:Georgia,serif;font-size:30px;margin:0 0 10px;}
+  .topictitle{font-family:Georgia,serif;font-size:32px;line-height:1.25;margin:0 0 16px;}
+  .sub{color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 30px;}
+  .topicintro{color:var(--ink);font-size:17px;line-height:1.6;margin:0 auto 10px;max-width:440px;font-family:Georgia,serif;}
+  .topiccount{color:var(--muted);font-size:13px;letter-spacing:.06em;margin:0 0 30px;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#241d0c;font-weight:700;font-size:18px;
+    padding:18px 30px;border-radius:999px;width:100%;max-width:340px;letter-spacing:.02em;box-shadow:0 10px 30px rgba(201,162,75,.22);}
+  .primary:active{transform:translateY(1px);}
+  .ghost{background:transparent;color:var(--muted);font-size:15px;padding:14px;margin-top:6px;}
+  .ghost:active{color:var(--ink);}
+  input{font-family:inherit;font-size:20px;text-align:center;width:100%;max-width:340px;padding:16px 18px;
+    background:var(--bg2);border:1px solid var(--line);color:var(--ink);border-radius:16px;outline:none;margin-bottom:22px;}
+  input:focus{border-color:var(--gold);}
+  .needs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+  .need{background:var(--bg2);border:1px solid var(--line);color:var(--ink);border-radius:18px;padding:20px 12px;
+    font-size:15px;font-weight:600;line-height:1.3;min-height:88px;display:flex;align-items:center;justify-content:center;}
+  .need:active{border-color:var(--gold);background:#221e19;}
+  .need .ic{font-size:22px;display:block;margin-bottom:8px;}
+  .need.wide{grid-column:1 / -1;background:#221d15;border-color:#3a3122;}
+  .resetcard{background:#20140f;border:1px solid #4a2c1f;border-radius:20px;padding:22px 20px;margin:0 auto 22px;max-width:400px;}
+  .resetcard p{margin:0 0 16px;color:#e9c9b0;font-size:15px;line-height:1.5;}
+  .lead{color:var(--gold-soft);font-size:16px;margin:0 0 18px;font-weight:600;}
+  .declaration{font-family:Georgia,serif;font-size:23px;line-height:1.55;margin:0 auto 30px;max-width:540px;}
+  .counter{color:var(--muted);font-size:13px;letter-spacing:.05em;margin-bottom:26px;}
+  .row{display:flex;gap:12px;max-width:360px;margin:0 auto;}
+  .row .primary{max-width:none;}
+  .speaker{background:var(--bg2);border:1px solid var(--line);color:var(--gold-soft);border-radius:999px;width:60px;flex:0 0 60px;
+    font-size:24px;display:flex;align-items:center;justify-content:center;}
+  .speaker:active,.speaker.playing{border-color:var(--gold);color:var(--gold);}
+  .backlink{margin-top:18px;}
+  .chip{background:transparent;border:1px dashed #4a4132;color:var(--gold-soft);border-radius:999px;
+    padding:10px 18px;font-size:14px;margin:0 auto 24px;display:none;}
+  .chip.on{display:inline-block;}
+  .chip:active{border-color:var(--gold);}
+  .wordlang{color:var(--muted);font-size:15px;font-style:italic;margin:0 0 22px;}
+  .worddef{color:var(--ink);font-size:18px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
+  .wordana{color:var(--gold-soft);font-size:16px;line-height:1.6;margin:0 auto 8px;max-width:440px;}
+  .tiers{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:22px auto 6px;}
+  .tier{display:block;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+    padding:18px 20px;text-align:left;text-decoration:none;color:var(--ink);}
+  .tier:active{border-color:var(--gold);background:#221e19;}
+  .tier .amt{font-family:Georgia,serif;font-size:24px;color:var(--gold-soft);}
+  .tier .amt span{font-size:14px;color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  .tier .tname{font-weight:700;font-size:15px;letter-spacing:.04em;margin:2px 0 4px;}
+  .tier .tmean{color:var(--muted);font-size:13.5px;line-height:1.45;}
+  .tier.custom{background:#221d15;border-color:#3a3122;}
+  .safety{display:none;background:#1c1a24;border:1px solid #35314a;border-radius:16px;color:#c9c4e0;
+    font-size:14px;line-height:1.55;padding:16px 18px;margin:0 auto 24px;max-width:440px;text-align:left;}
+  .safety.on{display:block;}
+  .supportlink{background:transparent;border:none;color:var(--muted);font-size:12px;letter-spacing:.06em;
+    padding:4px 18px 16px;opacity:.85;text-decoration:underline;text-underline-offset:3px;}
+  .brand{color:var(--muted);font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:18px;opacity:.7;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <section id="s-entry" class="screen on">
+      <div class="kicker">Know God Better</div>
+      <p class="verse" id="entryVerse"></p>
+      <p class="ref" id="entryRef"></p>
+      <button class="primary" onclick="goName()">Pray with me</button>
+    </section>
+
+    <section id="s-name" class="screen">
+      <h2>First — what do I call you?</h2>
+      <p class="sub">Just your first name. Nobody sees this but you.</p>
+      <input id="nameInput" type="text" autocomplete="given-name" placeholder="Your name" enterkeyhint="go" />
+      <button class="primary" onclick="goGreet()">That's me</button>
+      <button class="ghost" onclick="skipName()">Skip for now</button>
+    </section>
+
+    <section id="s-greet" class="screen">
+      <p class="big" id="greetHi"></p>
+      <p class="sub" id="greetLine"></p>
+      <button class="primary" onclick="goNeeds()">Let's pray</button>
+      <div class="resetcard" style="margin-top:26px;">
+        <p>Spun out? Doom-scrolled three hours gone? Racing thoughts? You can start your day over right now.</p>
+        <button class="primary" style="background:#3a2418;color:#f0d9c6;box-shadow:none;" onclick="goReset()">I need to reset</button>
+      </div>
+    </section>
+
+    <section id="s-reset" class="screen">
+      <p class="lead" id="resetLead">Take a breath.</p>
+      <p class="declaration" id="resetText"></p>
+      <div class="row">
+        <button class="speaker" onclick="speak(RESET)">&#128266;</button>
+        <button class="primary" onclick="goNeeds()">Now let's pray</button>
+      </div>
+      <button class="ghost backlink" onclick="goGreet()">Back</button>
+    </section>
+
+    <section id="s-needs" class="screen">
+      <h2 id="needsHi">What do you need today?</h2>
+      <p class="sub">Tap one. It has its own page in the Word.</p>
+      <div class="needs" id="needGrid"></div>
+      <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
+    </section>
+
+    <section id="s-topic" class="screen">
+      <div class="kicker sm">What the Word of God says</div>
+      <p class="topictitle" id="topicTitle"></p>
+      <p class="topicintro" id="topicIntro"></p>
+      <p class="topiccount" id="topicCount"></p>
+      <p class="safety" id="topicSafety"></p>
+      <button class="primary" onclick="startTopic()">Say it with me</button>
+      <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
+    </section>
+
+    <section id="s-pray" class="screen">
+      <p class="lead" id="prayLead">Say this with me.</p>
+      <p class="declaration" id="prayText"></p>
+      <p class="counter" id="prayCount"></p>
+      <button class="chip" id="wordChip" onclick="goWord()"></button>
+      <div class="row">
+        <button class="speaker" id="speakerBtn" onclick="replay()">&#128266;</button>
+        <button class="primary" onclick="nextInNeed()">Another one</button>
+      </div>
+      <button class="ghost backlink" onclick="backToTopic()">&#8592; Back to this topic</button>
+      <button class="ghost" onclick="goNeeds()">All topics</button>
+    </section>
+
+    <section id="s-word" class="screen">
+      <div class="kicker sm">The Word Bank</div>
+      <p class="topictitle" id="wordTitle"></p>
+      <p class="wordlang" id="wordLang"></p>
+      <p class="worddef" id="wordDef"></p>
+      <p class="wordana" id="wordAna"></p>
+      <div class="row" style="margin-top:26px;">
+        <button class="speaker" onclick="speakWord()">&#128266;</button>
+        <button class="primary" onclick="backFromWord()" id="wordBackBtn">Back to the prayer</button>
+      </div>
+      <button class="ghost backlink" onclick="goWordBank()">See all the words</button>
+    </section>
+
+    <section id="s-wordbank" class="screen">
+      <div class="kicker sm">The Word Bank</div>
+      <p class="topictitle">Christianese, translated</p>
+      <p class="sub">Big church words in plain English &mdash; with the Hebrew and Greek behind them. Tap one.</p>
+      <div class="needs" id="wordGrid"></div>
+      <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
+    </section>
+
+    <section id="s-support" class="screen">
+      <div class="kicker sm">Ten2 Harvest Media</div>
+      <p class="topictitle">Keep the tools free.</p>
+      <p class="topicintro">Everything on this app is free, and it stays free. Ten2 Harvest Media builds free tools that help people know God better &mdash; this is one of them. We're on a mission we call <strong>One Billion for Jesus</strong>: using AI and the power of the internet to put the Word of God into hands in every zip code and every mailable address on earth by 2027.</p>
+      <p class="topicintro">If this put something back in your hands, help us build the next one. Every number below carries a story.</p>
+      <div class="tiers">
+        <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
+          <div class="amt">$7 <span>/ month</span></div>
+          <div class="tname">COMPLETION</div>
+          <div class="tmean">Seven days. Finished work. God finishes what He starts &mdash; and so will we.</div>
+        </a>
+        <a class="tier" href="https://buy.stripe.com/5kQfZh4Ef0wJ6yf3QK9IQ03" target="_blank" rel="noopener">
+          <div class="amt">$12 <span>/ month</span></div>
+          <div class="tname">THE TWELVE</div>
+          <div class="tmean">Twelve tribes. Twelve apostles. Ordinary people, sent. That's who builds this.</div>
+        </a>
+        <a class="tier" href="https://buy.stripe.com/4gMdR9b2DbbncWD8709IQ04" target="_blank" rel="noopener">
+          <div class="amt">$20.24 <span>/ month</span></div>
+          <div class="tname">ACTS 20:24</div>
+          <div class="tmean">"I count my life as nothing &mdash; if only I finish the race." The verse this whole thing runs on.</div>
+        </a>
+        <a class="tier" href="https://buy.stripe.com/3cIaEXeePa7j09Rdrk9IQ05" target="_blank" rel="noopener">
+          <div class="amt">$50 <span>/ month</span></div>
+          <div class="tname">JUBILEE</div>
+          <div class="tmean">Leviticus 25. Debts cancelled. Captives home. Freedom announced &mdash; that's the whole mission.</div>
+        </a>
+        <a class="tier custom" href="https://buy.stripe.com/eVqcN5daLbbn9Krevo9IQ06" target="_blank" rel="noopener">
+          <div class="amt">You pick <span>/ one time</span></div>
+          <div class="tname">GIVE ONCE</div>
+          <div class="tmean">Any amount, one time. Every dollar puts the Word in somebody's hands.</div>
+        </a>
+      </div>
+      <button class="ghost backlink" onclick="goNeeds()">Back to praying</button>
+    </section>
+  </div>
+  <div class="brand">Pray always &middot; Ephesians 6:18 &middot; One day at a time</div>
+  <div style="text-align:center;"><button class="supportlink" onclick="show('s-support')">Built free by Ten2 Harvest Media &mdash; keep the tools free &#9829;</button></div>
+
+<script>
+const entryVerses=[
+  ["There is now no condemnation for those who are in Christ Jesus.","Romans 8:1"],
+  ["The name of the Lord is a strong tower. The righteous run to it and are safe.","Proverbs 18:10"],
+  ["He heals the brokenhearted and binds up their wounds.","Psalm 147:3"],
+  ["I have loved you with an everlasting love.","Jeremiah 31:3"]
+];
+
+const RESET="I can start over right now. Not tomorrow. Not after I clean up. Right now. The hours I lost do not lock the door. The doom scroll, the spin out, the racing thoughts, whatever pulled me away, that is behind me the second I turn back around. The Holy Spirit never left the room. He has been right here the whole time. So I take a breath. I turn back around. And I sit back down at my Father's table. Right now.";
+
+
+const GLOSSARY={
+repentance:{rx:/\brepent/i,word:"Repentance",lang:"Greek: metanoia \u2014 a change of mind that turns you around",
+def:"Repentance is not groveling and it is not beating yourself up. It means to change your mind and turn around. You were headed one way. You stop, you turn, you head home.",
+ana:"It is a U-turn, not a courtroom. The same move you made the day you got honest: I was wrong about the direction. Turn the car around."},
+justified:{rx:/\bjustif/i,word:"Justified",lang:"Greek: dikaio\u014d \u2014 declared righteous, legally",
+def:"Justified means the Judge banged the gavel and said not guilty \u2014 and it is on the books. Your record did not get hidden. It got settled.",
+ana:"Just as if I had never done it. Somebody else paid the whole bill, and the court stamped it paid in full."},
+sanctified:{rx:/\bsanctif/i,word:"Sanctified",lang:"Greek: hagiaz\u014d \u2014 set apart for a purpose",
+def:"Sanctified means set apart. God took you out of general circulation and marked you for Himself. It is about who owns you, not how polished you are.",
+ana:"Like your grandmother's good dishes. Not better china \u2014 set apart for something special. That is you."},
+redeemed:{rx:/\bredeem|redempt/i,word:"Redeemed",lang:"Greek: exagoraz\u014d / Hebrew: ga'al \u2014 bought back",
+def:"Redeemed means bought back. You were on the block and Somebody paid the full price and took you home. The deed changed hands.",
+ana:"Like getting something precious out of the pawn shop. It was His, it got lost, and He paid to bring it home. The price was blood."},
+grace:{rx:/\bgrace/i,word:"Grace",lang:"Greek: charis \u2014 a gift you did not earn",
+def:"Grace is God giving you what you could never earn and never pay back. It is not a wage. It is a gift.",
+ana:"Not a paycheck. A present. You do not work for it. You just have the guts to receive it."},
+mercy:{rx:/\bmerc(y|iful|ies)/i,word:"Mercy",lang:"Hebrew: chesed / Greek: eleos \u2014 loyal, rescuing love",
+def:"Mercy is God not giving you what you did earn. Grace hands you the gift. Mercy tears up the sentence.",
+ana:"You walked in expecting the hammer and walked out with your Father's arm around you. That is mercy."},
+righteousness:{rx:/\brighteous/i,word:"Righteousness",lang:"Greek: dikaiosyn\u0113 \u2014 right standing",
+def:"Righteousness is not being a goody two shoes. It is right standing with God. The relationship is right and the account is right \u2014 because of Jesus, not your scorecard.",
+ana:"It is your standing in the house, not a performance chart on the fridge. Sons do not audition to stay in the family."},
+salvation:{rx:/\bsav(ed|es|ing)|salvation/i,word:"Saved",lang:"Greek: s\u014dz\u014d \u2014 rescued, healed, delivered, made whole",
+def:"One word that means four things at once: rescued, healed, delivered, and made whole. God does not do partial rescues.",
+ana:"Pulled out of the water, dried off, patched up, and driven home. The whole rescue \u2014 not just the life ring."},
+faith:{rx:/\bfaith/i,word:"Faith",lang:"Greek: pistis \u2014 trust you put your weight on",
+def:"Faith is not a feeling you work up. It is trust with your weight on it \u2014 acting like God told the truth.",
+ana:"You do not feel a chair. You sit in it. Faith is sitting down on what God said."},
+confess:{rx:/\bconfess/i,word:"Confess",lang:"Greek: homologe\u014d \u2014 to say the same thing",
+def:"Confess literally means to say the same thing as God \u2014 agree with Him out loud. About what you did, and about who you are now.",
+ana:"It is the admitted step in one word. Get it out of the dark and into the light, and it loses its grip."},
+atonement:{rx:/\baton/i,word:"Atonement",lang:"Hebrew: kaphar \u2014 to cover completely",
+def:"Atonement means the covering. The debt gets covered so completely it is like it was never on the books.",
+ana:"Somebody walked into the bank and paid off a loan you could not touch. Covered means covered."},
+holy:{rx:/\bhol(y|iness)/i,word:"Holy",lang:"Hebrew: qadosh \u2014 set apart, one of a kind",
+def:"Holy does not mean stuffy. It means set apart \u2014 one of a kind, on purpose, for a purpose.",
+ana:"Not better than everybody. Different assignment. A tool set aside for the Master's own hand."},
+gospel:{rx:/\bgospel/i,word:"Gospel",lang:"Greek: euangelion \u2014 good news",
+def:"Gospel just means good news \u2014 the announcement that the war is over and the King already won.",
+ana:"Not good advice. Good news. Advice tells you what to do. News tells you what has been done."},
+reconciled:{rx:/\breconcil/i,word:"Reconciled",lang:"Greek: katallass\u014d \u2014 brought back together",
+def:"Reconciled means the relationship got restored. The fight between you and God is over \u2014 and He is the one who ended it.",
+ana:"The amends got made. Except God made them toward you first, while you were still mad at Him."},
+covenant:{rx:/\bcovenant/i,word:"Covenant",lang:"Hebrew: berith \u2014 a blood-sealed promise",
+def:"A covenant is stronger than a contract. Contracts have exit clauses. Covenants are cut in blood and do not expire.",
+ana:"A contract says: as long as you hold up your end. A covenant says: even if you do not. God cut a covenant."}
+};
+let currentWord=null, wordReturn="pray";
+
+const cats={
+  identity:{label:"Who I Am",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
+  forgiven:{label:"Forgiven",icon:"\u2725",title:"About Forgiveness",intro:"The record is clean and heaven is not keeping a file. Here's what got written down about you."},
+  free:{label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
+  loved:{label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
+  peace:{label:"Peace & Rest",icon:"\uD83D\uDD4A\uFE0F",title:"About Peace & Rest",intro:"Peace is not a mood. It is a Person standing guard at your door. Here's His word on it."},
+  strength:{label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
+  healed:{label:"Healed",icon:"\u2795",title:"About Healing",intro:"By His stripes. Past tense. Healing is part of what He already paid for."},
+  provision:{label:"Provided For",icon:"\uD83C\uDF3E",title:"About Provision",intro:"Your Father owns it all, and He provides for His kids. Here's His promise."},
+  victory:{label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
+  anxiety:{label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
+  depression:{label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
+  mind:{label:"The Mind",icon:"\uD83E\uDDE0",title:"About Your Mind",intro:"Your mind is not stuck the way it is. It gets renewed, one thought at a time. It is written."},
+  recovered:{label:"Fully Recovered",icon:"\uD83C\uDF31",title:"About Being Fully Recovered",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."}
+};
+
+const D=[
+{n:1,c:"identity",t:"The word of God tells me in chapter one hundred thirty-nine, verse fourteen of the book of Psalms that I am fearfully and wonderfully made. God did not make a mistake when He made me. I am His handiwork and He does good work."},
+{n:2,c:"peace",t:"The word of God tells me in chapter twenty-nine, verse eleven of the book of Jeremiah that God knows the plans He has for me, plans for good and not for harm, to give me a future and a hope. My story is not over. God wrote the ending and it is good."},
+{n:3,c:"strength",t:"The word of God tells me in chapter four, verse thirteen of the book of Philippians that I can do all things through Christ who strengthens me. The strength is not mine. It is His, and He never runs out."},
+{n:4,c:"provision",t:"The word of God tells me in chapter four, verse nineteen of the book of Philippians that my God shall supply all my need according to His riches in glory by Christ Jesus. I am not on my own. My Father owns it all and He provides for His kids."},
+{n:5,c:"peace",t:"The word of God tells me in chapter four, verse seven of the book of Philippians that the peace of God, which passes all understanding, guards my heart and my mind in Christ Jesus. Peace stands guard at my door. Worry does not get in."},
+{n:6,c:"identity",t:"The word of God tells me in chapter one, verse six of the book of Philippians that He who began a good work in me will finish it. God does not start projects and walk away. He is finishing what He started in me."},
+{n:7,c:"identity",t:"The word of God tells me in chapter three, verse twenty of the book of Philippians that my citizenship is in heaven. This world is not my home. I carry the passport of the kingdom."},
+{n:8,c:"free",t:"The word of God tells me in chapter eight, verse two of the book of Romans that the law of the Spirit of life in Christ Jesus has set me free from the law of sin and death. There is a higher law working in me now. Freedom is my legal standing."},
+{n:9,c:"strength",t:"The word of God tells me in chapter eight, verse eleven of the book of Romans that the same Spirit who raised Jesus from the dead lives in me. Resurrection power is not far away. It moved in."},
+{n:10,c:"identity",t:"The word of God tells me in chapter eight, verse fifteen of the book of Romans that I did not receive a spirit of bondage to fear again, but the Spirit of adoption, and I cry out Abba, Father. I am not a slave in this house. I am a son."},
+{n:11,c:"identity",t:"The word of God tells me in chapter eight, verse sixteen of the book of Romans that the Spirit Himself testifies with my spirit that I am a child of God. This is not wishful thinking. God Himself vouches for me."},
+{n:12,c:"identity",t:"The word of God tells me in chapter eight, verse seventeen of the book of Romans that I am an heir of God and a joint heir with Christ. Everything the Father gave the Son, I share in. That is my inheritance."},
+{n:13,c:"peace",t:"The word of God tells me in chapter eight, verse twenty-eight of the book of Romans that all things work together for good to those who love God and are called according to His purpose. Even the mess gets used. Nothing is wasted in my Father's hands."},
+{n:14,c:"victory",t:"The word of God tells me in chapter eight, verse thirty-one of the book of Romans that if God is for me, who can be against me. The scoreboard is settled. God is on my side and the other side already lost."},
+{n:15,c:"loved",t:"The word of God tells me in chapter eight, verses thirty-eight and thirty-nine of the book of Romans that nothing can separate me from the love of God which is in Christ Jesus. Not death, not life, not my worst day. Nothing."},
+{n:16,c:"forgiven",t:"The word of God tells me in chapter three, verse twenty-four of the book of Romans that I am justified freely by His grace through the redemption that is in Christ Jesus. Freely means I did not earn it and I cannot lose it by having a bad week. Grace paid the whole bill."},
+{n:17,c:"identity",t:"The word of God tells me in chapter six, verse four of the book of Romans that just as Christ was raised from the dead, I too walk in newness of life. I am not patched up. I am brand new."},
+{n:18,c:"free",t:"The word of God tells me in chapter six, verse six of the book of Romans that my old man was crucified with Christ so that the body of sin might be done away with. The old me does not get resurrected. He stays in the grave."},
+{n:19,c:"free",t:"The word of God tells me in chapter six, verse eighteen of the book of Romans that I have been set free from sin and have become a servant of righteousness. I switched teams. I work for righteousness now."},
+{n:20,c:"identity",t:"The word of God tells me in chapter six, verse twenty-three of the book of Romans that the gift of God is eternal life in Christ Jesus my Lord. It is a gift. My job is to receive it, not to earn it."},
+{n:21,c:"identity",t:"The word of God tells me in chapter ten, verse nine of the book of Romans that because I confess with my mouth the Lord Jesus and believe in my heart that God raised Him from the dead, I am saved. I said it. I believe it. It is settled."},
+{n:22,c:"peace",t:"The word of God tells me in chapter fifteen, verse thirteen of the book of Romans that the God of hope fills me with all joy and peace in believing, so that I abound in hope by the power of the Holy Spirit. I am not running on empty. I am running on hope that overflows."},
+{n:23,c:"identity",t:"The word of God tells me in chapter one, verse three of the book of Ephesians that I have been blessed with every spiritual blessing in the heavenly places in Christ. Not some blessings. Every one. They already have my name on them."},
+{n:24,c:"identity",t:"The word of God tells me in chapter one, verse four of the book of Ephesians that God chose me in Christ before the foundation of the world, to be holy and blameless before Him. I was not an afterthought. I was picked before the world was built."},
+{n:25,c:"identity",t:"The word of God tells me in chapter one, verse five of the book of Ephesians that God predestined me to adoption as a son through Jesus Christ, according to the good pleasure of His will. It made God happy to adopt me. I am wanted."},
+{n:26,c:"identity",t:"The word of God tells me in chapter one, verse thirteen of the book of Ephesians that I have been sealed with the Holy Spirit of promise. God put His seal on me. That seal does not break."},
+{n:27,c:"identity",t:"The word of God tells me in chapter two, verses four and five of the book of Ephesians that God, who is rich in mercy, made me alive together with Christ even when I was dead in sin. I was dead and He made me alive. That is not improvement. That is resurrection."},
+{n:28,c:"victory",t:"The word of God tells me in chapter two, verse six of the book of Ephesians that God raised me up and seated me with Christ in the heavenly places. I fight from victory, not for it. My seat is above the battle."},
+{n:29,c:"identity",t:"The word of God tells me in chapter two, verse eight of the book of Ephesians that by grace I have been saved through faith, and it is not of myself, it is the gift of God. I did not climb up to God. He came down and got me."},
+{n:30,c:"forgiven",t:"The word of God tells me in chapter two, verse thirteen of the book of Ephesians that I who was once far off have been brought near by the blood of Christ. The distance is gone. The blood closed the gap."},
+{n:31,c:"identity",t:"The word of God tells me in chapter two, verse nineteen of the book of Ephesians that I am no longer a stranger or a foreigner, but a fellow citizen with the saints and a member of the household of God. I have a seat at the family table. I belong here."},
+{n:32,c:"identity",t:"The word of God tells me in chapter three, verse twelve of the book of Ephesians that in Christ I have boldness and access with confidence through faith in Him. I do not knock and hope. I walk in, because the Son opened the door."},
+{n:33,c:"strength",t:"The word of God tells me in chapter three, verses sixteen and seventeen of the book of Ephesians that God strengthens me with might through His Spirit in my inner man, and Christ dwells in my heart through faith. The strongest part of me is the inside. That is where He lives."},
+{n:34,c:"provision",t:"The word of God tells me in chapter three, verse twenty of the book of Ephesians that God is able to do exceedingly abundantly above all that I ask or think, according to the power that works in me. My biggest ask is still too small. He does more."},
+{n:35,c:"identity",t:"The word of God tells me in chapter four, verse twenty-four of the book of Ephesians that I have put on the new man, created according to God in true righteousness and holiness. The new man is not something I am becoming someday. He is who God already made me."},
+{n:36,c:"strength",t:"The word of God tells me in chapter six, verse ten of the book of Ephesians that I am strong in the Lord and in the power of His might. My strength has a source, and the source is not me. It is Him."},
+{n:37,c:"strength",t:"The word of God tells me in chapter six, verse eleven of the book of Ephesians that I put on the whole armor of God so I can stand against the schemes of the devil. I am not exposed. I am armored, and I am standing."},
+{n:38,c:"forgiven",t:"The word of God tells me in chapter one, verse twenty-two of the book of Colossians that Christ has reconciled me in His body through death, to present me holy, blameless, and above reproach in His sight. When God looks at me, He sees blameless. That is how the blood works."},
+{n:39,c:"identity",t:"The word of God tells me in chapter two, verse ten of the book of Colossians that I am complete in Him who is the head of all principality and power. I am not missing pieces. In Christ, I am whole."},
+{n:40,c:"identity",t:"The word of God tells me in chapter three, verse one of the book of Colossians that I have been raised with Christ, so I seek those things which are above, where Christ sits at the right hand of God. My eyes look up. That is where my life comes from."},
+{n:41,c:"peace",t:"The word of God tells me in chapter three, verse three of the book of Colossians that my life is hidden with Christ in God. The enemy cannot get to me without going through Jesus first. I am hidden in the safest place there is."},
+{n:42,c:"loved",t:"The word of God tells me in chapter three, verse twelve of the book of Colossians that I am chosen of God, holy, and dearly loved. Not tolerated. Dearly loved."},
+{n:43,c:"free",t:"The word of God tells me in chapter three, verse thirteen of the book of Galatians that Christ has redeemed me from the curse by becoming a curse for me. The curse stops at the cross. It does not follow me home."},
+{n:44,c:"identity",t:"The word of God tells me in chapter three, verse twenty-six of the book of Galatians that I am a child of God through faith in Christ Jesus. Faith made me family. That is the whole requirement."},
+{n:45,c:"identity",t:"The word of God tells me in chapter three, verse twenty-nine of the book of Galatians that because I belong to Christ, I am Abraham's seed and an heir according to the promise. The promises made to Abraham run through my bloodline now. I am in the will."},
+{n:46,c:"identity",t:"The word of God tells me in chapter four, verse seven of the book of Galatians that I am no longer a slave but a son, and since I am a son, I am an heir of God through Christ. Slaves earn. Sons inherit. I am a son."},
+{n:47,c:"free",t:"The word of God tells me in chapter five, verse one of the book of Galatians that Christ has made me free, so I stand fast in that liberty and refuse to be tangled again in a yoke of bondage. I have been free since the cross. I am not going back into chains that are already broken."},
+{n:48,c:"identity",t:"The word of God tells me in chapter five, verses twenty-two and twenty-three of the book of Galatians that the fruit of the Spirit is growing in me: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control. This fruit is not manufactured. It grows because His Spirit lives in me."},
+{n:49,c:"identity",t:"The word of God tells me in chapter three, verse sixteen of the book of John that God so loved the world that He gave His only Son, that whoever believes in Him shall not perish but have everlasting life. I believe. So I have life, and it never ends."},
+{n:50,c:"free",t:"The word of God tells me in chapter eight, verse thirty-six of the book of John that whom the Son sets free is free indeed. Free indeed means really free. Not free with an asterisk."},
+{n:51,c:"identity",t:"The word of God tells me in chapter five, verse fourteen of the book of Matthew that I am the light of the world. Darkness does not put out light. Light puts out darkness, and I carry it."},
+{n:52,c:"identity",t:"The word of God tells me in chapter five, verse thirteen of the book of Matthew that I am the salt of the earth. My life has flavor and purpose. God put me here to make a difference people can taste."},
+{n:53,c:"identity",t:"The word of God tells me in chapter ten, verse ten of the book of John that Jesus came so I could have life, and have it more abundantly. The thief came to steal, kill, and destroy, but Jesus came with the opposite. I choose the abundant life He brought."},
+{n:54,c:"victory",t:"The word of God tells me in chapter ten, verse twenty-eight of the book of John that Jesus gives me eternal life, I shall never perish, and no one can snatch me out of His hand. His grip on me is stronger than anything pulling at me. I am held."},
+{n:55,c:"peace",t:"The word of God tells me in chapter fourteen, verse twenty-seven of the book of John that Jesus left His peace with me, not as the world gives. So my heart is not troubled and it is not afraid. His peace is mine to keep."},
+{n:56,c:"identity",t:"The word of God tells me in chapter fifteen, verse five of the book of John that Jesus is the vine and I am a branch, and when I abide in Him, I bear much fruit. My job is to stay connected. The fruit is His department."},
+{n:57,c:"loved",t:"The word of God tells me in chapter fifteen, verse fifteen of the book of John that Jesus no longer calls me a servant, but He calls me friend. The King of everything calls me His friend. Let that sink in."},
+{n:58,c:"identity",t:"The word of God tells me in chapter fifteen, verse sixteen of the book of John that I did not choose Him, but He chose me and appointed me to go and bear fruit that lasts. I was recruited by the Lord Himself. My work matters and it lasts."},
+{n:59,c:"victory",t:"The word of God tells me in chapter sixteen, verse thirty-three of the book of John that in this world I will have trouble, but I take heart, because Jesus has overcome the world. Trouble is real, but it is already beaten. I follow the One who won."},
+{n:60,c:"loved",t:"The word of God tells me in chapter seventeen, verse twenty-three of the book of John that the Father loves me even as He loves Jesus. Read that again. The same love the Father has for the Son, He has for me."},
+{n:61,c:"identity",t:"The word of God tells me in chapter one, verse thirty of the book of First Corinthians that Christ Jesus has become for me wisdom from God, and righteousness, and sanctification, and redemption. Everything I lack, He is. I am covered on all four counts."},
+{n:62,c:"mind",t:"The word of God tells me in chapter two, verse sixteen of the book of First Corinthians that I have the mind of Christ. I do not have to think like the old man thought. I can think like Jesus thinks."},
+{n:63,c:"identity",t:"The word of God tells me in chapter three, verse sixteen of the book of First Corinthians that I am the temple of God and the Spirit of God dwells in me. God does not live in buildings anymore. He lives in me."},
+{n:64,c:"identity",t:"The word of God tells me in chapter six, verses nineteen and twenty of the book of First Corinthians that I was bought with a price, so I glorify God in my body. The blood of Jesus was the price. I was worth that much to God."},
+{n:65,c:"strength",t:"The word of God tells me in chapter ten, verse thirteen of the book of First Corinthians that no temptation has overtaken me except what is common to man, and God is faithful, and He always makes a way of escape. There is always a door out. My God builds exits into every temptation."},
+{n:66,c:"victory",t:"The word of God tells me in chapter fifteen, verse fifty-seven of the book of First Corinthians that thanks be to God, who gives me the victory through my Lord Jesus Christ. Victory is given, not earned. I receive it with thanks."},
+{n:67,c:"peace",t:"The word of God tells me in chapter one, verse twenty of the book of Second Corinthians that all the promises of God in Christ are yes, and in Him amen. God does not say maybe. Every promise He made me is a yes."},
+{n:68,c:"identity",t:"The word of God tells me in chapter one, verses twenty-one and twenty-two of the book of Second Corinthians that God has anointed me, sealed me, and given me His Spirit in my heart as a guarantee. I carry God's down payment inside me. He is coming back for what He paid for."},
+{n:69,c:"victory",t:"The word of God tells me in chapter two, verse fourteen of the book of Second Corinthians that God always leads me in triumph in Christ. Always is a big word, and God chose it. I am on the winning side every day."},
+{n:70,c:"identity",t:"The word of God tells me in chapter three, verse eighteen of the book of Second Corinthians that I am being transformed into His image from glory to glory by the Spirit of the Lord. I am not stuck. I am moving from glory to glory, one degree at a time."},
+{n:71,c:"identity",t:"The word of God tells me in chapter five, verse twenty of the book of Second Corinthians that I am an ambassador for Christ, as though God were pleading through me. I represent the kingdom everywhere I go. My life speaks for the King."},
+{n:72,c:"provision",t:"The word of God tells me in chapter nine, verse eight of the book of Second Corinthians that God is able to make all grace abound toward me, so that I always have all sufficiency in all things. All grace. All sufficiency. All things. God does not do halfway."},
+{n:73,c:"mind",t:"The word of God tells me in chapter ten, verses four and five of the book of Second Corinthians that the weapons of my warfare are mighty in God for pulling down strongholds, and I take every thought captive to the obedience of Christ. My thoughts do not run wild. I catch them and line them up with the truth."},
+{n:74,c:"strength",t:"The word of God tells me in chapter twelve, verse nine of the book of Second Corinthians that His grace is sufficient for me, and His strength is made perfect in my weakness. My weak spot is where His power shows up strongest. I do not have to hide it."},
+{n:75,c:"peace",t:"The word of God tells me in chapter thirteen, verse five of the book of Hebrews that God has said He will never leave me nor forsake me. Never means never. I am not alone and I never will be."},
+{n:76,c:"strength",t:"The word of God tells me in chapter thirteen, verse six of the book of Hebrews that I can boldly say the Lord is my helper, and I will not fear what man can do to me. My helper is bigger than my problem. So I say it out loud and I say it bold."},
+{n:77,c:"forgiven",t:"The word of God tells me in chapter nine, verse fourteen of the book of Hebrews that the blood of Christ cleanses my conscience from dead works to serve the living God. The blood does not just clean my record. It cleans my conscience, so the guilt has to go too."},
+{n:78,c:"identity",t:"The word of God tells me in chapter twelve, verse two of the book of Hebrews that Jesus is the author and finisher of my faith. He wrote the first chapter and He will write the last. My faith is in good hands."},
+{n:79,c:"forgiven",t:"The word of God tells me in chapter eight, verse twelve of the book of Hebrews that God is merciful to my unrighteousness, and my sins and lawless deeds He remembers no more. God chose to forget what the enemy keeps bringing up. I side with God's memory."},
+{n:80,c:"forgiven",t:"The word of God tells me in chapter one, verses eighteen and nineteen of the book of First Peter that I was not redeemed with silver or gold, but with the precious blood of Christ, a lamb without blemish. My redemption cost more than all the money in the world. That is my price tag."},
+{n:81,c:"identity",t:"The word of God tells me in chapter one, verse twenty-three of the book of First Peter that I have been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever. The seed that made me new cannot rot, cannot die, cannot fail. My new birth is permanent."},
+{n:82,c:"healed",t:"The word of God tells me in chapter two, verse twenty-four of the book of First Peter that Jesus bore my sins in His own body on the tree, and by His stripes I was healed. He carried it so I do not have to. Healing is part of what He paid for."},
+{n:83,c:"peace",t:"The word of God tells me in chapter five, verse seven of the book of First Peter that I cast all my care upon Him, because He cares for me. I hand over the weight. He actually wants it."},
+{n:84,c:"provision",t:"The word of God tells me in chapter one, verse three of the book of Second Peter that His divine power has given me everything that pertains to life and godliness. I am not waiting on a delivery. Everything I need has already been given."},
+{n:85,c:"identity",t:"The word of God tells me in chapter one, verse four of the book of Second Peter that through His great and precious promises I am a partaker of the divine nature. God shared His own nature with me. That is who lives on the inside now."},
+{n:86,c:"loved",t:"The word of God tells me in chapter three, verse one of the book of First John to behold what manner of love the Father has given me, that I should be called a child of God. And that is what I am. Not what I hope to be. What I am."},
+{n:87,c:"victory",t:"The word of God tells me in chapter five, verse four of the book of First John that whoever is born of God overcomes the world, and this is the victory that overcomes the world, even my faith. I was born to overcome. It is in my spiritual DNA."},
+{n:88,c:"peace",t:"The word of God tells me in chapter five, verses fourteen and fifteen of the book of First John that when I ask anything according to His will, He hears me, and I have what I asked of Him. My prayers are not bouncing off the ceiling. My Father hears me."},
+{n:89,c:"forgiven",t:"The word of God tells me in chapter two, verse twelve of the book of First John that my sins are forgiven for His name's sake. Forgiveness is not about my name or my track record. It is about His name, and His name never fails."},
+{n:90,c:"strength",t:"The word of God tells me in chapter forty-one, verse ten of the book of Isaiah to fear not, for God is with me, He strengthens me, He helps me, and He upholds me with His righteous right hand. Four promises in one verse. Fear does not stand a chance against that."},
+{n:91,c:"strength",t:"The word of God tells me in chapter forty, verse thirty-one of the book of Isaiah that when I wait on the Lord, my strength is renewed, and I mount up with wings like an eagle. I run and do not grow weary. I walk and do not faint."},
+{n:92,c:"identity",t:"The word of God tells me in chapter forty-three, verse one of the book of Isaiah to fear not, for He has redeemed me, He has called me by my name, and I am His. God knows my name. I belong to Him, personally."},
+{n:93,c:"forgiven",t:"The word of God tells me in chapter forty-three, verse twenty-five of the book of Isaiah that God blots out my transgressions for His own sake, and He will not remember my sins. Blotted out means gone. God is not keeping a file on me."},
+{n:94,c:"peace",t:"The word of God tells me in chapter twenty-six, verse three of the book of Isaiah that God keeps me in perfect peace when my mind is stayed on Him, because I trust in Him. Perfect peace is not a mood. It is what happens when my mind stays fixed on Him."},
+{n:95,c:"healed",t:"The word of God tells me in chapter sixty-one, verse three of the book of Isaiah that God gives me beauty for ashes, the oil of joy for mourning, and a garment of praise for the spirit of heaviness. God trades up. He takes my worst and hands me back His best."},
+{n:96,c:"provision",t:"The word of God tells me in chapter twenty-three, verse one of the book of Psalms that the Lord is my shepherd, and I shall not want. I have a shepherd who never sleeps, never quits, and never loses a sheep. I lack nothing."},
+{n:97,c:"forgiven",t:"The word of God tells me in chapter one hundred three, verse twelve of the book of Psalms that as far as the east is from the west, so far has He removed my transgressions from me. East and west never meet. Neither will me and my old sins."},
+{n:98,c:"victory",t:"The word of God tells me in chapter one hundred eighteen, verse seventeen of the book of Psalms that I shall not die, but live, and declare the works of the Lord. I have a testimony to tell and breath to tell it with. I am still here on purpose."},
+{n:99,c:"loved",t:"The word of God tells me in chapter three, verse seventeen of the book of Zephaniah that the Lord my God is in my midst, He is mighty to save, He quiets me with His love, and He rejoices over me with singing. God sings over me. The Father is not disappointed in me. He is singing."},
+{n:100,c:"forgiven",t:"The word of God tells me in chapter seven, verse nineteen of the book of Micah that God has compassion on me, He subdues my iniquities, and He casts all my sins into the depths of the sea. My sins are on the bottom of the ocean. And there is no fishing allowed."},
+{n:101,c:"anxiety",t:"The word of God tells me in chapter ninety-four, verse nineteen of the book of Psalms that when anxiety was great within me, His consolation brought me joy. God does not scold me for being anxious. He comforts me right in the middle of it."},
+{n:102,c:"anxiety",t:"The word of God tells me in chapter fifty-five, verse twenty-two of the book of Psalms to cast my burden on the Lord, and He shall sustain me. He will never permit the righteous to be moved. I do not carry this. I hand it over, and He holds both the weight and me."},
+{n:103,c:"anxiety",t:"The word of God tells me in chapter six, verse thirty-four of the book of Matthew not to worry about tomorrow, for tomorrow will worry about itself. I only have to live today. God is already standing in tomorrow, and He has never lost a day yet."},
+{n:104,c:"anxiety",t:"The word of God tells me in chapter forty-six, verses one and two of the book of Psalms that God is my refuge and strength, a very present help in trouble. Therefore I will not fear, even if the earth gives way. Very present means right here, right now. Not on His way. Here."},
+{n:105,c:"anxiety",t:"The word of God tells me in chapter one hundred twelve, verse seven of the book of Psalms that I will not be afraid of bad news, because my heart is steadfast, trusting in the Lord. The phone can ring. The letter can come. My heart is anchored to something the news cannot shake."},
+{n:106,c:"depression",t:"The word of God tells me in chapter forty-two, verse eleven of the book of Psalms to ask my own soul, why are you cast down, and then to hope in God, for I shall yet praise Him. Yet means it is coming. The praise is not over. My story has more pages."},
+{n:107,c:"depression",t:"The word of God tells me in chapter three, verses twenty-two and twenty-three of the book of Lamentations that His mercies are new every morning, and great is His faithfulness. Last night does not get to run today. There is fresh mercy waiting with the sunrise, made new just for me."},
+{n:108,c:"depression",t:"The word of God tells me in chapter thirty, verse eleven of the book of Psalms that He has turned my mourning into dancing. He removed my sackcloth and clothed me with gladness. God does wardrobe changes. He takes the grief clothes off and puts joy on me Himself."},
+{n:109,c:"depression",t:"The word of God tells me in chapter forty-two, verse three of the book of Isaiah that a bruised reed He will not break, and a smoldering wick He will not snuff out. If all I have left is a flicker, He will not put it out. He cups His hands around it and brings it back to flame."},
+{n:110,c:"depression",t:"The word of God tells me in chapter twenty-seven, verse thirteen of the book of Psalms that I would have lost heart, unless I had believed that I would see the goodness of the Lord in the land of the living. Not just in heaven someday. In the land of the living. In this life. I will see His goodness with my own eyes."},
+{n:111,c:"mind",t:"The word of God tells me in chapter twelve, verse two of the book of Romans to be transformed by the renewing of my mind. My mind is not stuck the way it is. It gets renewed, washed, and rebuilt by the truth, one thought at a time."},
+{n:112,c:"mind",t:"The word of God tells me in chapter four, verse eight of the book of Philippians to fix my thoughts on whatever is true, noble, right, pure, lovely, and admirable. I do not have to think every thought that shows up. I choose what stays."},
+{n:113,c:"mind",t:"The word of God tells me in chapter one, verse seven of the book of Second Timothy that God did not give me a spirit of fear, but of power, and of love, and of a sound mind. A sound mind is part of my inheritance. Fear is not from my Father, so I do not have to sign for the package."},
+{n:114,c:"mind",t:"The word of God tells me in chapter three, verse two of the book of Colossians to set my mind on things above, not on things of the earth. My mind has a setting, and I am the one who sets it. Today I point it up."},
+{n:115,c:"mind",t:"The word of God tells me in chapter eight, verse thirty-five of the book of Luke about a man who was tormented out of his mind, and after Jesus got done with him, the people found him sitting at the feet of Jesus, clothed and in his right mind. Jesus restores minds. He did it then. He does it now. Right mind is on the menu."},
+{n:116,c:"recovered",t:"The word of God tells me in chapter five, verse seventeen of the book of Second Corinthians that if anyone is in Christ, he is a new creation. The old has gone, the new has come. I am not the old man in remission. The old man is gone. I am somebody brand new."},
+{n:117,c:"recovered",t:"The word of God tells me in chapter six, verse eleven of the book of Romans to count myself dead to sin but alive to God in Christ Jesus. Dead men do not get cravings from the grave. The old me died at the cross, and I do not take orders from a dead man."},
+{n:118,c:"recovered",t:"The word of God tells me in chapter six, verse eleven of the book of First Corinthians that such were some of you, but you were washed, you were sanctified, you were justified in the name of the Lord Jesus. Were. Past tense. That is what I was, not what I am. Heaven changed my paperwork."},
+{n:119,c:"recovered",t:"The word of God tells me in chapter one, verse thirteen of the book of Colossians that God has delivered me from the power of darkness and transferred me into the kingdom of the Son He loves. Transferred means I moved. I do not live at the old address anymore, and I do not have to go back to check the mail."},
+{n:120,c:"recovered",t:"The word of God tells me in chapter two, verse twenty of the book of Galatians that I have been crucified with Christ, and it is no longer I who live, but Christ lives in me. I do not fight for victory. I fight from it. The battle I used to lose was already won, and the Winner lives on the inside of me."}
+];
+
+let name="",currentList=[],idx=0,currentCat=null;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+(function(){const v=entryVerses[Math.floor(Math.random()*entryVerses.length)];document.getElementById('entryVerse').textContent=v[0];document.getElementById('entryRef').textContent=v[1];})();
+
+function partOfDay(){const h=new Date().getHours();if(h>=5&&h<12)return"morning";if(h>=12&&h<17)return"afternoon";return"evening";}
+
+function goName(){show('s-name');setTimeout(()=>document.getElementById('nameInput').focus(),300);}
+function skipName(){name="";goGreet();}
+function goGreet(){
+  const typed=(document.getElementById('nameInput').value||"").trim();
+  if(typed)name=typed.charAt(0).toUpperCase()+typed.slice(1);
+  const p=partOfDay();
+  const hi=p==="morning"?"Good morning":p==="afternoon"?"Good afternoon":"Good evening";
+  document.getElementById('greetHi').textContent=name?(hi+", "+name+"."):(hi+".");
+  const lines={
+    morning:"Before the noise starts, let's set the day on the right foundation. One truth at a time.",
+    afternoon:"However the day's gone so far, you can get back to the table right now. Let's take a breath.",
+    evening:"Let's close the day where it's safe. Set your head down on the truth, not the noise."
+  };
+  document.getElementById('greetLine').textContent=lines[p];
+  show('s-greet');
+}
+function goReset(){
+  document.getElementById('resetLead').textContent=name?(name+", take a breath."):"Take a breath.";
+  document.getElementById('resetText').textContent=RESET;
+  show('s-reset');
+  speak(RESET);
+}
+function goNeeds(){
+  document.getElementById('needsHi').textContent=name?("Alright, "+name+". What do you need today?"):"What do you need today?";
+  buildNeeds();show('s-needs');
+}
+document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')goGreet();});
+
+function buildNeeds(){
+  const grid=document.getElementById('needGrid');grid.innerHTML="";
+  const wide=document.createElement('button');wide.className='need wide';
+  wide.innerHTML='<span><span class="ic">\u2728</span>Whatever I need</span>';
+  wide.onclick=()=>openList(D.slice(),null);grid.appendChild(wide);
+  const present=[...new Set(D.map(d=>d.c))];
+  const order=["identity","forgiven","free","loved","peace","strength","anxiety","depression","mind","healed","provision","victory","recovered"];
+  order.filter(k=>present.includes(k)).forEach(key=>{
+    const b=document.createElement('button');b.className='need';
+    b.innerHTML='<span><span class="ic">'+cats[key].icon+'</span>'+cats[key].label+'</span>';
+    b.onclick=()=>goTopic(key);grid.appendChild(b);
+  });
+  const wb=document.createElement('button');wb.className='need wide';
+  wb.innerHTML='<span><span class="ic">\uD83D\uDCD6</span>The Word Bank \u2014 big church words, plain English</span>';
+  wb.onclick=()=>goWordBank();grid.appendChild(wb);
+}
+function goWord(){
+  if(!currentWord)return;
+  wordReturn="pray";renderWord(currentWord);
+}
+function renderWord(key){
+  const g=GLOSSARY[key];
+  document.getElementById('wordTitle').textContent=g.word;
+  document.getElementById('wordLang').textContent=g.lang;
+  document.getElementById('wordDef').textContent=g.def;
+  document.getElementById('wordAna').textContent=g.ana;
+  document.getElementById('wordBackBtn').textContent=wordReturn==="pray"?"Back to the prayer":"Back to the words";
+  show('s-word');
+}
+function backFromWord(){show(wordReturn==="pray"?"s-pray":"s-wordbank");}
+function goWordBank(){
+  wordReturn="bank";
+  const grid=document.getElementById('wordGrid');grid.innerHTML="";
+  Object.keys(GLOSSARY).forEach(k=>{
+    const g=GLOSSARY[k];
+    const b=document.createElement('button');b.className='need';
+    b.innerHTML='<span>'+g.word+'</span>';
+    b.onclick=()=>{wordReturn="bank";renderWord(k);};
+    grid.appendChild(b);
+  });
+  show('s-wordbank');
+}
+function speakWord(){
+  if(!('speechSynthesis' in window))return;
+  const key=document.getElementById('wordTitle').textContent;
+  const entry=Object.values(GLOSSARY).find(g=>g.word===key);
+  if(!entry)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(entry.word+". "+entry.def+" "+entry.ana);
+  if(voice)u.voice=voice;u.rate=.9;
+  speechSynthesis.speak(u);
+}
+const SAFETY_TOPICS=["anxiety","depression","mind"];
+const SAFETY_TEXT="Straight talk: this app prays with you. It does not replace a doctor, a counselor, or crisis help. If you are thinking about ending your life, call or text 988 (US) right now and talk to a real person. We'll be here when you get back.";
+function goTopic(key){
+  currentCat=key;
+  const c=cats[key];
+  const count=D.filter(d=>d.c===key).length;
+  document.getElementById('topicTitle').textContent=c.title;
+  document.getElementById('topicIntro').textContent=c.intro;
+  document.getElementById('topicCount').textContent=count+" declarations from the Word";
+  const sf=document.getElementById('topicSafety');
+  if(SAFETY_TOPICS.includes(key)){sf.textContent=SAFETY_TEXT;sf.classList.add('on');}
+  else{sf.classList.remove('on');}
+  show('s-topic');
+}
+function startTopic(){openList(D.filter(d=>d.c===currentCat),currentCat);}
+function backToTopic(){if(currentCat)goTopic(currentCat);else goNeeds();}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function openList(list,key){currentList=shuffle(list.slice());currentCat=key;idx=0;renderPray();show('s-pray');}
+function nextInNeed(){if(!currentList.length)return;idx=(idx+1)%currentList.length;renderPray();}
+function renderPray(){
+  const item=currentList[idx];
+  document.getElementById('prayLead').textContent=name?(name+", say this with me."):"Say this with me.";
+  document.getElementById('prayText').textContent=item.t;
+  document.getElementById('prayCount').textContent=(idx+1)+" of "+currentList.length+(currentCat?(" \u00b7 "+cats[currentCat].label):"");
+  const chip=document.getElementById('wordChip');
+  const hit=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].rx.test(item.t));
+  if(hit){currentWord=hit;chip.textContent="Do you know what "+GLOSSARY[hit].word.toLowerCase()+" really means? \u2192";chip.classList.add('on');}
+  else{currentWord=null;chip.classList.remove('on');}
+  speak(item.t);
+}
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/male|guy|daniel|david/i.test(v.name))||vs.find(v=>/en/i.test(v.lang))||vs[0]||null;}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(line){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const intro=name?(name+". Say this with me."):"Say this with me.";
+  const u1=new SpeechSynthesisUtterance(intro),u2=new SpeechSynthesisUtterance(line);
+  [u1,u2].forEach(u=>{if(voice)u.voice=voice;u.rate=.9;u.pitch=1;});
+  speechSynthesis.speak(u1);speechSynthesis.speak(u2);
+}
+function replay(){if(currentList.length)speak(currentList[idx].t);}
+</script>
+</body>
+</html>
