@@ -83,6 +83,11 @@
   }
   .breathe{animation:breathe 3s ease-in-out infinite;}
   @media (prefers-reduced-motion: reduce){.breathe{animation:none;}}
+  .hookline{margin-top:36px;font-family:Georgia,serif;font-size:17.5px;line-height:1.65;color:var(--ink);}
+  .hookline .l2{color:var(--gold-soft);font-style:italic;font-size:18.5px;margin-top:4px;}
+  .hookline span{opacity:0;display:inline-block;animation:wordin .5s ease forwards;}
+  @keyframes wordin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion: reduce){.hookline span{animation:none;opacity:1;}}
   .homebtn{position:fixed;top:14px;left:14px;z-index:50;background:rgba(27,24,21,.85);border:1px solid var(--line);
     border-radius:999px;width:44px;height:44px;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
   .homebtn.on{display:flex;}
@@ -157,6 +162,10 @@
       <p class="ref" id="entryRef"></p>
       <button class="primary breathe" onclick="goName()">Come to the table</button>
       <button class="ghost" onclick="show('s-install')">&#128241; Put this on your phone</button>
+      <div class="hookline">
+        <div><span style="animation-delay:0.50s">For</span> <span style="animation-delay:0.66s">everyone</span> <span style="animation-delay:0.82s">who</span> <span style="animation-delay:0.98s">was</span> <span style="animation-delay:1.14s">never</span> <span style="animation-delay:1.30s">taught</span> <span style="animation-delay:1.46s">how</span> <span style="animation-delay:1.62s">to</span> <span style="animation-delay:1.78s">pray</span></div>
+        <div class="l2"><span style="animation-delay:1.94s">&mdash;</span> <span style="animation-delay:2.10s">and</span> <span style="animation-delay:2.26s">wants</span> <span style="animation-delay:2.42s">to.</span></div>
+      </div>
     </section>
 
     <section id="s-name" class="screen">
@@ -344,7 +353,6 @@
       <button class="ghost backlink" onclick="show('s-entry')">&#8592; Back</button>
     </section>
   </div>
-  <div class="brand">For everyone who was never taught how to pray &mdash; and wants to.</div>
   <div id="footExtra1" style="text-align:center;display:none;"><button class="supportlink" onclick="show('s-support')">Built free by Ten2 Harvest Media &mdash; keep the tools free &#9829;</button></div>
 
 <script>
