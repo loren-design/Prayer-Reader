@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!--
+  (c) 2026 Know God Better Ministries | A Global Project of Ten2 Harvest Media
+  The prayers are scripture and truth - share them freely with anyone.
+  The code, design, brand, and Word Bank writing are proprietary and may not be
+  copied, republished, or rebranded without written permission.
+  knowgodbetter.com
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -64,6 +71,17 @@
   .wordlang{color:var(--muted);font-size:15px;font-style:italic;margin:0 0 22px;}
   .worddef{color:var(--ink);font-size:18px;line-height:1.6;margin:0 auto 18px;max-width:460px;font-family:Georgia,serif;}
   .wordana{color:var(--gold-soft);font-size:16px;line-height:1.6;margin:0 auto 8px;max-width:440px;}
+  @keyframes breathe{
+    0%,100%{box-shadow:0 10px 30px rgba(201,162,75,.22);transform:scale(1);}
+    50%{box-shadow:0 10px 44px rgba(230,201,135,.5);transform:scale(1.02);}
+  }
+  .breathe{animation:breathe 3s ease-in-out infinite;}
+  @media (prefers-reduced-motion: reduce){.breathe{animation:none;}}
+  .homebtn{position:fixed;top:14px;left:14px;z-index:50;background:rgba(27,24,21,.85);border:1px solid var(--line);
+    border-radius:999px;width:44px;height:44px;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+  .homebtn.on{display:flex;}
+  .homebtn svg{width:22px;height:22px;}
+  .homebtn:active{border-color:var(--gold);}
   .logo{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:30px;}
   .logo svg{width:88px;height:88px;filter:drop-shadow(0 0 18px rgba(230,201,135,.25));}
   .logo > div{display:flex;flex-direction:column;gap:10px;}
@@ -94,6 +112,13 @@
 </style>
 </head>
 <body>
+  <button class="homebtn" id="homeBtn" onclick="goNeeds()" aria-label="Back to the table">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 58 V30 a18 18 0 0 1 36 0 V58" fill="none" stroke="#c9a24b" stroke-width="5" stroke-linecap="round"/>
+      <rect x="29.5" y="24" width="5" height="34" rx="2.5" fill="#e6c987"/>
+      <rect x="23" y="35" width="18" height="5" rx="2.5" fill="#e6c987"/>
+    </svg>
+  </button>
   <div class="wrap">
     <section id="s-entry" class="screen on">
       <div class="logo">
@@ -110,7 +135,7 @@
       </div>
       <p class="verse" id="entryVerse"></p>
       <p class="ref" id="entryRef"></p>
-      <button class="primary" onclick="goName()">Pray with me</button>
+      <button class="primary breathe" onclick="goName()">Come to the table</button>
     </section>
 
     <section id="s-name" class="screen">
@@ -234,6 +259,10 @@
   <div style="text-align:center;"><button class="supportlink" onclick="show('s-support')">Built free by Ten2 Harvest Media &mdash; keep the tools free &#9829;</button></div>
 
 <script>
+try{
+console.log("%cThe door is open.","color:#c9a24b;font-size:22px;font-family:Georgia,serif;");
+console.log("%cThis tool belongs to Know God Better Ministries, A Global Project of Ten2 Harvest Media.\nThe prayers? Share them with everybody - they were never ours to begin with.\nThe code, the design, the brand? Those are proprietary. Copying or rebranding them without written permission is theft, and we'd rather you just talk to us.\nWant to build Kingdom tools together? Come through the front door: knowgodbetter.com","color:#a89f92;font-size:13px;line-height:1.5;");
+}catch(e){}
 const entryVerses=[
   ["There is now no condemnation for those who are in Christ Jesus.","Romans 8:1"],
   ["The name of the Lord is a strong tower. The righteous run to it and are safe.","Proverbs 18:10"],
@@ -467,6 +496,8 @@ let name="",currentList=[],idx=0,currentCat=null;
 function show(id){
   if('speechSynthesis' in window)speechSynthesis.cancel();
   const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');
+  const hb=document.getElementById('homeBtn');
+  if(hb){if(["s-entry","s-name","s-greet"].includes(id))hb.classList.remove('on');else hb.classList.add('on');}
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
 (function(){const v=entryVerses[Math.floor(Math.random()*entryVerses.length)];document.getElementById('entryVerse').textContent=v[0];document.getElementById('entryRef').textContent=v[1];})();
 
@@ -609,6 +640,6 @@ function toggleSpeak(line){
 }
 function replay(){if(currentList.length)toggleSpeak(currentList[idx].t);}
 </script>
-<div class="copyright">&copy; 2026 Know God Better Ministries &middot; a Ten2 Harvest Media tool &middot; knowgodbetter</div>
+<div class="copyright">&copy; 2026 Know God Better Ministries&nbsp;&nbsp;|&nbsp;&nbsp;A Global Project of Ten2 Harvest Media</div>
 </body>
 </html>
