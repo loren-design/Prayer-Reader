@@ -95,7 +95,9 @@
     <section id="s-greet" class="screen">
       <p class="big" id="greetHi"></p>
       <p class="sub" id="greetLine"></p>
-      <button class="primary" onclick="goNeeds()">Let's pray</button>
+      <p class="sub" style="margin-bottom:14px;">Want me to read the prayers out loud, or read them quietly yourself?</p>
+      <button class="primary" onclick="voiceOn()">&#128266; Read them to me</button>
+      <button class="ghost" onclick="voiceOff()">I'll read them quietly</button>
       <div class="resetcard" style="margin-top:26px;">
         <p>Spun out? Doom-scrolled three hours gone? Racing thoughts? You can start your day over right now.</p>
         <button class="primary" style="background:#3a2418;color:#f0d9c6;box-shadow:none;" onclick="goReset()">I need to reset</button>
@@ -106,7 +108,7 @@
       <p class="lead" id="resetLead">Take a breath.</p>
       <p class="declaration" id="resetText"></p>
       <div class="row">
-        <button class="speaker" onclick="speak(RESET)">&#128266;</button>
+        <button class="speaker" onclick="toggleSpeak(RESET)">&#128266;</button>
         <button class="primary" onclick="goNeeds()">Now let's pray</button>
       </div>
       <button class="ghost backlink" onclick="goGreet()">Back</button>
@@ -402,7 +404,10 @@ const D=[
 
 let name="",currentList=[],idx=0,currentCat=null;
 
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function show(id){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
 (function(){const v=entryVerses[Math.floor(Math.random()*entryVerses.length)];document.getElementById('entryVerse').textContent=v[0];document.getElementById('entryRef').textContent=v[1];})();
 
 function partOfDay(){const h=new Date().getHours();if(h>=5&&h<12)return"morning";if(h>=12&&h<17)return"afternoon";return"evening";}
@@ -423,11 +428,14 @@ function goGreet(){
   document.getElementById('greetLine').textContent=lines[p];
   show('s-greet');
 }
+let voicePref="off";
+function voiceOn(){voicePref="on";goNeeds();}
+function voiceOff(){voicePref="off";goNeeds();}
 function goReset(){
   document.getElementById('resetLead').textContent=name?(name+", take a breath."):"Take a breath.";
   document.getElementById('resetText').textContent=RESET;
   show('s-reset');
-  speak(RESET);
+  if(voicePref==="on")speak(RESET);
 }
 function goNeeds(){
   document.getElementById('needsHi').textContent=name?("Alright, "+name+". What do you need today?"):"What do you need today?";
@@ -479,6 +487,7 @@ function goWordBank(){
 }
 function speakWord(){
   if(!('speechSynthesis' in window))return;
+  if(speechSynthesis.speaking){speechSynthesis.cancel();return;}
   const key=document.getElementById('wordTitle').textContent;
   const entry=Object.values(GLOSSARY).find(g=>g.word===key);
   if(!entry)return;
@@ -515,7 +524,7 @@ function renderPray(){
   const hit=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].rx.test(item.t));
   if(hit){currentWord=hit;chip.textContent="Do you know what "+GLOSSARY[hit].word.toLowerCase()+" really means? \u2192";chip.classList.add('on');}
   else{currentWord=null;chip.classList.remove('on');}
-  speak(item.t);
+  if(voicePref==="on")speak(item.t);
 }
 let voice=null;
 function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/male|guy|daniel|david/i.test(v.name))||vs.find(v=>/en/i.test(v.lang))||vs[0]||null;}
@@ -523,12 +532,20 @@ if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pick
 function speak(line){
   if(!('speechSynthesis' in window))return;
   speechSynthesis.cancel();
-  const intro=name?(name+". Say this with me."):"Say this with me.";
-  const u1=new SpeechSynthesisUtterance(intro),u2=new SpeechSynthesisUtterance(line);
-  [u1,u2].forEach(u=>{if(voice)u.voice=voice;u.rate=.9;u.pitch=1;});
-  speechSynthesis.speak(u1);speechSynthesis.speak(u2);
+  const u=new SpeechSynthesisUtterance(line);
+  if(voice)u.voice=voice;u.rate=.9;u.pitch=1;
+  const sb=document.getElementById('speakerBtn');
+  u.onstart=()=>{if(sb)sb.classList.add('playing');};
+  u.onend=()=>{if(sb)sb.classList.remove('playing');};
+  u.onerror=()=>{if(sb)sb.classList.remove('playing');};
+  speechSynthesis.speak(u);
 }
-function replay(){if(currentList.length)speak(currentList[idx].t);}
+function toggleSpeak(line){
+  if(!('speechSynthesis' in window))return;
+  if(speechSynthesis.speaking){speechSynthesis.cancel();const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');return;}
+  speak(line);
+}
+function replay(){if(currentList.length)toggleSpeak(currentList[idx].t);}
 </script>
 </body>
 </html>
