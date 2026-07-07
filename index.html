@@ -89,6 +89,17 @@
   .logo .tagline{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
   .logo .welcome{font-size:13px;color:var(--gold-soft);font-family:Georgia,serif;font-style:italic;letter-spacing:.02em;}
   .copyright{color:var(--muted);font-size:11px;letter-spacing:.05em;text-align:center;padding:0 18px 20px;opacity:.6;}
+  .vj{max-width:380px;margin:20px auto;text-align:left;}
+  .vnode{display:flex;gap:14px;align-items:flex-start;}
+  .vdot{width:12px;height:12px;border-radius:50%;background:var(--gold-soft);flex:0 0 12px;margin-top:4px;box-shadow:0 0 10px rgba(230,201,135,.4);}
+  .vref{font-size:12px;letter-spacing:.16em;color:var(--gold);font-weight:700;}
+  .vlab{font-size:14.5px;color:var(--ink);line-height:1.5;font-family:Georgia,serif;margin-top:2px;}
+  .vline{width:2px;height:26px;background:#3a3122;margin-left:5px;}
+  .chunk{color:var(--ink);font-size:15.5px;line-height:1.65;max-width:430px;margin:0 auto;text-align:left;}
+  .chunk strong{color:var(--gold-soft);}
+  .rule{width:54px;height:1px;background:#3a3122;margin:18px auto;}
+  .minidoor{margin:0 auto 6px;}
+  .minidoor svg{width:44px;height:44px;}
   .tiers{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:22px auto 6px;}
   .tier{display:block;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
     padding:18px 20px;text-align:left;text-decoration:none;color:var(--ink);}
@@ -222,9 +233,12 @@
 
     <section id="s-support" class="screen">
       <div class="kicker sm">Ten2 Harvest Media</div>
-      <p class="topictitle">Keep the tools free.</p>
-      <p class="topicintro">Everything on this app is free, and it stays free. Ten2 Harvest Media builds free tools that help people know God better &mdash; this is one of them. We're on a mission we call <strong>One Billion for Jesus</strong>: using AI and the power of the internet to put the Word of God into hands in every zip code and every mailable address on earth by 2027.</p>
-      <p class="topicintro">If this put something back in your hands, help us build the next one. Every number below carries a story.</p>
+      <p class="topictitle">Keep the Tools Free.</p>
+      <div class="chunk"><strong>Quick question.</strong> Did this put something back in your hands today? A prayer that landed? A word that finally made sense?</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>Here's what we've learned.</strong> Almost nobody gets taught how to pray. It's the missing piece in nearly every Christian's life we've ever met. Praying always isn't a mood &mdash; it's a practice. Somebody has to teach it.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>So that's what we build.</strong> Free tools that teach people to know God better and pray always. There's no paywall on the Word of God &mdash; we checked with the Author. If this added something to your life, help us build the next one. Every number below carries a story.</div>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
           <div class="amt">$7 <span>/ month</span></div>
@@ -252,7 +266,52 @@
           <div class="tmean">Any amount, one time. Every dollar puts the Word in somebody's hands.</div>
         </a>
       </div>
+      <button class="ghost" onclick="show('s-about')">More about us &#8594;</button>
       <button class="ghost backlink" onclick="goNeeds()">Back to praying</button>
+    </section>
+
+    <section id="s-about" class="screen">
+      <div class="minidoor">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 58 V30 a18 18 0 0 1 36 0 V58" fill="none" stroke="#c9a24b" stroke-width="4" stroke-linecap="round"/>
+          <rect x="29.5" y="22" width="5" height="36" rx="2.5" fill="#e6c987"/>
+          <rect x="22" y="34" width="20" height="5" rx="2.5" fill="#e6c987"/>
+        </svg>
+      </div>
+      <div class="kicker sm">Know God Better Ministries</div>
+      <p class="topictitle">Created by God. For God. To know God.</p>
+      <div class="chunk"><strong>Everybody quotes John 3:16.</strong> But ask a hundred Christians what eternal life means and you'll hear the same answer: a destination. A later thing. A forever-after thing.</div>
+      <div class="vj">
+        <div class="vnode"><div class="vdot"></div><div><div class="vref">JOHN 3:16</div><div class="vlab">The invitation. God so loved the world.</div></div></div>
+        <div class="vline"></div>
+        <div class="vnode"><div class="vdot"></div><div><div class="vref">JOHN 17:3</div><div class="vlab">The definition. "This IS eternal life &mdash; that they KNOW You." Not later. Now.</div></div></div>
+        <div class="vline"></div>
+        <div class="vnode"><div class="vdot"></div><div><div class="vref">MATTHEW 7:23</div><div class="vlab">The warning. "Away from me &mdash; I never knew you."</div></div></div>
+      </div>
+      <div class="chunk"><strong>Jesus defined it Himself.</strong> The night before the cross, praying to His Father, He said eternal life is knowing God. It's not a someday address. It's a relationship that starts breathing right now.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>And Matthew 7:23 is the warning label.</strong> People who taught, served, sat in church thirty years, even got baptized &mdash; and heard "I never knew you." They performed for Him. They never knew Him. Performance was never the point.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>That's why Know God Better exists.</strong> Your sin is not your identity. Your past doesn't define you. We solve one problem &mdash; hopelessness &mdash; with one solution: knowing Jesus, through daily engagement with the Holy Spirit. From hopeless to hope-filled.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>The mission is One Billion for Jesus.</strong> Every zip code. Every language. Every mailable address on earth &mdash; and everywhere a phone can be held, the Word can be handed. Know God Better Ministries &mdash; A Global Project of Ten2 Harvest Media.</div>
+      <button class="ghost" style="margin-top:14px;" onclick="show('s-story')">How this started &mdash; Loren's story &#8594;</button>
+      <button class="primary" style="margin-top:10px;" onclick="show('s-support')">Help us build it</button>
+      <button class="ghost backlink" onclick="goNeeds()">Back to the table</button>
+    </section>
+
+    <section id="s-story" class="screen">
+      <div class="kicker sm">How this started</div>
+      <p class="topictitle">An old hippie and a $500-a-day habit.</p>
+      <div class="chunk"><strong>I was 19 and out of options.</strong> A $500-a-day habit I couldn't stop on my own. I didn't want to keep living the way I was living. Truth is, I didn't want to live at all.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>An old hippie in AA asked me one question.</strong> "You got a problem with God?" I said no. He said, "Great. Get on your knees every morning and ask God to keep you sober. At night, tell Him thank you." No church background. No religion. I was just desperate enough to follow instructions. That was 1991. I've been sober ever since.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>God wasn't done.</strong> The Holy Spirit spent the next nine years drawing me toward Jesus. In 2000, I gave my life to Christ &mdash; a heart choice, not a church habit. I didn't get to know God through religion. I got to know Him one honest prayer at a time.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
+      <button class="primary" style="margin-top:26px;" onclick="goNeeds()">Come to the table</button>
+      <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
     </section>
   </div>
   <div class="brand">Pray always &middot; Ephesians 6:18 &middot; One day at a time</div>
