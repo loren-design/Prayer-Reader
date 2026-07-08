@@ -407,7 +407,7 @@ console.log("%cThis tool belongs to Know God Better Ministries, A Global Project
 }catch(e){}
 
 const SB_URL="https://yrsgmmcjgkrjrftcrzpx.supabase.co";
-const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyc2dtbWNqZ2tyanJmdGNyenB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzQzMDgsImV4cCI6MjA5Njk1MDMwOH0.Txq9BZMwaq4rWRczsdc1I7IJTfqI9YZW_pDXXqkor9g";
+const SB_KEY="sb_publishable_BQaoUG4lQoxrozTwgW0Ssw_Qnmv0O6f";
 function openFeedback(){
   document.getElementById('fbThanks').style.display='none';
   document.getElementById('fbModal').classList.add('on');
@@ -427,10 +427,10 @@ function sendFeedback(){
   }).then(function(r){
     btn.disabled=false;btn.textContent="Send it";
     if(r.ok){box.value="";document.getElementById('fbThanks').style.display='block';}
-    else{alert("Didn't send - try once more?");}
-  }).catch(function(){
+    else{r.text().then(function(t){alert("Didn't send (code "+r.status+"): "+t.slice(0,200));});}
+  }).catch(function(e){
     btn.disabled=false;btn.textContent="Send it";
-    alert("Didn't send - check your signal and try again.");
+    alert("Didn't send - network error: "+e.message);
   });
 }
 
