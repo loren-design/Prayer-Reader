@@ -163,14 +163,22 @@
   <button class="betabtn" onclick="openFeedback()">BETA</button>
   <div class="overlay" id="fbModal">
     <div class="modalcard" style="width:100%;max-width:400px;text-align:left;">
-      <p class="fbtitle">Be brutal.</p>
-      <p class="fbsub">What page were you on? What did you notice? What did you think? Drop a whole bunch of it in here &mdash; and <em>don't type it: tap the little microphone on your keyboard and just talk.</em></p>
-      <textarea id="fbText" placeholder="Let it rip..."></textarea>
-      <p class="fbthanks" id="fbThanks">Got it. Sent straight to Loren. Hammer away &mdash; send another anytime.</p>
-      <div class="row" style="max-width:none;">
-        <button class="primary" onclick="sendFeedback()" id="fbSend">Send it</button>
+      <div id="fbForm">
+        <p class="fbtitle">Be brutal.</p>
+        <p class="fbsub">What page were you on? What did you notice? What did you think? Drop a whole bunch of it in here &mdash; and <em>don't type it: tap the little microphone on your keyboard and just talk.</em></p>
+        <textarea id="fbText" placeholder="Let it rip..."></textarea>
+        <div class="row" style="max-width:none;">
+          <button class="primary" onclick="sendFeedback()" id="fbSend">Send it</button>
+        </div>
+        <button class="ghost backlink" onclick="closeFeedback()">Close</button>
       </div>
-      <button class="ghost backlink" onclick="closeFeedback()">Close</button>
+      <div id="fbDone" style="display:none;text-align:center;">
+        <div class="face">&#128077;</div>
+        <p class="fbtitle" style="text-align:center;">Got it. Sent straight to Loren.</p>
+        <p class="fbsub" style="text-align:center;">Hammer away &mdash; keep digging and testing, and send another the <em>second</em> you find something weird, something confusing, or something that didn't work right.</p>
+        <button class="primary" onclick="fbAgain()">Send another</button>
+        <button class="ghost backlink" onclick="closeFeedback()">Back to testing</button>
+      </div>
     </div>
   </div>
   <button class="homebtn" id="homeBtn" onclick="goNeeds()" aria-label="Back to the table">
@@ -409,9 +417,15 @@ console.log("%cThis tool belongs to Know God Better Ministries, A Global Project
 const SB_URL="https://yrsgmmcjgkrjrftcrzpx.supabase.co";
 const SB_KEY="sb_publishable_BQaoUG4lQoxrozTwgW0Ssw_Qnmv0O6f";
 function openFeedback(){
-  document.getElementById('fbThanks').style.display='none';
+  document.getElementById('fbForm').style.display='block';
+  document.getElementById('fbDone').style.display='none';
   document.getElementById('fbModal').classList.add('on');
   setTimeout(function(){document.getElementById('fbText').focus();},250);
+}
+function fbAgain(){
+  document.getElementById('fbDone').style.display='none';
+  document.getElementById('fbForm').style.display='block';
+  setTimeout(function(){document.getElementById('fbText').focus();},100);
 }
 function closeFeedback(){document.getElementById('fbModal').classList.remove('on');}
 function sendFeedback(){
@@ -426,7 +440,7 @@ function sendFeedback(){
     body:JSON.stringify({screen:currentScreen,message:msg})
   }).then(function(r){
     btn.disabled=false;btn.textContent="Send it";
-    if(r.ok){box.value="";document.getElementById('fbThanks').style.display='block';}
+    if(r.ok){box.value="";document.getElementById('fbForm').style.display='none';document.getElementById('fbDone').style.display='block';}
     else{r.text().then(function(t){alert("Didn't send (code "+r.status+"): "+t.slice(0,200));});}
   }).catch(function(e){
     btn.disabled=false;btn.textContent="Send it";
