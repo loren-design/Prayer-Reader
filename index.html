@@ -253,6 +253,7 @@
       <p class="topiccount" id="topicCount"></p>
       <p class="safety" id="topicSafety"></p>
       <button class="primary" onclick="startTopic()">Say it with me</button>
+      <button class="ghost" id="deepBtn" style="display:none;" onclick="goDeep()">Go deeper on this &#8594;</button>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
     </section>
 
@@ -373,6 +374,14 @@
       <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
       <button class="primary" style="margin-top:26px;" onclick="goNeeds()">Come to the table</button>
       <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
+    </section>
+
+    <section id="s-deep" class="screen">
+      <div class="kicker sm" id="deepKicker"></div>
+      <p class="topictitle" id="deepTitle"></p>
+      <div id="deepBody"></div>
+      <button class="primary" style="margin-top:26px;" onclick="startTopic()">Now say the prayers</button>
+      <button class="ghost backlink" onclick="backToTopic()">&#8592; Back</button>
     </section>
 
     <section id="s-install" class="screen">
@@ -770,6 +779,53 @@ function speakWord(){
   if(voice)u.voice=voice;u.rate=.9;
   speechSynthesis.speak(u);
 }
+
+const DEEP={
+anxiety:{q:"What does God actually say about anxiety? \u2192",title:"When the Storm Is Real",body:[
+"<strong>Let's be honest about anxiety: the storm is usually real.</strong> The bills are real. The diagnosis is real. The phone call you're dreading is real. The Bible never asks you to pretend the storm isn't happening. It asks you a different question: who's in the boat with you?",
+"<strong>Mark chapter four tells it.</strong> The disciples \u2014 grown men, professional fishermen \u2014 are bailing water in a storm so bad they're sure they're dying. And Jesus is asleep on a cushion in the back. They wake Him up furious: don't You care that we're drowning? He stands up, tells the storm to knock it off, and it does. Then He asks them the question that stings a little: why were you so afraid?",
+"<strong>Here's the part nobody preaches:</strong> Jesus wasn't asleep because He didn't care. He was asleep because He wasn't worried. The same storm was hitting both of them \u2014 one boat, two completely different experiences. The difference wasn't the weather. It was who knew how the story ended.",
+"<strong>Charles Spurgeon loved this scene so much he preached it at the communion table</strong> \u2014 and he pointed at a detail most of us skip: Jesus was asleep on a pillow. Somebody put it there. Real rest, planned ahead, in the middle of a real storm. That's not denial. That's trust with a pillow under it.",
+"<strong>Psalm fifty-five says cast your burden on the Lord and He shall sustain you.</strong> Cast means throw \u2014 not hand over politely, throw. First Peter five says it plainer: throw all your care on Him, because He cares for you. Anxiety is carrying tomorrow's weight with today's arms. Prayer is throwing that weight into a boat where Somebody isn't worried.",
+"<strong>So here's the practice, plain:</strong> when the spiral starts, don't argue with the storm. Talk to the One in the boat. Out loud. That's what the declarations on this page are for \u2014 they're you, waking Jesus up on purpose, before you start bailing."
+]},
+depression:{q:"What does God say when you can\u2019t get up? \u2192",title:"The God of the Broom Tree",body:[
+"<strong>First Kings chapter nineteen might be the kindest chapter in the Bible.</strong> Elijah \u2014 the fire-from-heaven prophet, fresh off the biggest win of his life \u2014 crashes. He walks a day into the wilderness, sits down under a broom tree, and asks God to let him die. I have had enough, Lord. That's a prophet talking. That's in your Bible.",
+"<strong>Now watch what God does, because it's not what religion expects.</strong> No lecture. No 'where's your faith?' No pull-yourself-together. God lets him sleep. Then an angel wakes him with fresh bread and water \u2014 twice \u2014 and says: eat, the journey is too much for you. Sleep. Food. Water. Kindness. Then, later, a gentle whisper. That's God's treatment plan for a man who wanted to die.",
+"<strong>Charles Spurgeon \u2014 maybe the greatest preacher of his century \u2014 talked openly about his own crushing seasons of darkness.</strong> He told his students that the strongest saints go through them, and that there's no shame in it. If it could reach Elijah and Spurgeon, it reaching you is not a verdict on your faith.",
+"<strong>Psalm thirty-four says the Lord is close to the brokenhearted.</strong> Not disappointed in. Close to. Isaiah forty-two says a smoldering wick He will not snuff out \u2014 if all you've got left is a flicker, He cups His hands around it.",
+"<strong>So if you're under the broom tree today:</strong> eat something. Sleep. Let people help \u2014 doctors and counselors are bread and water too. And speak these declarations even at a whisper, because the God of the broom tree hears whispers. He's not waiting for you at the finish line. He's sitting with you under the tree."
+]},
+recovered:{q:"In recovery \u2014 or fully recovered? \u2192",title:"Clothed and in His Right Mind",body:[
+"<strong>Mark chapter five introduces the most hopeless man in the Bible.</strong> Living in the tombs. Cutting himself with stones. Chains couldn't hold him \u2014 they'd tried. Everybody had given up, including him. If you've ever been the person the family stopped talking about, you know this man.",
+"<strong>Then Jesus steps off a boat, and one conversation later,</strong> the town comes out and finds this same man sitting down, clothed, and in his right mind. That phrase is in the Book on purpose. Not managed. Not maintained. Right mind. The man begs to leave town with Jesus \u2014 and Jesus says no. Go home to your people and tell them how much the Lord has done for you. His testimony became his assignment.",
+"<strong>Here's the thing this app stands on:</strong> Second Corinthians five says if anyone is in Christ, he is a new creation \u2014 the old has gone. Not the old is in remission. Gone. First Corinthians six looks a list of wrecked lives dead in the eye and says: and such WERE some of you. Were. Past tense. Heaven talks about your old life in the past tense, and you're allowed to as well.",
+"<strong>Andrew Wommack teaches something that unlocks this:</strong> you are a spirit, you have a soul, and you live in a body. The moment you gave your life to Christ, your spirit was made completely new \u2014 finished, sealed, one hundred percent. The fight you feel isn't God's work being incomplete. It's your soul \u2014 your mind \u2014 catching up to what's already true in your spirit. That's exactly why you speak these declarations out loud: you're renewing the mind to agree with the new man.",
+"<strong>The old-timers who got sober on their knees knew where the power was.</strong> Clarence Snyder, one of the earliest \u2014 sober in 1938, led thousands to freedom \u2014 always said the answers were never a secret: they were in the Book the whole time. Keep your supports, keep your people, keep your meetings \u2014 and know what the Book calls you: not recovering. Recovered. New. Fighting FROM victory, not for it.",
+"<strong>So say these declarations like the man from the tombs would say them</strong> \u2014 somebody who remembers the chains and is wearing clean clothes anyway. Then go tell your people what the Lord has done. That's the assignment."
+]},
+identity:{q:"Who does God say you are? \u2192",title:"The Robe, the Ring, and the Sandals",body:[
+"<strong>Luke chapter fifteen \u2014 the boy comes home rehearsing a job application.</strong> Make me like one of your hired servants. He's done the math: sonship is gone, but maybe employment is possible. He's still rehearsing when his father \u2014 who has been watching the road \u2014 hikes up his robe and runs. Old men didn't run in that culture. This one did.",
+"<strong>And the father never lets him finish the speech.</strong> Instead, three gifts, and every one of them is a sentence about who you are. The robe: honored guest, not hired help \u2014 covering the pig-pen clothes without a word about them. The ring: the family seal, the authority to sign the family name \u2014 handed back to the kid who just wasted half the fortune. The sandals: servants went barefoot; sons wore shoes. Every item answers the speech he never got to give: you were never applying for a job. You're my son.",
+"<strong>J.I. Packer taught that if you want to measure how well somebody understands Christianity,</strong> find out how much they make of being adopted by God \u2014 he called it the highest privilege the gospel offers. Higher than forgiveness. Forgiveness clears your record; adoption gives you a Father.",
+"<strong>Romans eight says you didn't receive a spirit of slavery to fall back into fear \u2014 you received the Spirit of adoption, and by Him we cry Abba, Father.</strong> Abba is the word toddlers used. It's not formal. It was never supposed to be.",
+"<strong>So before you say these declarations, drop the job application.</strong> You're not negotiating a position in the household. You're wearing the robe, the ring, and the sandals of somebody who was declared a son while he still smelled like the far country. Now say it out loud until your own ears believe it."
+]}
+};
+function goDeep(){
+  if(!currentCat||!DEEP[currentCat])return;
+  const d=DEEP[currentCat];
+  document.getElementById('deepKicker').textContent="Going deeper \u2014 "+cats[currentCat].label;
+  document.getElementById('deepTitle').textContent=d.title;
+  const body=document.getElementById('deepBody');
+  body.innerHTML="";
+  d.body.forEach(function(para,i){
+    if(i>0){const r=document.createElement('div');r.className='rule';body.appendChild(r);}
+    const c=document.createElement('div');c.className='chunk';c.innerHTML=para;body.appendChild(c);
+  });
+  show('s-deep');
+}
+
 const SAFETY_TOPICS=["anxiety","depression","mind"];
 const SAFETY_TEXT="Straight talk: this app prays with you. It does not replace a doctor, a counselor, or crisis help. If you are thinking about ending your life, call or text 988 (US) right now and talk to a real person. We'll be here when you get back.";
 function goTopic(key){
@@ -782,6 +838,8 @@ function goTopic(key){
   const sf=document.getElementById('topicSafety');
   if(SAFETY_TOPICS.includes(key)){sf.textContent=SAFETY_TEXT;sf.classList.add('on');}
   else{sf.classList.remove('on');}
+  const db=document.getElementById('deepBtn');
+  if(DEEP[key]){db.textContent=DEEP[key].q;db.style.display="inline-block";}else{db.style.display="none";}
   show('s-topic');
 }
 function startTopic(){openList(D.filter(d=>d.c===currentCat),currentCat);}
