@@ -30,7 +30,7 @@
   body{background:radial-gradient(120% 90% at 50% 0%, #1d1a16 0%, var(--bg) 60%);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100dvh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
   .wrap{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
-    padding:32px 26px calc(28px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;width:100%;text-align:center;}
+    padding:78px 26px calc(28px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;width:100%;text-align:center;}
   .screen{display:none;width:100%;animation:rise .5s ease both;}
   .screen.on{display:block;}
   @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
@@ -88,6 +88,7 @@
   .hookline span{opacity:0;display:inline-block;animation:wordin .5s ease forwards;}
   @keyframes wordin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion: reduce){.hookline span{animation:none;opacity:1;}}
+  .taphint{color:var(--muted);font-size:12px;letter-spacing:.03em;margin:10px 0 0;}
   .betabtn{position:fixed;top:14px;right:14px;z-index:50;background:rgba(27,24,21,.85);border:1px dashed #4a4132;
     color:var(--gold-soft);border-radius:999px;padding:8px 14px;font-size:12px;letter-spacing:.08em;font-weight:700;backdrop-filter:blur(4px);}
   .betabtn:active{border-color:var(--gold);}
@@ -274,6 +275,7 @@
         <button class="speaker" id="speakerBtn" onclick="replay()">&#128266;</button>
         <button class="primary" onclick="nextInNeed()">Another one</button>
       </div>
+      <p class="taphint">&#128266; tap to listen &middot; tap again to stop</p>
       <button class="ghost backlink" onclick="backToTopic()">&#8592; Back to this topic</button>
       <button class="ghost" onclick="goNeeds()">All topics</button>
     </section>
@@ -289,6 +291,7 @@
         <button class="speaker" onclick="speakWord()">&#128266;</button>
         <button class="primary" onclick="backFromWord()" id="wordBackBtn">Back to the prayer</button>
       </div>
+      <p class="taphint">&#128266; tap to listen &middot; tap again to stop</p>
       <button class="ghost backlink" onclick="goWordBank()">See all the words</button>
     </section>
 
@@ -718,13 +721,19 @@ function goGreet(){
   show('s-greet');
 }
 let voicePref="off";
-let donkeyShown=false;
+let donkeyShown=false, donkeyNext=null;
+function openDonkey(fn){donkeyNext=fn||null;document.getElementById('donkeyModal').classList.add('on');}
 function voiceOn(){
   voicePref="on";
-  if(!donkeyShown){donkeyShown=true;document.getElementById('donkeyModal').classList.add('on');return;}
+  if(!donkeyShown){openDonkey(goNeeds);return;}
   goNeeds();
 }
-function closeDonkey(){document.getElementById('donkeyModal').classList.remove('on');goNeeds();}
+function closeDonkey(){
+  donkeyShown=true;
+  document.getElementById('donkeyModal').classList.remove('on');
+  if(donkeyNext){var f=donkeyNext;donkeyNext=null;f();}
+  else goNeeds();
+}
 function voiceOff(){voicePref="off";goNeeds();}
 function goReset(){
   document.getElementById('resetLead').textContent=name?(name+", take a breath."):"Take a breath.";
@@ -783,6 +792,7 @@ function goWordBank(){
 }
 function speakWord(){
   if(!('speechSynthesis' in window))return;
+  if(!donkeyShown){openDonkey(speakWord);return;}
   if(speechSynthesis.speaking){speechSynthesis.cancel();return;}
   const key=document.getElementById('wordTitle').textContent;
   const entry=Object.values(GLOSSARY).find(g=>g.word===key);
@@ -888,6 +898,7 @@ function speak(line){
 }
 function toggleSpeak(line){
   if(!('speechSynthesis' in window))return;
+  if(!donkeyShown){openDonkey(function(){speak(line);});return;}
   if(speechSynthesis.speaking){speechSynthesis.cancel();const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');return;}
   speak(line);
 }
