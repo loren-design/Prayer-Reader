@@ -88,6 +88,16 @@
   .hookline span{opacity:0;display:inline-block;animation:wordin .5s ease forwards;}
   @keyframes wordin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion: reduce){.hookline span{animation:none;opacity:1;}}
+  .betabtn{position:fixed;top:14px;right:14px;z-index:50;background:rgba(27,24,21,.85);border:1px dashed #4a4132;
+    color:var(--gold-soft);border-radius:999px;padding:8px 14px;font-size:12px;letter-spacing:.08em;font-weight:700;backdrop-filter:blur(4px);}
+  .betabtn:active{border-color:var(--gold);}
+  .fbtitle{font-family:Georgia,serif;font-size:22px;margin:0 0 10px;color:var(--ink);}
+  .fbsub{color:var(--muted);font-size:14px;line-height:1.55;margin:0 0 14px;}
+  .fbsub em{color:var(--gold-soft);}
+  textarea{font-family:inherit;font-size:16px;width:100%;min-height:130px;padding:14px;background:var(--bg);
+    border:1px solid var(--line);color:var(--ink);border-radius:14px;outline:none;resize:vertical;margin-bottom:14px;}
+  textarea:focus{border-color:var(--gold);}
+  .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
   .modalcard{background:var(--bg2);border:1px solid #3a3122;border-radius:22px;padding:28px 24px;max-width:360px;text-align:center;animation:rise .35s ease both;}
@@ -148,6 +158,19 @@
       <div class="face">&#128516;</div>
       <p>Heads up: the voice you're about to hear is your phone's robot &mdash; not mine. But God once got a message through with a donkey <em>(Numbers 22, look it up)</em> &mdash; so a robot's an upgrade.</p>
       <button class="primary" onclick="closeDonkey()">Bring on the robot</button>
+    </div>
+  </div>
+  <button class="betabtn" onclick="openFeedback()">BETA</button>
+  <div class="overlay" id="fbModal">
+    <div class="modalcard" style="width:100%;max-width:400px;text-align:left;">
+      <p class="fbtitle">Be brutal.</p>
+      <p class="fbsub">What page were you on? What did you notice? What did you think? Drop a whole bunch of it in here &mdash; and <em>don't type it: tap the little microphone on your keyboard and just talk.</em></p>
+      <textarea id="fbText" placeholder="Let it rip..."></textarea>
+      <p class="fbthanks" id="fbThanks">Got it. Sent straight to Loren. Hammer away &mdash; send another anytime.</p>
+      <div class="row" style="max-width:none;">
+        <button class="primary" onclick="sendFeedback()" id="fbSend">Send it</button>
+      </div>
+      <button class="ghost backlink" onclick="closeFeedback()">Close</button>
     </div>
   </div>
   <button class="homebtn" id="homeBtn" onclick="goNeeds()" aria-label="Back to the table">
@@ -373,6 +396,35 @@ try{
 console.log("%cThe door is open.","color:#c9a24b;font-size:22px;font-family:Georgia,serif;");
 console.log("%cThis tool belongs to Know God Better Ministries, A Global Project of Ten2 Harvest Media.\nThe prayers? Share them with everybody - they were never ours to begin with.\nThe code, the design, the brand? Those are proprietary. Copying or rebranding them without written permission is theft, and we'd rather you just talk to us.\nWant to build Kingdom tools together? Come through the front door: knowgodbetter.com","color:#a89f92;font-size:13px;line-height:1.5;");
 }catch(e){}
+
+const SB_URL="https://yrsgmmcjgkrjrftcrzpx.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyc2dtbWNqZ2tyanJmdGNyenB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzQzMDgsImV4cCI6MjA5Njk1MDMwOH0.Txq9BZMwaq4rWRczsdc1I7IJTfqI9YZW_pDXXqkor9g";
+function openFeedback(){
+  document.getElementById('fbThanks').style.display='none';
+  document.getElementById('fbModal').classList.add('on');
+  setTimeout(function(){document.getElementById('fbText').focus();},250);
+}
+function closeFeedback(){document.getElementById('fbModal').classList.remove('on');}
+function sendFeedback(){
+  var box=document.getElementById('fbText');
+  var msg=(box.value||"").trim();
+  if(!msg)return;
+  var btn=document.getElementById('fbSend');
+  btn.disabled=true;btn.textContent="Sending...";
+  fetch(SB_URL+"/rest/v1/beta_feedback",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},
+    body:JSON.stringify({screen:currentScreen,message:msg})
+  }).then(function(r){
+    btn.disabled=false;btn.textContent="Send it";
+    if(r.ok){box.value="";document.getElementById('fbThanks').style.display='block';}
+    else{alert("Didn't send - try once more?");}
+  }).catch(function(){
+    btn.disabled=false;btn.textContent="Send it";
+    alert("Didn't send - check your signal and try again.");
+  });
+}
+
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=document.getElementById('installBtn');if(b)b.style.display='inline-block';});
 function installNow(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt=null;var b=document.getElementById('installBtn');if(b)b.style.display='none';}
@@ -607,7 +659,9 @@ const D=[
 let name="",currentList=[],idx=0,currentCat=null;
 
 let navBack=false;
+let currentScreen="s-entry";
 function show(id){
+  currentScreen=id;
   if(!navBack){try{history.pushState({screen:id},"");}catch(e){}}
   if('speechSynthesis' in window)speechSynthesis.cancel();
   const sb=document.getElementById('speakerBtn');if(sb)sb.classList.remove('playing');
