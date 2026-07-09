@@ -106,6 +106,9 @@
   .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
+  .mecard{text-align:left;}
+  .meface{float:left;width:82px;height:82px;border-radius:50%;object-fit:cover;
+    margin:6px 14px 6px 0;border:2px solid var(--gold);}
   .modalcard{background:var(--bg2);border:1px solid #3a3122;border-radius:22px;padding:28px 24px;max-width:360px;text-align:center;animation:rise .35s ease both;}
   .modalcard .face{font-size:40px;margin-bottom:12px;}
   .modalcard p{color:var(--ink);font-size:15.5px;line-height:1.6;margin:0 0 20px;font-family:Georgia,serif;}
@@ -161,8 +164,7 @@
 <body>
   <div class="overlay" id="donkeyModal">
     <div class="modalcard">
-      <div class="face">&#128516;</div>
-      <p>The voice you're about to hear is mine &mdash; I'm Loren. I recorded these so nobody has to pray alone. If a line ever comes out sounding like a robot, that's just the backup kicking in &mdash; and hey, God once got a message through with a donkey <em>(Numbers 22, look it up)</em>.</p>
+      <p class="mecard">Hey &mdash; I'm Loren Alves. I built this app<img src="loren.jpg" class="meface" alt="Loren Alves" onerror="this.style.display='none'"> and recorded every one of these prayers in my own voice, so nobody has to pray alone. If a line ever sounds like a robot, that's just the backup &mdash; God once got a message through with a donkey, so we're good. &#128516;</p>
       <button class="primary" onclick="closeDonkey()">Pray with me</button>
     </div>
   </div>
