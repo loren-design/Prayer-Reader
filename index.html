@@ -817,17 +817,19 @@ function goWordBank(){
   show('s-wordbank');
 }
 function speakWord(){
-  if(!('speechSynthesis' in window))return;
   if(!donkeyShown){openDonkey(speakWord);return;}
-  if(speechSynthesis.speaking){speechSynthesis.cancel();return;}
+  if(lorenAudio||(('speechSynthesis' in window)&&speechSynthesis.speaking)){
+    stopLoren();
+    if('speechSynthesis' in window)speechSynthesis.cancel();
+    return;
+  }
   const key=document.getElementById('wordTitle').textContent;
-  const entry=Object.values(GLOSSARY).find(g=>g.word===key);
+  const wk=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].word===key);
+  const entry=wk?GLOSSARY[wk]:null;
   if(!entry)return;
-  speechSynthesis.cancel();
   const strip=h=>h.replace(/<[^>]+>/g,"");
-  const u=new SpeechSynthesisUtterance(entry.word+". "+entry.def+" "+strip(entry.heb)+" "+strip(entry.grk)+" "+entry.ana);
-  if(voice)u.voice=voice;u.rate=.9;
-  speechSynthesis.speak(u);
+  const line=entry.word+". "+entry.def+" "+strip(entry.heb)+" "+strip(entry.grk)+" "+entry.ana;
+  speak(line,"w-"+wk);
 }
 
 const DEEP={
@@ -937,6 +939,7 @@ let lorenAudio=null;
 function voiceFileFor(id){
   if(id===undefined||id===null)return null;
   if(id==="reset")return VOICE_BASE+"reset.mp3";
+  if(String(id).indexOf("w-")===0)return VOICE_BASE+String(id)+".mp3";
   return VOICE_BASE+"d"+String(id).padStart(3,"0")+".mp3";
 }
 function stopLoren(){
