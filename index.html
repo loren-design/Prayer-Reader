@@ -159,6 +159,16 @@
   .steps{max-width:300px;margin:0 auto 26px;display:flex;flex-direction:column;gap:11px;text-align:left;}
   .step{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink);}
   .stepnum{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#241d0c;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:0 0 22px;}
+  .gcards{display:flex;flex-direction:column;gap:14px;margin:20px auto 22px;max-width:340px;text-align:left;}
+  .gcard{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:16px 16px 15px;
+    opacity:0;animation:rise .6s ease forwards;}
+  .gcard:nth-child(1){animation-delay:.25s;}
+  .gcard:nth-child(2){animation-delay:.85s;}
+  .gcard:nth-child(3){animation-delay:1.45s;}
+  .ghead{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:700;font-size:15px;color:var(--gold2,#e6c987);}
+  .gcard p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink);}
+  .grise{opacity:0;animation:rise .6s ease forwards;animation-delay:2.05s;}
+  @media (prefers-reduced-motion: reduce){.gcard,.grise{animation:none;opacity:1;}}
 </style>
 </head>
 <body>
@@ -207,17 +217,33 @@
         <div>
           <div class="wordmark">Know God Better</div>
           <div class="tagline">The door is open</div>
-          <div class="welcome">Come on in. You're welcome anytime.</div>
         </div>
       </div>
-      <p class="verse" id="entryVerse"></p>
-      <p class="ref" id="entryRef"></p>
-      <button class="primary breathe" onclick="goName()">Come to the table</button>
-      <button class="ghost" onclick="show('s-install')">&#128241; Put this on your phone</button>
+      <button class="primary breathe" onclick="enterApp()">Come on in</button>
+      <button class="ghost" style="font-size:13px;opacity:.75;" onclick="show('s-install')">&#128241; Put this on your phone</button>
       <div class="hookline">
         <div><span style="animation-delay:0.50s">For</span> <span style="animation-delay:0.66s">everyone</span> <span style="animation-delay:0.82s">who</span> <span style="animation-delay:0.98s">was</span> <span style="animation-delay:1.14s">never</span> <span style="animation-delay:1.30s">taught</span> <span style="animation-delay:1.46s">how</span> <span style="animation-delay:1.62s">to</span> <span style="animation-delay:1.78s">pray</span></div>
         <div class="l2"><span style="animation-delay:1.94s">&mdash;</span> <span style="animation-delay:2.10s">and</span> <span style="animation-delay:2.26s">wants</span> <span style="animation-delay:2.42s">to.</span></div>
       </div>
+    </section>
+
+    <section id="s-guide" class="screen">
+      <h2>This is guided prayer.</h2>
+      <div class="gcards">
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">1</span>The words are ready</div>
+          <p>They&rsquo;re already here, straight from the Bible. You don&rsquo;t have to come up with anything.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">2</span>Say them out loud</div>
+          <p>God&rsquo;s Word was spoken long before anyone owned a Bible &mdash; and there&rsquo;s <strong>power</strong> when it&rsquo;s spoken. From a preacher, a friend, or you. Your mouth says it, your ears hear it, your heart starts to believe it.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">3</span>That&rsquo;s praying</div>
+          <p>That&rsquo;s power for <strong>right now</strong>. Come back any time today you need it &mdash; that&rsquo;s how you get to know God better.</p>
+        </div>
+      </div>
+      <button class="primary grise" id="guideBtn" onclick="guideNext()">Show me</button>
     </section>
 
     <section id="s-name" class="screen">
@@ -232,18 +258,11 @@
       <p class="big" id="greetHi"></p>
       <p class="sub" id="greetLine"></p>
       <button class="ghost" style="margin-top:-6px;margin-bottom:10px;font-size:13px;" onclick="changeName()">Not you? Change name</button>
-      <div class="steps">
-        <div class="step"><span class="stepnum">1</span><span>Pick what you need.</span></div>
-        <div class="step"><span class="stepnum">2</span><span>Say the words out loud.</span></div>
-        <div class="step"><span class="stepnum">3</span><span>That's praying. That's the whole thing.</span></div>
-      </div>
       <p class="sub" style="margin-bottom:14px;">Want me to read the prayers out loud, or read them quietly yourself?</p>
       <button class="primary" onclick="voiceOn()">&#128266; Read them to me</button>
       <button class="ghost" onclick="voiceOff()">I'll read them quietly</button>
-      <div class="resetcard" style="margin-top:26px;">
-        <p>Spun out? Doom-scrolled three hours gone? Racing thoughts? You can start your day over right now.</p>
-        <button class="primary" style="background:#3a2418;color:#f0d9c6;box-shadow:none;" onclick="goReset()">I need to reset</button>
-      </div>
+      <button class="ghost" style="font-size:13px;opacity:.8;" onclick="openGuide()">What is guided prayer?</button>
+      <button class="ghost" style="margin-top:20px;" onclick="goReset()">Spun out? Start your day over right now &rarr;</button>
     </section>
 
     <section id="s-reset" class="screen">
@@ -711,7 +730,7 @@ function show(id){
   const f1=document.getElementById('footExtra1');
   if(f1)f1.style.display=(id==="s-entry")?"none":"block";
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
-(function(){const v=entryVerses[Math.floor(Math.random()*entryVerses.length)];document.getElementById('entryVerse').textContent=v[0];document.getElementById('entryRef').textContent=v[1];})();
+// entry verse rotation retired July 2026 - landing slimmed to one breath
 try{history.replaceState({screen:"s-entry"},"");}catch(e){}
 window.addEventListener('popstate',function(e){
   if(e.state&&e.state.screen){navBack=true;show(e.state.screen);navBack=false;}
@@ -719,6 +738,19 @@ window.addEventListener('popstate',function(e){
 
 function partOfDay(){const h=new Date().getHours();if(h>=5&&h<12)return"morning";if(h>=12&&h<17)return"afternoon";return"evening";}
 
+let guideBack=false;
+function openGuide(){guideBack=true;const b=document.getElementById('guideBtn');if(b)b.textContent="Got it";show('s-guide');}
+function guideNext(){
+  if(guideBack){guideBack=false;const b=document.getElementById('guideBtn');if(b)b.textContent="Show me";show('s-greet');return;}
+  goName();
+}
+function enterApp(){
+  try{
+    if(localStorage.getItem('pa_guide_seen')){goName();return;}
+    localStorage.setItem('pa_guide_seen','1');
+  }catch(e){}
+  show('s-guide');
+}
 function goName(){
   let saved="";try{saved=localStorage.getItem('pa_name')||"";}catch(e){}
   if(saved){name=saved;goGreet();return;}
