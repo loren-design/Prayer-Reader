@@ -303,15 +303,15 @@
       <div class="gcards">
         <div class="gcard">
           <div class="ghead"><span class="stepnum">1</span>The words are ready</div>
-          <p>They&rsquo;re already here, straight from the Bible. You don&rsquo;t have to come up with anything.</p>
+          <p>Bold statements of what God already said about you &mdash; written out, ready to speak.</p>
         </div>
         <div class="gcard">
           <div class="ghead"><span class="stepnum">2</span>Say them out loud</div>
-          <p>God&rsquo;s Word was spoken long before anyone owned a Bible &mdash; and there&rsquo;s <strong>power</strong> when it&rsquo;s spoken. From a preacher, a friend, or you. Your mouth says it, your ears hear it, your heart starts to believe it.</p>
+          <p>That&rsquo;s where the <strong>power</strong> is. Your mouth says it, your ears hear it, your heart starts to believe it.</p>
         </div>
         <div class="gcard">
-          <div class="ghead"><span class="stepnum">3</span>Do it all day, every day</div>
-          <p>That&rsquo;s power for <strong>right now</strong>. Come back morning, noon, and night &mdash; the Bible calls it being <strong>transformed by the renewing of your mind</strong>. A little at a time, for the rest of your life. It only gets deeper.</p>
+          <div class="ghead"><span class="stepnum">3</span>Come back any time</div>
+          <p>Struggling, celebrating, failed, forgiven &mdash; there&rsquo;s a word for it here. <strong>The Word, out loud, changes you.</strong></p>
         </div>
       </div>
       <button class="primary grise" id="guideBtn" onclick="guideNext()">Show me</button>
@@ -1013,12 +1013,15 @@ function goFind(){
   document.getElementById('findResults').innerHTML="";
   document.getElementById('findDefault').style.display="block";
   const qs=document.getElementById('findQs');
-  if(!qs.childElementCount){
-    QUESTIONS.forEach(x=>{
-      const b=document.createElement('button');b.className='fq';b.textContent=x.q;
-      b.onclick=x.go;qs.appendChild(b);
-    });
-    const az=document.getElementById('findAZ');
+  qs.innerHTML="";
+  const day=Math.floor(Date.now()/86400000);
+  for(let i=0;i<4;i++){
+    const x=QUESTIONS[(day+i)%QUESTIONS.length];
+    const b=document.createElement('button');b.className='fq';b.textContent=x.q;
+    b.onclick=x.go;qs.appendChild(b);
+  }
+  const az=document.getElementById('findAZ');
+  if(!az.childElementCount){
     Object.keys(cats).sort((a,b)=>cats[a].label.localeCompare(cats[b].label)).forEach(k=>{
       const c=document.createElement('button');c.className='fchip';
       c.textContent=cats[k].label;c.onclick=()=>goTopic(k);az.appendChild(c);
