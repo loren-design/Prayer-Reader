@@ -110,6 +110,16 @@
   .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
+  .storyface{width:104px;height:104px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);
+    display:block;margin:0 auto 16px;opacity:0;animation:rise .6s ease forwards;}
+  #s-story .chunk{opacity:0;animation:rise .6s ease forwards;}
+  #s-story .chunk:nth-of-type(1){animation-delay:.15s;}
+  #s-story .chunk:nth-of-type(2){animation-delay:.4s;}
+  #s-story .chunk:nth-of-type(3){animation-delay:.65s;}
+  #s-story .chunk:nth-of-type(4){animation-delay:.9s;}
+  #s-story .chunk:nth-of-type(5){animation-delay:1.15s;}
+  #s-story .chunk:nth-of-type(6){animation-delay:1.4s;}
+  @media (prefers-reduced-motion: reduce){#s-story .chunk,.storyface{animation:none;opacity:1;}}
   .mecard{text-align:left;}
   .meface{float:left;width:82px;height:82px;border-radius:50%;object-fit:cover;
     margin:6px 14px 6px 0;border:2px solid var(--gold);}
@@ -436,15 +446,21 @@
 
     <section id="s-story" class="screen">
       <div class="kicker sm">How this started</div>
+      <img src="loren.jpg" alt="Loren Alves" class="storyface" onerror="this.style.display='none'" />
       <p class="topictitle">An old hippie and a $500-a-day habit.</p>
       <div class="chunk"><strong>I was 19 and out of options.</strong> A $500-a-day habit I couldn't stop on my own. I didn't want to keep living the way I was living. Truth is, I didn't want to live at all.</div>
       <div class="rule"></div>
+      <div class="chunk"><strong>And when I finally quit it, I just pivoted.</strong> I'll only drink. I'll only smoke dope. I'll only take acid and smoke dope. I'll only binge a little cocaine. Nine months of that taught me what takes some people decades: the problem was never the substance. My drug of choice was always <strong>more</strong>.</div>
+      <div class="rule"></div>
       <div class="chunk"><strong>An old hippie in AA asked me one question.</strong> "You got a problem with God?" I said no. He said, "Great. Get on your knees every morning and ask God to keep you sober. At night, tell Him thank you." No church background. No religion. I was just desperate enough to follow instructions. That was 1991. I've been sober ever since.</div>
       <div class="rule"></div>
-      <div class="chunk"><strong>God wasn't done.</strong> The Holy Spirit spent the next nine years drawing me toward Jesus. In 2000, I gave my life to Christ &mdash; a heart choice, not a church habit. I didn't get to know God through religion. I got to know Him one honest prayer at a time.</div>
+      <div class="chunk"><strong>God wasn't done.</strong> The Holy Spirit spent nine years drawing me toward Jesus &mdash; and then my unborn daughter Sidney was diagnosed with a heart defect she wouldn't survive. Losing her broke me wide open. In 2000, I gave my life to Christ &mdash; a heart choice, not a church habit. I carry Sidney's memory with honor, not shame.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>And God kept restoring what life kept breaking.</strong> In 2017 a toxic brain injury scrambled the very mind I'm asking you to renew. Strokes followed in 2023. I'm still here &mdash; thirty-five years sober, mind renewed daily by the same Word that's in this app. Restoration isn't a theory to me. It's my history.</div>
       <div class="rule"></div>
       <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
-      <button class="primary" style="margin-top:26px;" onclick="goNeeds()">Come to the table</button>
+      <p class="topiccount" style="margin-top:18px;">The whole story lives at <a href="https://knowgodbetter.org" target="_blank" rel="noopener" style="color:var(--gold-soft);">knowgodbetter.org</a></p>
+      <button class="primary" style="margin-top:14px;" onclick="goNeeds()">Let's pray together</button>
       <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
     </section>
 
