@@ -110,11 +110,15 @@
   .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
-  .statstrip{display:flex;gap:10px;justify-content:center;max-width:400px;margin:20px auto 10px;}
+  .wbcta{display:inline-block;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#241d0c;
+    font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:999px;margin:8px 0 6px;letter-spacing:.02em;}
+  #wordGrid{grid-template-columns:repeat(2,1fr);gap:4px 10px;margin-top:14px;}
+  .wbword{background:none;border:none;color:var(--gold2,#e6c987);font-family:Georgia,serif;font-size:21px;
+    padding:13px 6px;text-decoration:underline;text-underline-offset:5px;
+    text-decoration-thickness:1px;text-decoration-color:rgba(230,201,135,.5);cursor:pointer;}
+  .wbword:active{color:var(--gold);}
   .statwide{background:#221d15;border:1px solid #3a3122;border-radius:16px;padding:14px 12px;max-width:400px;margin:0 auto 20px;}
   .statwidename{font-family:Georgia,serif;font-size:22px;color:var(--gold-soft);line-height:1.2;margin-bottom:5px;}
-  .stat{flex:1;background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px 8px;}
-  .statnum{font-family:Georgia,serif;font-size:30px;color:var(--gold-soft);line-height:1;}
   .statlab{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.35;text-transform:uppercase;letter-spacing:.05em;}
   .storyface{width:104px;height:104px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);
     display:block;margin:0 auto 16px;opacity:0;animation:rise .6s ease forwards;}
@@ -373,7 +377,8 @@
     <section id="s-wordbank" class="screen">
       <div class="kicker sm">What It Really Means</div>
       <p class="topictitle">Church words, in plain English</p>
-      <p class="sub">Words we use in church that nobody explains &mdash; made simple, with the Hebrew and Greek behind them. Tap one.</p>
+      <p class="sub">Words we use in church that nobody explains &mdash; made simple, with the Hebrew and Greek behind them.</p>
+      <div class="wbcta">Tap a word to learn what it really means</div>
       <div class="needs" id="wordGrid"></div>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
     </section>
@@ -381,16 +386,7 @@
     <section id="s-support" class="screen">
       <div class="kicker sm">Ten2 Harvest Media</div>
       <p class="topictitle">The Word of God Is Always Free.</p>
-      <div class="chunk"><strong>Stuck people aren't searching for Jesus. They're searching for hope. We bring both.</strong></div>
-      <div class="statstrip">
-        <div class="stat"><div class="statnum">1</div><div class="statlab">problem<br>hopelessness</div></div>
-        <div class="stat"><div class="statnum">1</div><div class="statlab">solution<br>Jesus</div></div>
-      </div>
-      <div class="statwide">
-        <div class="statwidename">One Billion for Jesus</div>
-        <div class="statlab">one billion conversations to start</div>
-      </div>
-      <div class="chunk">Did you find some hope here today? Keep the door open for the next one.</div>
+      <div class="chunk"><strong>Stuck people aren't searching for Jesus. They're searching for hope. We bring both.</strong> If you found some hope here today, keep the door open for the next one.</div>
       <div class="chunk" style="color:var(--muted);font-size:14px;cursor:pointer;" onclick="openMission()"><span style="color:var(--gold-soft);">Read the whole vow and mission &darr;</span></div>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
@@ -419,11 +415,17 @@
           <div class="tmean">Any amount, one time. Every dollar puts the Word in somebody's hands.</div>
         </a>
       </div>
-      <details id="missionMore" style="max-width:420px;margin:26px auto 0;text-align:left;">
+      <div class="statwide" style="margin-top:28px;cursor:pointer;" onclick="openMission()">
+        <div class="statwidename">What is the One Billion for Jesus Movement?</div>
+        <div class="statlab" style="text-transform:none;font-size:13px;letter-spacing:0;">A global community of people committed to starting one billion conversations about Jesus through digital evangelism and discipleship &mdash; every zip code, every language, everywhere a phone can be held. Tap to read more.</div>
+      </div>
+      <details id="missionMore" style="max-width:420px;margin:14px auto 0;text-align:left;">
         <summary style="cursor:pointer;color:var(--gold-soft);font-size:14px;text-align:center;">More about the mission and the vow &darr;</summary>
-        <div class="chunk" style="margin-top:16px;">Millions of people woke up hopeless today. Whether you've walked with Jesus for thirty years or you're not even sure about Him yet &mdash; if this app encouraged you, inspired you, or moved you one step toward freedom, you're already one of the billion.</div>
+        <div class="chunk" style="margin-top:18px;">Whether you've walked with Jesus for thirty years or you're not even sure about Him yet &mdash; if this app encouraged you, inspired you, or moved you one step toward freedom, you're already one of the billion.</div>
+        <div class="rule"></div>
         <div class="chunk"><strong>The vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
-        <div class="chunk"><strong>The mission.</strong> One problem &mdash; hopelessness. One solution &mdash; hope, filled in Jesus. One billion conversations &mdash; every zip code, every language, everywhere a phone can be held: for the stuck, the addicted, the hurting, and the believer thirty years in who still needs healing. We build the free tools that start the conversation; the Father does the drawing. Givers are how the door stays open. Every number above carries a story.</div>
+        <div class="rule"></div>
+        <div class="chunk"><strong>The mission.</strong> We build the free tools that start the conversations &mdash; for the stuck, the addicted, the hurting, and the believer thirty years in who still needs healing &mdash; and the Father does the drawing. Givers are how the door stays open. Every number above carries a story.</div>
       </details>
       <button class="ghost" onclick="show('s-about')">More about us &#8594;</button>
       <button class="ghost backlink" onclick="goNeeds()">Back to praying</button>
@@ -477,7 +479,7 @@
       <div class="chunk"><strong>And God kept restoring what life kept breaking.</strong> In 2017 a toxic brain injury scrambled the very mind I'm asking you to renew. Strokes followed in 2023. I'm still here &mdash; thirty-five years sober, mind renewed daily by the same Word that's in this app. Restoration isn't a theory to me. It's my history.</div>
       <div class="rule"></div>
       <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
-      <p class="topiccount" style="margin-top:18px;">The whole story lives at <a href="https://knowgodbetter.org" target="_blank" rel="noopener" style="color:var(--gold-soft);">knowgodbetter.org</a></p>
+      <p class="topiccount" style="margin-top:18px;">The whole story lives on <a href="https://www.youtube.com/@KnowGodBetterMinistries" target="_blank" rel="noopener" style="color:var(--gold-soft);">the Know God Better YouTube channel</a></p>
       <button class="primary" style="margin-top:14px;" onclick="goNeeds()">Let's pray together</button>
       <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
     </section>
@@ -949,8 +951,8 @@ function goWordBank(){
   const grid=document.getElementById('wordGrid');grid.innerHTML="";
   Object.keys(GLOSSARY).forEach(k=>{
     const g=GLOSSARY[k];
-    const b=document.createElement('button');b.className='need';
-    b.innerHTML='<span>'+g.word+'</span>';
+    const b=document.createElement('button');b.className='wbword';
+    b.innerHTML=g.word;
     b.onclick=()=>{wordReturn="bank";renderWord(k);};
     grid.appendChild(b);
   });
