@@ -1079,15 +1079,15 @@ document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='
 
 function buildNeeds(){
   const grid=document.getElementById('needGrid');grid.innerHTML="";
-  const find=document.createElement('button');find.className='need wide';
-  find.innerHTML='<span class="ic">\uD83D\uDD0D</span><span>Find a prayer \u2014 search or browse A to Z</span>';
-  find.onclick=()=>goFind();grid.appendChild(find);
   BUCKETS.forEach(b=>{
     const card=document.createElement('button');card.className='bucket';
     const labels=b.sub||b.topics.map(k=>cats[k].label).join(" \u00B7 ");
     card.innerHTML='<div class="bq"><span class="bicon">'+b.icon+'</span>'+b.q+'</div><div class="bt">'+labels+'</div>';
     card.onclick=()=>goBucket(b.k);grid.appendChild(card);
   });
+  const find=document.createElement('button');find.className='need wide';
+  find.innerHTML='<span class="ic">\uD83D\uDD0D</span><span>Find a prayer \u2014 search or browse A to Z</span>';
+  find.onclick=()=>goFind();grid.appendChild(find);
   const wb=document.createElement('button');wb.className='need wide';
   wb.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>What It Really Means \u2014 church words, in plain English</span>';
   wb.onclick=()=>goWordBank();grid.appendChild(wb);
