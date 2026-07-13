@@ -110,6 +110,12 @@
   .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
+  .tcard{display:block;width:100%;max-width:340px;margin:2px auto 18px;background:var(--bg2);
+    border:1px solid var(--line);border-radius:18px;padding:14px 16px;text-align:left;cursor:pointer;}
+  .tcard:active{border-color:var(--gold);background:#221e19;}
+  .tkick{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .thook{font-family:Georgia,serif;font-style:italic;font-size:17px;line-height:1.45;color:var(--gold2,#e6c987);margin-bottom:7px;}
+  .tref{font-size:12px;color:var(--muted);}
   .bucket{grid-column:1 / -1;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
     padding:15px 16px;text-align:left;color:var(--ink);cursor:pointer;}
   .bucket:active{border-color:var(--gold);background:#221e19;}
@@ -312,6 +318,11 @@
       <p class="big" id="greetHi"></p>
       <p class="sub" id="greetLine"></p>
       <button class="ghost" style="margin-top:-8px;margin-bottom:8px;font-size:12px;opacity:.6;" onclick="changeName()">Change name</button>
+      <button class="tcard" onclick="goToday()">
+        <div class="tkick">Today's declaration</div>
+        <div class="thook" id="todayHook"></div>
+        <div class="tref" id="todayRef"></div>
+      </button>
       <p style="font-weight:700;font-size:18px;margin:6px 0 20px;">The Word, out loud, changes you.</p>
       <button class="primary breathe" onclick="goNeeds()">Let's pray together</button>
       <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:30px;">
@@ -885,6 +896,15 @@ function changeName(){
   show('s-name');setTimeout(()=>document.getElementById('nameInput').focus(),300);
 }
 function skipName(){name="";goGreet();}
+function todayItem(){
+  const d=Math.floor(Date.now()/86400000);
+  return {item:D[d%D.length], idx:d%D.length};
+}
+function goToday(){
+  const t=todayItem();
+  currentList=D.slice();currentCat=null;idx=t.idx;
+  renderPray();show('s-pray');
+}
 function goGreet(){
   const typed=(document.getElementById('nameInput').value||"").trim();
   if(typed)name=typed.charAt(0).toUpperCase()+typed.slice(1);
@@ -892,6 +912,9 @@ function goGreet(){
   const p=partOfDay();
   const hi=p==="morning"?"Good morning":p==="afternoon"?"Good afternoon":"Good evening";
   document.getElementById('greetHi').textContent=name?(hi+", "+name+"."):(hi+".");
+  const t=todayItem();
+  document.getElementById('todayHook').textContent=t.item.h;
+  document.getElementById('todayRef').textContent=t.item.r;
   const lines={
     morning:"Before the noise starts, let's set the day on the right foundation. One truth at a time.",
     afternoon:"However the day's gone so far, you can get back to the table right now. Let's take a breath.",
