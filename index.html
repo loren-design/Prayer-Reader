@@ -180,6 +180,26 @@
     </div>
   </div>
   <button class="betabtn" onclick="openFeedback()">BETA</button>
+  <div class="overlay" id="betaModal">
+    <div class="modalcard" style="width:100%;max-width:400px;text-align:left;">
+      <div id="betaForm">
+        <p class="fbtitle">Help me build this.</p>
+        <p class="fbsub">I'm Loren &mdash; I'm looking for beta testers. Leave your first name and number and I'll text you updates two or three times a week as this thing grows. Reply STOP to any text and you're out, no hard feelings. <em>This is separate from your praying &mdash; that stays anonymous, always.</em></p>
+        <input id="betaName" type="text" autocomplete="given-name" placeholder="First name" style="margin-bottom:10px;" />
+        <input id="betaPhone" type="tel" autocomplete="tel" placeholder="Phone number" style="margin-bottom:12px;" />
+        <div class="row" style="max-width:none;">
+          <button class="primary" onclick="sendBeta()" id="betaSend">Count me in</button>
+        </div>
+        <button class="ghost backlink" onclick="closeBeta()">Close</button>
+      </div>
+      <div id="betaDone" style="display:none;text-align:center;">
+        <div class="face">&#129309;</div>
+        <p class="fbtitle" style="text-align:center;">You're on the team.</p>
+        <p class="fbsub" style="text-align:center;">I'll text you when something new lands. Hammer on the app and use the feedback button on every screen &mdash; be brutal.</p>
+        <button class="ghost backlink" onclick="closeBeta()">Back to the table</button>
+      </div>
+    </div>
+  </div>
   <div class="overlay" id="fbModal">
     <div class="modalcard" style="width:100%;max-width:400px;text-align:left;">
       <div id="fbForm">
@@ -265,6 +285,7 @@
       <button class="primary" onclick="voiceOn()">&#128266; Read them to me</button>
       <button class="ghost" onclick="voiceOff()">I'll read them quietly</button>
       <button class="ghost" style="font-size:13px;opacity:.85;" onclick="openGuide()">&#9889; The Power of Guided Prayer</button>
+      <button class="ghost" style="font-size:13px;opacity:.85;" onclick="openBeta()">&#128295; Join the beta &mdash; help me build this</button>
       <button class="ghost" style="margin-top:20px;" onclick="goReset()">Spun out? Start your day over right now &rarr;</button>
     </section>
 
@@ -337,12 +358,12 @@
 
     <section id="s-support" class="screen">
       <div class="kicker sm">Ten2 Harvest Media</div>
-      <p class="topictitle">Keep the Tools Free.</p>
+      <p class="topictitle">One Billion for Jesus.</p>
       <div class="chunk"><strong>Quick question.</strong> Did this put something back in your hands today? A prayer that landed? A word that finally made sense?</div>
       <div class="rule"></div>
-      <div class="chunk"><strong>Here's what we've learned.</strong> Almost nobody gets taught how to pray. It's the missing piece in nearly every Christian's life we've ever met. Praying always isn't a mood &mdash; it's a practice. Somebody has to teach it.</div>
+      <div class="chunk"><strong>Here's our vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
       <div class="rule"></div>
-      <div class="chunk"><strong>So that's what we build.</strong> Free tools that teach people to know God better and pray always. There's no paywall on the Word of God &mdash; we checked with the Author. If this added something to your life, help us build the next one. Every number below carries a story.</div>
+      <div class="chunk"><strong>And here's the mission.</strong> One billion people meeting the real, loving God &mdash; every zip code, every language, everywhere a phone can be held. Almost nobody gets taught how to pray. We build the free tools that teach it, and givers are how the door stays open. If this put something in your hands, help us hand it to the next person. Every number below carries a story.</div>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
           <div class="amt">$7 <span>/ month</span></div>
@@ -463,6 +484,33 @@ function fbAgain(){
   setTimeout(function(){document.getElementById('fbText').focus();},100);
 }
 function closeFeedback(){document.getElementById('fbModal').classList.remove('on');}
+function openBeta(){
+  document.getElementById('betaForm').style.display='block';
+  document.getElementById('betaDone').style.display='none';
+  document.getElementById('betaModal').classList.add('on');
+  var bn=document.getElementById('betaName');
+  if(name&&!bn.value)bn.value=name;
+  setTimeout(function(){(bn.value?document.getElementById('betaPhone'):bn).focus();},250);
+}
+function closeBeta(){document.getElementById('betaModal').classList.remove('on');}
+function sendBeta(){
+  var nm=(document.getElementById('betaName').value||"").trim();
+  var ph=(document.getElementById('betaPhone').value||"").trim();
+  if(!nm){alert("I need a first name to know who I'm texting.");return;}
+  var digits=ph.replace(/[^0-9]/g,"");
+  if(digits.length<10){alert("That phone number looks short - double-check it?");return;}
+  var btn=document.getElementById('betaSend');
+  btn.disabled=true;btn.textContent="Sending...";
+  fetch(SB_URL+"/rest/v1/beta_testers",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},
+    body:JSON.stringify({name:nm,phone:ph,consent:true,source:"pray-always"})
+  }).then(function(r){
+    btn.disabled=false;btn.textContent="Count me in";
+    if(r.ok){document.getElementById('betaForm').style.display='none';document.getElementById('betaDone').style.display='block';}
+    else{alert("Didn't go through (code "+r.status+"). Try once more?");}
+  }).catch(function(){btn.disabled=false;btn.textContent="Count me in";alert("No connection - try again in a minute.");});
+}
 function sendFeedback(){
   var box=document.getElementById('fbText');
   var msg=(box.value||"").trim();
@@ -587,131 +635,141 @@ const cats={
   victory:{label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
   anxiety:{label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
   depression:{label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
+  anger:{label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
   mind:{label:"The Mind",icon:"\uD83E\uDDE0",title:"About Your Mind",intro:"Your mind is not stuck the way it is. It gets renewed, one thought at a time. It is written."},
   recovered:{label:"Living Sober-Minded",icon:"\uD83C\uDF31",title:"About Living Sober-Minded",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."}
 };
 
 const D=[
-{n:1,c:"identity",t:"The word of God tells me in chapter one hundred thirty-nine, verse fourteen of the book of Psalms that I am fearfully and wonderfully made. God did not make a mistake when He made me. I am His handiwork and He does good work.",r:"Psalm 139:14"},
-{n:2,c:"peace",t:"The word of God tells me in chapter twenty-nine, verse eleven of the book of Jeremiah that God knows the plans He has for me, plans for good and not for harm, to give me a future and a hope. My story is not over. God wrote the ending and it is good.",r:"Jeremiah 29:11"},
-{n:3,c:"strength",t:"The word of God tells me in chapter four, verse thirteen of the book of Philippians that I can do all things through Christ who strengthens me. The strength is not mine. It is His, and He never runs out.",r:"Philippians 4:13"},
-{n:4,c:"provision",t:"The word of God tells me in chapter four, verse nineteen of the book of Philippians that my God shall supply all my need according to His riches in glory by Christ Jesus. I am not on my own. My Father owns it all and He provides for His kids.",r:"Philippians 4:19"},
-{n:5,c:"peace",t:"The word of God tells me in chapter four, verse seven of the book of Philippians that the peace of God, which passes all understanding, guards my heart and my mind in Christ Jesus. Peace stands guard at my door. Worry does not get in.",r:"Philippians 4:7"},
-{n:6,c:"identity",t:"The word of God tells me in chapter one, verse six of the book of Philippians that He who began a good work in me will finish it. God does not start projects and walk away. He is finishing what He started in me.",r:"Philippians 1:6"},
-{n:7,c:"identity",t:"The word of God tells me in chapter three, verse twenty of the book of Philippians that my citizenship is in heaven. This world is not my home. I carry the passport of the kingdom.",r:"Philippians 3:20"},
-{n:8,c:"free",t:"The word of God tells me in chapter eight, verse two of the book of Romans that the law of the Spirit of life in Christ Jesus has set me free from the law of sin and death. There is a higher law working in me now. Freedom is my legal standing.",r:"Romans 8:2"},
-{n:9,c:"strength",t:"The word of God tells me in chapter eight, verse eleven of the book of Romans that the same Spirit who raised Jesus from the dead lives in me. Resurrection power is not far away. It moved in.",r:"Romans 8:11"},
-{n:10,c:"identity",t:"The word of God tells me in chapter eight, verse fifteen of the book of Romans that I did not receive a spirit of bondage to fear again, but the Spirit of adoption, and I cry out Abba, Father. I am not a slave in this house. I am a son.",r:"Romans 8:15"},
-{n:11,c:"identity",t:"The word of God tells me in chapter eight, verse sixteen of the book of Romans that the Spirit Himself testifies with my spirit that I am a child of God. This is not wishful thinking. God Himself vouches for me.",r:"Romans 8:16"},
-{n:12,c:"identity",t:"The word of God tells me in chapter eight, verse seventeen of the book of Romans that I am an heir of God and a joint heir with Christ. Everything the Father gave the Son, I share in. That is my inheritance.",r:"Romans 8:17"},
-{n:13,c:"peace",t:"The word of God tells me in chapter eight, verse twenty-eight of the book of Romans that all things work together for good to those who love God and are called according to His purpose. Even the mess gets used. Nothing is wasted in my Father's hands.",r:"Romans 8:28"},
-{n:14,c:"victory",t:"The word of God tells me in chapter eight, verse thirty-one of the book of Romans that if God is for me, who can be against me. The scoreboard is settled. God is on my side and the other side already lost.",r:"Romans 8:31"},
-{n:15,c:"loved",t:"The word of God tells me in chapter eight, verses thirty-eight and thirty-nine of the book of Romans that nothing can separate me from the love of God which is in Christ Jesus. Not death, not life, not my worst day. Nothing.",r:"Romans 8:38-39"},
-{n:16,c:"forgiven",t:"The word of God tells me in chapter three, verse twenty-four of the book of Romans that I am justified freely by His grace through the redemption that is in Christ Jesus. Freely means I did not earn it and I cannot lose it by having a bad week. Grace paid the whole bill.",r:"Romans 3:24"},
-{n:17,c:"identity",t:"The word of God tells me in chapter six, verse four of the book of Romans that just as Christ was raised from the dead, I too walk in newness of life. I am not patched up. I am brand new.",r:"Romans 6:4"},
-{n:18,c:"free",t:"The word of God tells me in chapter six, verse six of the book of Romans that my old man was crucified with Christ so that the body of sin might be done away with. The old me does not get resurrected. He stays in the grave.",r:"Romans 6:6"},
-{n:19,c:"free",t:"The word of God tells me in chapter six, verse eighteen of the book of Romans that I have been set free from sin and have become a servant of righteousness. I switched teams. I work for righteousness now.",r:"Romans 6:18"},
-{n:20,c:"identity",t:"The word of God tells me in chapter six, verse twenty-three of the book of Romans that the gift of God is eternal life in Christ Jesus my Lord. It is a gift. My job is to receive it, not to earn it.",r:"Romans 6:23"},
-{n:21,c:"identity",t:"The word of God tells me in chapter ten, verse nine of the book of Romans that because I confess with my mouth the Lord Jesus and believe in my heart that God raised Him from the dead, I am saved. I said it. I believe it. It is settled.",r:"Romans 10:9"},
-{n:22,c:"peace",t:"The word of God tells me in chapter fifteen, verse thirteen of the book of Romans that the God of hope fills me with all joy and peace in believing, so that I abound in hope by the power of the Holy Spirit. I am not running on empty. I am running on hope that overflows.",r:"Romans 15:13"},
-{n:23,c:"identity",t:"The word of God tells me in chapter one, verse three of the book of Ephesians that I have been blessed with every spiritual blessing in the heavenly places in Christ. Not some blessings. Every one. They already have my name on them.",r:"Ephesians 1:3"},
-{n:24,c:"identity",t:"The word of God tells me in chapter one, verse four of the book of Ephesians that God chose me in Christ before the foundation of the world, to be holy and blameless before Him. I was not an afterthought. I was picked before the world was built.",r:"Ephesians 1:4"},
-{n:25,c:"identity",t:"The word of God tells me in chapter one, verse five of the book of Ephesians that God predestined me to adoption as a son through Jesus Christ, according to the good pleasure of His will. It made God happy to adopt me. I am wanted.",r:"Ephesians 1:5"},
-{n:26,c:"identity",t:"The word of God tells me in chapter one, verse thirteen of the book of Ephesians that I have been sealed with the Holy Spirit of promise. God put His seal on me. That seal does not break.",r:"Ephesians 1:13"},
-{n:27,c:"identity",t:"The word of God tells me in chapter two, verses four and five of the book of Ephesians that God, who is rich in mercy, made me alive together with Christ even when I was dead in sin. I was dead and He made me alive. That is not improvement. That is resurrection.",r:"Ephesians 2:4-5"},
-{n:28,c:"victory",t:"The word of God tells me in chapter two, verse six of the book of Ephesians that God raised me up and seated me with Christ in the heavenly places. I fight from victory, not for it. My seat is above the battle.",r:"Ephesians 2:6"},
-{n:29,c:"identity",t:"The word of God tells me in chapter two, verse eight of the book of Ephesians that by grace I have been saved through faith, and it is not of myself, it is the gift of God. I did not climb up to God. He came down and got me.",r:"Ephesians 2:8"},
-{n:30,c:"forgiven",t:"The word of God tells me in chapter two, verse thirteen of the book of Ephesians that I who was once far off have been brought near by the blood of Christ. The distance is gone. The blood closed the gap.",r:"Ephesians 2:13"},
-{n:31,c:"identity",t:"The word of God tells me in chapter two, verse nineteen of the book of Ephesians that I am no longer a stranger or a foreigner, but a fellow citizen with the saints and a member of the household of God. I have a seat at the family table. I belong here.",r:"Ephesians 2:19"},
-{n:32,c:"identity",t:"The word of God tells me in chapter three, verse twelve of the book of Ephesians that in Christ I have boldness and access with confidence through faith in Him. I do not knock and hope. I walk in, because the Son opened the door.",r:"Ephesians 3:12"},
-{n:33,c:"strength",t:"The word of God tells me in chapter three, verses sixteen and seventeen of the book of Ephesians that God strengthens me with might through His Spirit in my inner man, and Christ dwells in my heart through faith. The strongest part of me is the inside. That is where He lives.",r:"Ephesians 3:16-17"},
-{n:34,c:"provision",t:"The word of God tells me in chapter three, verse twenty of the book of Ephesians that God is able to do exceedingly abundantly above all that I ask or think, according to the power that works in me. My biggest ask is still too small. He does more.",r:"Ephesians 3:20"},
-{n:35,c:"identity",t:"The word of God tells me in chapter four, verse twenty-four of the book of Ephesians that I have put on the new man, created according to God in true righteousness and holiness. The new man is not something I am becoming someday. He is who God already made me.",r:"Ephesians 4:24"},
-{n:36,c:"strength",t:"The word of God tells me in chapter six, verse ten of the book of Ephesians that I am strong in the Lord and in the power of His might. My strength has a source, and the source is not me. It is Him.",r:"Ephesians 6:10"},
-{n:37,c:"strength",t:"The word of God tells me in chapter six, verse eleven of the book of Ephesians that I put on the whole armor of God so I can stand against the schemes of the devil. I am not exposed. I am armored, and I am standing.",r:"Ephesians 6:11"},
-{n:38,c:"forgiven",t:"The word of God tells me in chapter one, verse twenty-two of the book of Colossians that Christ has reconciled me in His body through death, to present me holy, blameless, and above reproach in His sight. When God looks at me, He sees blameless. That is how the blood works.",r:"Colossians 1:22"},
-{n:39,c:"identity",t:"The word of God tells me in chapter two, verse ten of the book of Colossians that I am complete in Him who is the head of all principality and power. I am not missing pieces. In Christ, I am whole.",r:"Colossians 2:10"},
-{n:40,c:"identity",t:"The word of God tells me in chapter three, verse one of the book of Colossians that I have been raised with Christ, so I seek those things which are above, where Christ sits at the right hand of God. My eyes look up. That is where my life comes from.",r:"Colossians 3:1"},
-{n:41,c:"peace",t:"The word of God tells me in chapter three, verse three of the book of Colossians that my life is hidden with Christ in God. The enemy cannot get to me without going through Jesus first. I am hidden in the safest place there is.",r:"Colossians 3:3"},
-{n:42,c:"loved",t:"The word of God tells me in chapter three, verse twelve of the book of Colossians that I am chosen of God, holy, and dearly loved. Not tolerated. Dearly loved.",r:"Colossians 3:12"},
-{n:43,c:"free",t:"The word of God tells me in chapter three, verse thirteen of the book of Galatians that Christ has redeemed me from the curse by becoming a curse for me. The curse stops at the cross. It does not follow me home.",r:"Galatians 3:13"},
-{n:44,c:"identity",t:"The word of God tells me in chapter three, verse twenty-six of the book of Galatians that I am a child of God through faith in Christ Jesus. Faith made me family. That is the whole requirement.",r:"Galatians 3:26"},
-{n:45,c:"identity",t:"The word of God tells me in chapter three, verse twenty-nine of the book of Galatians that because I belong to Christ, I am Abraham's seed and an heir according to the promise. The promises made to Abraham run through my bloodline now. I am in the will.",r:"Galatians 3:29"},
-{n:46,c:"identity",t:"The word of God tells me in chapter four, verse seven of the book of Galatians that I am no longer a slave but a son, and since I am a son, I am an heir of God through Christ. Slaves earn. Sons inherit. I am a son.",r:"Galatians 4:7"},
-{n:47,c:"free",t:"The word of God tells me in chapter five, verse one of the book of Galatians that Christ has made me free, so I stand fast in that liberty and refuse to be tangled again in a yoke of bondage. I have been free since the cross. I am not going back into chains that are already broken.",r:"Galatians 5:1"},
-{n:48,c:"identity",t:"The word of God tells me in chapter five, verses twenty-two and twenty-three of the book of Galatians that the fruit of the Spirit is growing in me: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control. This fruit is not manufactured. It grows because His Spirit lives in me.",r:"Galatians 5:22-23"},
-{n:49,c:"identity",t:"The word of God tells me in chapter three, verse sixteen of the book of John that God so loved the world that He gave His only Son, that whoever believes in Him shall not perish but have everlasting life. I believe. So I have life, and it never ends.",r:"John 3:16"},
-{n:50,c:"free",t:"The word of God tells me in chapter eight, verse thirty-six of the book of John that whom the Son sets free is free indeed. Free indeed means really free. Not free with an asterisk.",r:"John 8:36"},
-{n:51,c:"identity",t:"The word of God tells me in chapter five, verse fourteen of the book of Matthew that I am the light of the world. Darkness does not put out light. Light puts out darkness, and I carry it.",r:"Matthew 5:14"},
-{n:52,c:"identity",t:"The word of God tells me in chapter five, verse thirteen of the book of Matthew that I am the salt of the earth. My life has flavor and purpose. God put me here to make a difference people can taste.",r:"Matthew 5:13"},
-{n:53,c:"identity",t:"The word of God tells me in chapter ten, verse ten of the book of John that Jesus came so I could have life, and have it more abundantly. The thief came to steal, kill, and destroy, but Jesus came with the opposite. I choose the abundant life He brought.",r:"John 10:10"},
-{n:54,c:"victory",t:"The word of God tells me in chapter ten, verse twenty-eight of the book of John that Jesus gives me eternal life, I shall never perish, and no one can snatch me out of His hand. His grip on me is stronger than anything pulling at me. I am held.",r:"John 10:28"},
-{n:55,c:"peace",t:"The word of God tells me in chapter fourteen, verse twenty-seven of the book of John that Jesus left His peace with me, not as the world gives. So my heart is not troubled and it is not afraid. His peace is mine to keep.",r:"John 14:27"},
-{n:56,c:"identity",t:"The word of God tells me in chapter fifteen, verse five of the book of John that Jesus is the vine and I am a branch, and when I abide in Him, I bear much fruit. My job is to stay connected. The fruit is His department.",r:"John 15:5"},
-{n:57,c:"loved",t:"The word of God tells me in chapter fifteen, verse fifteen of the book of John that Jesus no longer calls me a servant, but He calls me friend. The King of everything calls me His friend. Let that sink in.",r:"John 15:15"},
-{n:58,c:"identity",t:"The word of God tells me in chapter fifteen, verse sixteen of the book of John that I did not choose Him, but He chose me and appointed me to go and bear fruit that lasts. I was recruited by the Lord Himself. My work matters and it lasts.",r:"John 15:16"},
-{n:59,c:"victory",t:"The word of God tells me in chapter sixteen, verse thirty-three of the book of John that in this world I will have trouble, but I take heart, because Jesus has overcome the world. Trouble is real, but it is already beaten. I follow the One who won.",r:"John 16:33"},
-{n:60,c:"loved",t:"The word of God tells me in chapter seventeen, verse twenty-three of the book of John that the Father loves me even as He loves Jesus. Read that again. The same love the Father has for the Son, He has for me.",r:"John 17:23"},
-{n:61,c:"identity",t:"The word of God tells me in chapter one, verse thirty of the book of First Corinthians that Christ Jesus has become for me wisdom from God, and righteousness, and sanctification, and redemption. Everything I lack, He is. I am covered on all four counts.",r:"1 Corinthians 1:30"},
-{n:62,c:"mind",t:"The word of God tells me in chapter two, verse sixteen of the book of First Corinthians that I have the mind of Christ. I do not have to think like the old man thought. I can think like Jesus thinks.",r:"1 Corinthians 2:16"},
-{n:63,c:"identity",t:"The word of God tells me in chapter three, verse sixteen of the book of First Corinthians that I am the temple of God and the Spirit of God dwells in me. God does not live in buildings anymore. He lives in me.",r:"1 Corinthians 3:16"},
-{n:64,c:"identity",t:"The word of God tells me in chapter six, verses nineteen and twenty of the book of First Corinthians that I was bought with a price, so I glorify God in my body. The blood of Jesus was the price. I was worth that much to God.",r:"1 Corinthians 6:19-20"},
-{n:65,c:"strength",t:"The word of God tells me in chapter ten, verse thirteen of the book of First Corinthians that no temptation has overtaken me except what is common to man, and God is faithful, and He always makes a way of escape. There is always a door out. My God builds exits into every temptation.",r:"1 Corinthians 10:13"},
-{n:66,c:"victory",t:"The word of God tells me in chapter fifteen, verse fifty-seven of the book of First Corinthians that thanks be to God, who gives me the victory through my Lord Jesus Christ. Victory is given, not earned. I receive it with thanks.",r:"1 Corinthians 15:57"},
-{n:67,c:"peace",t:"The word of God tells me in chapter one, verse twenty of the book of Second Corinthians that all the promises of God in Christ are yes, and in Him amen. God does not say maybe. Every promise He made me is a yes.",r:"2 Corinthians 1:20"},
-{n:68,c:"identity",t:"The word of God tells me in chapter one, verses twenty-one and twenty-two of the book of Second Corinthians that God has anointed me, sealed me, and given me His Spirit in my heart as a guarantee. I carry God's down payment inside me. He is coming back for what He paid for.",r:"2 Corinthians 1:21-22"},
-{n:69,c:"victory",t:"The word of God tells me in chapter two, verse fourteen of the book of Second Corinthians that God always leads me in triumph in Christ. Always is a big word, and God chose it. I am on the winning side every day.",r:"2 Corinthians 2:14"},
-{n:70,c:"identity",t:"The word of God tells me in chapter three, verse eighteen of the book of Second Corinthians that I am being transformed into His image from glory to glory by the Spirit of the Lord. I am not stuck. I am moving from glory to glory, one degree at a time.",r:"2 Corinthians 3:18"},
-{n:71,c:"identity",t:"The word of God tells me in chapter five, verse twenty of the book of Second Corinthians that I am an ambassador for Christ, as though God were pleading through me. I represent the kingdom everywhere I go. My life speaks for the King.",r:"2 Corinthians 5:20"},
-{n:72,c:"provision",t:"The word of God tells me in chapter nine, verse eight of the book of Second Corinthians that God is able to make all grace abound toward me, so that I always have all sufficiency in all things. All grace. All sufficiency. All things. God does not do halfway.",r:"2 Corinthians 9:8"},
-{n:73,c:"mind",t:"The word of God tells me in chapter ten, verses four and five of the book of Second Corinthians that the weapons of my warfare are mighty in God for pulling down strongholds, and I take every thought captive to the obedience of Christ. My thoughts do not run wild. I catch them and line them up with the truth.",r:"2 Corinthians 10:4-5"},
-{n:74,c:"strength",t:"The word of God tells me in chapter twelve, verse nine of the book of Second Corinthians that His grace is sufficient for me, and His strength is made perfect in my weakness. My weak spot is where His power shows up strongest. I do not have to hide it.",r:"2 Corinthians 12:9"},
-{n:75,c:"peace",t:"The word of God tells me in chapter thirteen, verse five of the book of Hebrews that God has said He will never leave me nor forsake me. Never means never. I am not alone and I never will be.",r:"Hebrews 13:5"},
-{n:76,c:"strength",t:"The word of God tells me in chapter thirteen, verse six of the book of Hebrews that I can boldly say the Lord is my helper, and I will not fear what man can do to me. My helper is bigger than my problem. So I say it out loud and I say it bold.",r:"Hebrews 13:6"},
-{n:77,c:"forgiven",t:"The word of God tells me in chapter nine, verse fourteen of the book of Hebrews that the blood of Christ cleanses my conscience from dead works to serve the living God. The blood does not just clean my record. It cleans my conscience, so the guilt has to go too.",r:"Hebrews 9:14"},
-{n:78,c:"identity",t:"The word of God tells me in chapter twelve, verse two of the book of Hebrews that Jesus is the author and finisher of my faith. He wrote the first chapter and He will write the last. My faith is in good hands.",r:"Hebrews 12:2"},
-{n:79,c:"forgiven",t:"The word of God tells me in chapter eight, verse twelve of the book of Hebrews that God is merciful to my unrighteousness, and my sins and lawless deeds He remembers no more. God chose to forget what the enemy keeps bringing up. I side with God's memory.",r:"Hebrews 8:12"},
-{n:80,c:"forgiven",t:"The word of God tells me in chapter one, verses eighteen and nineteen of the book of First Peter that I was not redeemed with silver or gold, but with the precious blood of Christ, a lamb without blemish. My redemption cost more than all the money in the world. That is my price tag.",r:"1 Peter 1:18-19"},
-{n:81,c:"identity",t:"The word of God tells me in chapter one, verse twenty-three of the book of First Peter that I have been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever. The seed that made me new cannot rot, cannot die, cannot fail. My new birth is permanent.",r:"1 Peter 1:23"},
-{n:82,c:"healed",t:"The word of God tells me in chapter two, verse twenty-four of the book of First Peter that Jesus bore my sins in His own body on the tree, and by His stripes I was healed. He carried it so I do not have to. Healing is part of what He paid for.",r:"1 Peter 2:24"},
-{n:83,c:"peace",t:"The word of God tells me in chapter five, verse seven of the book of First Peter that I cast all my care upon Him, because He cares for me. I hand over the weight. He actually wants it.",r:"1 Peter 5:7"},
-{n:84,c:"provision",t:"The word of God tells me in chapter one, verse three of the book of Second Peter that His divine power has given me everything that pertains to life and godliness. I am not waiting on a delivery. Everything I need has already been given.",r:"2 Peter 1:3"},
-{n:85,c:"identity",t:"The word of God tells me in chapter one, verse four of the book of Second Peter that through His great and precious promises I am a partaker of the divine nature. God shared His own nature with me. That is who lives on the inside now.",r:"2 Peter 1:4"},
-{n:86,c:"loved",t:"The word of God tells me in chapter three, verse one of the book of First John to behold what manner of love the Father has given me, that I should be called a child of God. And that is what I am. Not what I hope to be. What I am.",r:"1 John 3:1"},
-{n:87,c:"victory",t:"The word of God tells me in chapter five, verse four of the book of First John that whoever is born of God overcomes the world, and this is the victory that overcomes the world, even my faith. I was born to overcome. It is in my spiritual DNA.",r:"1 John 5:4"},
-{n:88,c:"peace",t:"The word of God tells me in chapter five, verses fourteen and fifteen of the book of First John that when I ask anything according to His will, He hears me, and I have what I asked of Him. My prayers are not bouncing off the ceiling. My Father hears me.",r:"1 John 5:14-15"},
-{n:89,c:"forgiven",t:"The word of God tells me in chapter two, verse twelve of the book of First John that my sins are forgiven for His name's sake. Forgiveness is not about my name or my track record. It is about His name, and His name never fails.",r:"1 John 2:12"},
-{n:90,c:"strength",t:"The word of God tells me in chapter forty-one, verse ten of the book of Isaiah to fear not, for God is with me, He strengthens me, He helps me, and He upholds me with His righteous right hand. Four promises in one verse. Fear does not stand a chance against that.",r:"Isaiah 41:10"},
-{n:91,c:"strength",t:"The word of God tells me in chapter forty, verse thirty-one of the book of Isaiah that when I wait on the Lord, my strength is renewed, and I mount up with wings like an eagle. I run and do not grow weary. I walk and do not faint.",r:"Isaiah 40:31"},
-{n:92,c:"identity",t:"The word of God tells me in chapter forty-three, verse one of the book of Isaiah to fear not, for He has redeemed me, He has called me by my name, and I am His. God knows my name. I belong to Him, personally.",r:"Isaiah 43:1"},
-{n:93,c:"forgiven",t:"The word of God tells me in chapter forty-three, verse twenty-five of the book of Isaiah that God blots out my transgressions for His own sake, and He will not remember my sins. Blotted out means gone. God is not keeping a file on me.",r:"Isaiah 43:25"},
-{n:94,c:"peace",t:"The word of God tells me in chapter twenty-six, verse three of the book of Isaiah that God keeps me in perfect peace when my mind is stayed on Him, because I trust in Him. Perfect peace is not a mood. It is what happens when my mind stays fixed on Him.",r:"Isaiah 26:3"},
-{n:95,c:"healed",t:"The word of God tells me in chapter sixty-one, verse three of the book of Isaiah that God gives me beauty for ashes, the oil of joy for mourning, and a garment of praise for the spirit of heaviness. God trades up. He takes my worst and hands me back His best.",r:"Isaiah 61:3"},
-{n:96,c:"provision",t:"The word of God tells me in chapter twenty-three, verse one of the book of Psalms that the Lord is my shepherd, and I shall not want. I have a shepherd who never sleeps, never quits, and never loses a sheep. I lack nothing.",r:"Psalm 23:1"},
-{n:97,c:"forgiven",t:"The word of God tells me in chapter one hundred three, verse twelve of the book of Psalms that as far as the east is from the west, so far has He removed my transgressions from me. East and west never meet. Neither will me and my old sins.",r:"Psalm 103:12"},
-{n:98,c:"victory",t:"The word of God tells me in chapter one hundred eighteen, verse seventeen of the book of Psalms that I shall not die, but live, and declare the works of the Lord. I have a testimony to tell and breath to tell it with. I am still here on purpose.",r:"Psalm 118:17"},
-{n:99,c:"loved",t:"The word of God tells me in chapter three, verse seventeen of the book of Zephaniah that the Lord my God is in my midst, He is mighty to save, He quiets me with His love, and He rejoices over me with singing. God sings over me. The Father is not disappointed in me. He is singing.",r:"Zephaniah 3:17"},
-{n:100,c:"forgiven",t:"The word of God tells me in chapter seven, verse nineteen of the book of Micah that God has compassion on me, He subdues my iniquities, and He casts all my sins into the depths of the sea. My sins are on the bottom of the ocean. And there is no fishing allowed.",r:"Micah 7:19"},
-{n:101,c:"anxiety",t:"The word of God tells me in chapter ninety-four, verse nineteen of the book of Psalms that when anxiety was great within me, His consolation brought me joy. God does not scold me for being anxious. He comforts me right in the middle of it.",r:"Psalm 94:19"},
-{n:102,c:"anxiety",t:"The word of God tells me in chapter fifty-five, verse twenty-two of the book of Psalms to cast my burden on the Lord, and He shall sustain me. He will never permit the righteous to be moved. I do not carry this. I hand it over, and He holds both the weight and me.",r:"Psalm 55:22"},
-{n:103,c:"anxiety",t:"The word of God tells me in chapter six, verse thirty-four of the book of Matthew not to worry about tomorrow, for tomorrow will worry about itself. I only have to live today. God is already standing in tomorrow, and He has never lost a day yet.",r:"Matthew 6:34"},
-{n:104,c:"anxiety",t:"The word of God tells me in chapter forty-six, verses one and two of the book of Psalms that God is my refuge and strength, a very present help in trouble. Therefore I will not fear, even if the earth gives way. Very present means right here, right now. Not on His way. Here.",r:"Psalm 46:1-2"},
-{n:105,c:"anxiety",t:"The word of God tells me in chapter one hundred twelve, verse seven of the book of Psalms that I will not be afraid of bad news, because my heart is steadfast, trusting in the Lord. The phone can ring. The letter can come. My heart is anchored to something the news cannot shake.",r:"Psalm 112:7"},
-{n:106,c:"depression",t:"The word of God tells me in chapter forty-two, verse eleven of the book of Psalms to ask my own soul, why are you cast down, and then to hope in God, for I shall yet praise Him. Yet means it is coming. The praise is not over. My story has more pages.",r:"Psalm 42:11"},
-{n:107,c:"depression",t:"The word of God tells me in chapter three, verses twenty-two and twenty-three of the book of Lamentations that His mercies are new every morning, and great is His faithfulness. Last night does not get to run today. There is fresh mercy waiting with the sunrise, made new just for me.",r:"Lamentations 3:22-23"},
-{n:108,c:"depression",t:"The word of God tells me in chapter thirty, verse eleven of the book of Psalms that He has turned my mourning into dancing. He removed my sackcloth and clothed me with gladness. God does wardrobe changes. He takes the grief clothes off and puts joy on me Himself.",r:"Psalm 30:11"},
-{n:109,c:"depression",t:"The word of God tells me in chapter forty-two, verse three of the book of Isaiah that a bruised reed He will not break, and a smoldering wick He will not snuff out. If all I have left is a flicker, He will not put it out. He cups His hands around it and brings it back to flame.",r:"Isaiah 42:3"},
-{n:110,c:"depression",t:"The word of God tells me in chapter twenty-seven, verse thirteen of the book of Psalms that I would have lost heart, unless I had believed that I would see the goodness of the Lord in the land of the living. Not just in heaven someday. In the land of the living. In this life. I will see His goodness with my own eyes.",r:"Psalm 27:13"},
-{n:111,c:"mind",t:"The word of God tells me in chapter twelve, verse two of the book of Romans to be transformed by the renewing of my mind. My mind is not stuck the way it is. It gets renewed, washed, and rebuilt by the truth, one thought at a time.",r:"Romans 12:2"},
-{n:112,c:"mind",t:"The word of God tells me in chapter four, verse eight of the book of Philippians to fix my thoughts on whatever is true, noble, right, pure, lovely, and admirable. I do not have to think every thought that shows up. I choose what stays.",r:"Philippians 4:8"},
-{n:113,c:"mind",t:"The word of God tells me in chapter one, verse seven of the book of Second Timothy that God did not give me a spirit of fear, but of power, and of love, and of a sound mind. A sound mind is part of my inheritance. Fear is not from my Father, so I do not have to sign for the package.",r:"2 Timothy 1:7"},
-{n:114,c:"mind",t:"The word of God tells me in chapter three, verse two of the book of Colossians to set my mind on things above, not on things of the earth. My mind has a setting, and I am the one who sets it. Today I point it up.",r:"Colossians 3:2"},
-{n:115,c:"mind",t:"The word of God tells me in chapter eight, verse thirty-five of the book of Luke about a man who was tormented out of his mind, and after Jesus got done with him, the people found him sitting at the feet of Jesus, clothed and in his right mind. Jesus restores minds. He did it then. He does it now. Right mind is on the menu.",r:"Luke 8:35"},
-{n:116,c:"recovered",t:"The word of God tells me in chapter five, verse seventeen of the book of Second Corinthians that if anyone is in Christ, he is a new creation. The old has gone, the new has come. I am not the old man in remission. The old man is gone. I am somebody brand new.",r:"2 Corinthians 5:17"},
-{n:117,c:"recovered",t:"The word of God tells me in chapter six, verse eleven of the book of Romans to count myself dead to sin but alive to God in Christ Jesus. Dead men do not get cravings from the grave. The old me died at the cross, and I do not take orders from a dead man.",r:"Romans 6:11"},
-{n:118,c:"recovered",t:"The word of God tells me in chapter six, verse eleven of the book of First Corinthians that such were some of you, but you were washed, you were sanctified, you were justified in the name of the Lord Jesus. Were. Past tense. That is what I was, not what I am. Heaven changed my paperwork.",r:"1 Corinthians 6:11"},
-{n:119,c:"recovered",t:"The word of God tells me in chapter one, verse thirteen of the book of Colossians that God has delivered me from the power of darkness and transferred me into the kingdom of the Son He loves. Transferred means I moved. I do not live at the old address anymore, and I do not have to go back to check the mail.",r:"Colossians 1:13"},
-{n:120,c:"recovered",t:"The word of God tells me in chapter two, verse twenty of the book of Galatians that I have been crucified with Christ, and it is no longer I who live, but Christ lives in me. I do not fight for victory. I fight from it. The battle I used to lose was already won, and the Winner lives on the inside of me.",r:"Galatians 2:20"}
+{n:1,c:"identity",h:"Somebody taught you to look in the mirror and see junk. Let's fix that.",t:"The word of God tells me in chapter one hundred thirty-nine, verse fourteen of the book of Psalms that I am fearfully and wonderfully made. God did not make a mistake when He made me. I am His handiwork and He does good work.",r:"Psalm 139:14"},
+{n:2,c:"peace",h:"If you've ever wondered whether God gave up on your story, here's His answer.",t:"The word of God tells me in chapter twenty-nine, verse eleven of the book of Jeremiah that God knows the plans He has for me, plans for good and not for harm, to give me a future and a hope. My story is not over. God wrote the ending and it is good.",r:"Jeremiah 29:11"},
+{n:3,c:"strength",h:"Tired of running on your own gas? Good — you were never supposed to.",t:"The word of God tells me in chapter four, verse thirteen of the book of Philippians that I can do all things through Christ who strengthens me. The strength is not mine. It is His, and He never runs out.",r:"Philippians 4:13"},
+{n:4,c:"provision",h:"Been staring at the bills doing math alone? God works with a bigger account.",t:"The word of God tells me in chapter four, verse nineteen of the book of Philippians that my God shall supply all my need according to His riches in glory by Christ Jesus. I am not on my own. My Father owns it all and He provides for His kids.",r:"Philippians 4:19"},
+{n:5,c:"peace",h:"When your thoughts won't stop pacing, there's a peace that stands guard at the door.",t:"The word of God tells me in chapter four, verse seven of the book of Philippians that the peace of God, which passes all understanding, guards my heart and my mind in Christ Jesus. Peace stands guard at my door. Worry does not get in.",r:"Philippians 4:7"},
+{n:6,c:"identity",h:"If you feel half-done, take heart — God has never once walked away from a project.",t:"The word of God tells me in chapter one, verse six of the book of Philippians that He who began a good work in me will finish it. God does not start projects and walk away. He is finishing what He started in me.",r:"Philippians 1:6"},
+{n:7,c:"identity",h:"This world can feel like it's not home. Good news — it isn't.",t:"The word of God tells me in chapter three, verse twenty of the book of Philippians that my citizenship is in heaven. This world is not my home. I carry the passport of the kingdom.",r:"Philippians 3:20"},
+{n:8,c:"free",h:"The old rulebook that kept condemning you? A higher court took over your case.",t:"The word of God tells me in chapter eight, verse two of the book of Romans that the law of the Spirit of life in Christ Jesus has set me free from the law of sin and death. There is a higher law working in me now. Freedom is my legal standing.",r:"Romans 8:2"},
+{n:9,c:"strength",h:"The same power that walked Jesus out of a grave is living inside you right now.",t:"The word of God tells me in chapter eight, verse eleven of the book of Romans that the same Spirit who raised Jesus from the dead lives in me. Resurrection power is not far away. It moved in.",r:"Romans 8:11"},
+{n:10,c:"identity",h:"Some of us learned fear at home. Your heavenly Father doesn't run His house that way.",t:"The word of God tells me in chapter eight, verse fifteen of the book of Romans that I did not receive a spirit of bondage to fear again, but the Spirit of adoption, and I cry out Abba, Father. I am not a slave in this house. I am a son.",r:"Romans 8:15"},
+{n:11,c:"identity",h:"On the days you doubt you belong to God, you've got a witness who never wavers.",t:"The word of God tells me in chapter eight, verse sixteen of the book of Romans that the Spirit Himself testifies with my spirit that I am a child of God. This is not wishful thinking. God Himself vouches for me.",r:"Romans 8:16"},
+{n:12,c:"identity",h:"You didn't just get forgiven — you got written into the will.",t:"The word of God tells me in chapter eight, verse seventeen of the book of Romans that I am an heir of God and a joint heir with Christ. Everything the Father gave the Son, I share in. That is my inheritance.",r:"Romans 8:17"},
+{n:13,c:"peace",h:"Even the chapters you'd rather tear out — God works them into the good.",t:"The word of God tells me in chapter eight, verse twenty-eight of the book of Romans that all things work together for good to those who love God and are called according to His purpose. Even the mess gets used. Nothing is wasted in my Father's hands.",r:"Romans 8:28"},
+{n:14,c:"victory",h:"Feeling outnumbered today? Count again — this time include God.",t:"The word of God tells me in chapter eight, verse thirty-one of the book of Romans that if God is for me, who can be against me. The scoreboard is settled. God is on my side and the other side already lost.",r:"Romans 8:31"},
+{n:15,c:"loved",h:"Go ahead, list everything that could separate you from His love. It's a short list — nothing.",t:"The word of God tells me in chapter eight, verses thirty-eight and thirty-nine of the book of Romans that nothing can separate me from the love of God which is in Christ Jesus. Not death, not life, not my worst day. Nothing.",r:"Romans 8:38-39"},
+{n:16,c:"forgiven",h:"Freely means freely. Some of us keep trying to pay a bill that reads zero.",t:"The word of God tells me in chapter three, verse twenty-four of the book of Romans that I am justified freely by His grace through the redemption that is in Christ Jesus. Freely means I did not earn it and I cannot lose it by having a bad week. Grace paid the whole bill.",r:"Romans 3:24"},
+{n:17,c:"identity",h:"God didn't patch up the old you. He buried it and started fresh.",t:"The word of God tells me in chapter six, verse four of the book of Romans that just as Christ was raised from the dead, I too walk in newness of life. I am not patched up. I am brand new.",r:"Romans 6:4"},
+{n:18,c:"free",h:"The person you used to be has a funeral date, and it already happened.",t:"The word of God tells me in chapter six, verse six of the book of Romans that my old man was crucified with Christ so that the body of sin might be done away with. The old me does not get resurrected. He stays in the grave.",r:"Romans 6:6"},
+{n:19,c:"free",h:"You don't work for sin anymore. The transfer paperwork went through at the cross.",t:"The word of God tells me in chapter six, verse eighteen of the book of Romans that I have been set free from sin and have become a servant of righteousness. I switched teams. I work for righteousness now.",r:"Romans 6:18"},
+{n:20,c:"identity",h:"I spent years trying to earn what God was just trying to hand me. Maybe you have too.",t:"The word of God tells me in chapter six, verse twenty-three of the book of Romans that the gift of God is eternal life in Christ Jesus my Lord. It is a gift. My job is to receive it, not to earn it.",r:"Romans 6:23"},
+{n:21,c:"identity",h:"Getting saved isn't complicated. Your mouth and your heart just have to say the same thing.",t:"The word of God tells me in chapter ten, verse nine of the book of Romans that because I confess with my mouth the Lord Jesus and believe in my heart that God raised Him from the dead, I am saved. I said it. I believe it. It is settled.",r:"Romans 10:9"},
+{n:22,c:"peace",h:"If your hope tank is empty, you're about to meet the God who fills it.",t:"The word of God tells me in chapter fifteen, verse thirteen of the book of Romans that the God of hope fills me with all joy and peace in believing, so that I abound in hope by the power of the Holy Spirit. I am not running on empty. I am running on hope that overflows.",r:"Romans 15:13"},
+{n:23,c:"identity",h:"Stop waiting for God to bless you someday. Read what He already signed over.",t:"The word of God tells me in chapter one, verse three of the book of Ephesians that I have been blessed with every spiritual blessing in the heavenly places in Christ. Not some blessings. Every one. They already have my name on them.",r:"Ephesians 1:3"},
+{n:24,c:"identity",h:"Before there was an earth to stand on, God was already choosing you.",t:"The word of God tells me in chapter one, verse four of the book of Ephesians that God chose me in Christ before the foundation of the world, to be holy and blameless before Him. I was not an afterthought. I was picked before the world was built.",r:"Ephesians 1:4"},
+{n:25,c:"identity",h:"You weren't a maybe. You weren't a backup plan. You were picked on purpose.",t:"The word of God tells me in chapter one, verse five of the book of Ephesians that God predestined me to adoption as a son through Jesus Christ, according to the good pleasure of His will. It made God happy to adopt me. I am wanted.",r:"Ephesians 1:5"},
+{n:26,c:"identity",h:"God put His seal on you, and it does not peel off in hard weather.",t:"The word of God tells me in chapter one, verse thirteen of the book of Ephesians that I have been sealed with the Holy Spirit of promise. God put His seal on me. That seal does not break.",r:"Ephesians 1:13"},
+{n:27,c:"identity",h:"I was dead in my mess when God made me alive. Not cleaned up first — dead.",t:"The word of God tells me in chapter two, verses four and five of the book of Ephesians that God, who is rich in mercy, made me alive together with Christ even when I was dead in sin. I was dead and He made me alive. That is not improvement. That is resurrection.",r:"Ephesians 2:4-5"},
+{n:28,c:"victory",h:"You're not fighting your way up to victory. You're fighting from a seat above it.",t:"The word of God tells me in chapter two, verse six of the book of Ephesians that God raised me up and seated me with Christ in the heavenly places. I fight from victory, not for it. My seat is above the battle.",r:"Ephesians 2:6"},
+{n:29,c:"identity",h:"You didn't earn your way in, which means you can't mess your way out.",t:"The word of God tells me in chapter two, verse eight of the book of Ephesians that by grace I have been saved through faith, and it is not of myself, it is the gift of God. I did not climb up to God. He came down and got me.",r:"Ephesians 2:8"},
+{n:30,c:"forgiven",h:"However far away you feel today, the blood already closed the distance.",t:"The word of God tells me in chapter two, verse thirteen of the book of Ephesians that I who was once far off have been brought near by the blood of Christ. The distance is gone. The blood closed the gap.",r:"Ephesians 2:13"},
+{n:31,c:"identity",h:"You know that feeling of not belonging anywhere? God tore up your visitor badge.",t:"The word of God tells me in chapter two, verse nineteen of the book of Ephesians that I am no longer a stranger or a foreigner, but a fellow citizen with the saints and a member of the household of God. I have a seat at the family table. I belong here.",r:"Ephesians 2:19"},
+{n:32,c:"identity",h:"You don't have to clear your throat and hope God has a minute. Walk in.",t:"The word of God tells me in chapter three, verse twelve of the book of Ephesians that in Christ I have boldness and access with confidence through faith in Him. I do not knock and hope. I walk in, because the Son opened the door.",r:"Ephesians 3:12"},
+{n:33,c:"strength",h:"The gym builds the outside. The Spirit builds the part that actually carries the load.",t:"The word of God tells me in chapter three, verses sixteen and seventeen of the book of Ephesians that God strengthens me with might through His Spirit in my inner man, and Christ dwells in my heart through faith. The strongest part of me is the inside. That is where He lives.",r:"Ephesians 3:16-17"},
+{n:34,c:"provision",h:"Here's a fun one: whatever you've been asking God for, you probably aimed too low.",t:"The word of God tells me in chapter three, verse twenty of the book of Ephesians that God is able to do exceedingly abundantly above all that I ask or think, according to the power that works in me. My biggest ask is still too small. He does more.",r:"Ephesians 3:20"},
+{n:35,c:"identity",h:"God laid out a whole new you like clothes on the bed. Put it on.",t:"The word of God tells me in chapter four, verse twenty-four of the book of Ephesians that I have put on the new man, created according to God in true righteousness and holiness. The new man is not something I am becoming someday. He is who God already made me.",r:"Ephesians 4:24"},
+{n:36,c:"strength",h:"Your strength was never supposed to come from gritting your teeth. It has a source.",t:"The word of God tells me in chapter six, verse ten of the book of Ephesians that I am strong in the Lord and in the power of His might. My strength has a source, and the source is not me. It is Him.",r:"Ephesians 6:10"},
+{n:37,c:"strength",h:"God never sends His kids into a fight without armor. Suit up.",t:"The word of God tells me in chapter six, verse eleven of the book of Ephesians that I put on the whole armor of God so I can stand against the schemes of the devil. I am not exposed. I am armored, and I am standing.",r:"Ephesians 6:11"},
+{n:38,c:"forgiven",h:"The record they could hold against you got rewritten by the only Judge that counts.",t:"The word of God tells me in chapter one, verse twenty-two of the book of Colossians that Christ has reconciled me in His body through death, to present me holy, blameless, and above reproach in His sight. When God looks at me, He sees blameless. That is how the blood works.",r:"Colossians 1:22"},
+{n:39,c:"identity",h:"I spent years hunting for the missing piece. Turns out in Christ, nothing was missing.",t:"The word of God tells me in chapter two, verse ten of the book of Colossians that I am complete in Him who is the head of all principality and power. I am not missing pieces. In Christ, I am whole.",r:"Colossians 2:10"},
+{n:40,c:"identity",h:"When life keeps dragging your eyes to the dirt, remember where your life actually moved.",t:"The word of God tells me in chapter three, verse one of the book of Colossians that I have been raised with Christ, so I seek those things which are above, where Christ sits at the right hand of God. My eyes look up. That is where my life comes from.",r:"Colossians 3:1"},
+{n:41,c:"peace",h:"The enemy can't hit what he can't find, and God hid you well.",t:"The word of God tells me in chapter three, verse three of the book of Colossians that my life is hidden with Christ in God. The enemy cannot get to me without going through Jesus first. I am hidden in the safest place there is.",r:"Colossians 3:3"},
+{n:42,c:"loved",h:"You're not the relative God puts up with at dinner. You're the one He dearly loves.",t:"The word of God tells me in chapter three, verse twelve of the book of Colossians that I am chosen of God, holy, and dearly loved. Not tolerated. Dearly loved.",r:"Colossians 3:12"},
+{n:43,c:"free",h:"Whatever curse has been chasing your family, it ran into the cross and stopped.",t:"The word of God tells me in chapter three, verse thirteen of the book of Galatians that Christ has redeemed me from the curse by becoming a curse for me. The curse stops at the cross. It does not follow me home.",r:"Galatians 3:13"},
+{n:44,c:"identity",h:"No entrance exam. No trial period. Faith made you family, full stop.",t:"The word of God tells me in chapter three, verse twenty-six of the book of Galatians that I am a child of God through faith in Christ Jesus. Faith made me family. That is the whole requirement.",r:"Galatians 3:26"},
+{n:45,c:"identity",h:"That promise God made four thousand years ago? Your name is in it.",t:"The word of God tells me in chapter three, verse twenty-nine of the book of Galatians that because I belong to Christ, I am Abraham's seed and an heir according to the promise. The promises made to Abraham run through my bloodline now. I am in the will.",r:"Galatians 3:29"},
+{n:46,c:"identity",h:"You can take off the employee uniform now. Sons don't punch a clock for love.",t:"The word of God tells me in chapter four, verse seven of the book of Galatians that I am no longer a slave but a son, and since I am a son, I am an heir of God through Christ. Slaves earn. Sons inherit. I am a son.",r:"Galatians 4:7"},
+{n:47,c:"free",h:"You fought too hard to get free to go back and pick up the chains.",t:"The word of God tells me in chapter five, verse one of the book of Galatians that Christ has made me free, so I stand fast in that liberty and refuse to be tangled again in a yoke of bondage. I have been free since the cross. I am not going back into chains that are already broken.",r:"Galatians 5:1"},
+{n:48,c:"identity",h:"Feel like you're not changing fast enough? Fruit doesn't grow loud, but it grows.",t:"The word of God tells me in chapter five, verses twenty-two and twenty-three of the book of Galatians that the fruit of the Spirit is growing in me: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control. This fruit is not manufactured. It grows because His Spirit lives in me.",r:"Galatians 5:22-23"},
+{n:49,c:"identity",h:"If you only ever memorize one verse, the whole Book agrees it should be this one.",t:"The word of God tells me in chapter three, verse sixteen of the book of John that God so loved the world that He gave His only Son, that whoever believes in Him shall not perish but have everlasting life. I believe. So I have life, and it never ends.",r:"John 3:16"},
+{n:50,c:"free",h:"When Jesus sets a man free, there's no fine print and no repo man.",t:"The word of God tells me in chapter eight, verse thirty-six of the book of John that whom the Son sets free is free indeed. Free indeed means really free. Not free with an asterisk.",r:"John 8:36"},
+{n:51,c:"identity",h:"You've never seen darkness win a fight against a light switch. Neither has the enemy.",t:"The word of God tells me in chapter five, verse fourteen of the book of Matthew that I am the light of the world. Darkness does not put out light. Light puts out darkness, and I carry it.",r:"Matthew 5:14"},
+{n:52,c:"identity",h:"God didn't put you here to blend in. You're the flavor in the room.",t:"The word of God tells me in chapter five, verse thirteen of the book of Matthew that I am the salt of the earth. My life has flavor and purpose. God put me here to make a difference people can taste.",r:"Matthew 5:13"},
+{n:53,c:"identity",h:"The enemy has plans for your life. So does Jesus. Only one of them loves you.",t:"The word of God tells me in chapter ten, verse ten of the book of John that Jesus came so I could have life, and have it more abundantly. The thief came to steal, kill, and destroy, but Jesus came with the opposite. I choose the abundant life He brought.",r:"John 10:10"},
+{n:54,c:"victory",h:"Whatever's trying to pull you away should know whose hand it's prying at.",t:"The word of God tells me in chapter ten, verse twenty-eight of the book of John that Jesus gives me eternal life, I shall never perish, and no one can snatch me out of His hand. His grip on me is stronger than anything pulling at me. I am held.",r:"John 10:28"},
+{n:55,c:"peace",h:"The world's peace runs out with the battery. Jesus left you the other kind.",t:"The word of God tells me in chapter fourteen, verse twenty-seven of the book of John that Jesus left His peace with me, not as the world gives. So my heart is not troubled and it is not afraid. His peace is mine to keep.",r:"John 14:27"},
+{n:56,c:"identity",h:"Your job was never to squeeze out fruit. Your job is to stay plugged into the vine.",t:"The word of God tells me in chapter fifteen, verse five of the book of John that Jesus is the vine and I am a branch, and when I abide in Him, I bear much fruit. My job is to stay connected. The fruit is His department.",r:"John 15:5"},
+{n:57,c:"loved",h:"The God who runs the universe looked at you and said, that one's My friend.",t:"The word of God tells me in chapter fifteen, verse fifteen of the book of John that Jesus no longer calls me a servant, but He calls me friend. The King of everything calls me His friend. Let that sink in.",r:"John 15:15"},
+{n:58,c:"identity",h:"You didn't sneak into this calling. You were hand-picked and appointed for it.",t:"The word of God tells me in chapter fifteen, verse sixteen of the book of John that I did not choose Him, but He chose me and appointed me to go and bear fruit that lasts. I was recruited by the Lord Himself. My work matters and it lasts.",r:"John 15:16"},
+{n:59,c:"victory",h:"Jesus never promised no trouble. He promised something better — the trouble loses.",t:"The word of God tells me in chapter sixteen, verse thirty-three of the book of John that in this world I will have trouble, but I take heart, because Jesus has overcome the world. Trouble is real, but it is already beaten. I follow the One who won.",r:"John 16:33"},
+{n:60,c:"loved",h:"The Father loves you the same way He loves Jesus. Go ahead, read that twice.",t:"The word of God tells me in chapter seventeen, verse twenty-three of the book of John that the Father loves me even as He loves Jesus. Read that again. The same love the Father has for the Son, He has for me.",r:"John 17:23"},
+{n:61,c:"identity",h:"Everything you keep trying to become, Christ already became for you.",t:"The word of God tells me in chapter one, verse thirty of the book of First Corinthians that Christ Jesus has become for me wisdom from God, and righteousness, and sanctification, and redemption. Everything I lack, He is. I am covered on all four counts.",r:"1 Corinthians 1:30"},
+{n:62,c:"mind",h:"You don't have to think with the old broken equipment anymore. There's an upgrade.",t:"The word of God tells me in chapter two, verse sixteen of the book of First Corinthians that I have the mind of Christ. I do not have to think like the old man thought. I can think like Jesus thinks.",r:"1 Corinthians 2:16"},
+{n:63,c:"identity",h:"God doesn't commute to church on Sundays. He moved into you.",t:"The word of God tells me in chapter three, verse sixteen of the book of First Corinthians that I am the temple of God and the Spirit of God dwells in me. God does not live in buildings anymore. He lives in me.",r:"1 Corinthians 3:16"},
+{n:64,c:"identity",h:"If you ever wonder what you're worth, look at what heaven paid.",t:"The word of God tells me in chapter six, verses nineteen and twenty of the book of First Corinthians that I was bought with a price, so I glorify God in my body. The blood of Jesus was the price. I was worth that much to God.",r:"1 Corinthians 6:19-20"},
+{n:65,c:"strength",h:"Next time temptation knocks, remember — God already built you a back door.",t:"The word of God tells me in chapter ten, verse thirteen of the book of First Corinthians that no temptation has overtaken me except what is common to man, and God is faithful, and He always makes a way of escape. There is always a door out. My God builds exits into every temptation.",r:"1 Corinthians 10:13"},
+{n:66,c:"victory",h:"You don't have to win this fight. You receive a victory somebody already won.",t:"The word of God tells me in chapter fifteen, verse fifty-seven of the book of First Corinthians that thanks be to God, who gives me the victory through my Lord Jesus Christ. Victory is given, not earned. I receive it with thanks.",r:"1 Corinthians 15:57"},
+{n:67,c:"peace",h:"God's promises don't come back stamped maybe. In Christ, every one reads yes.",t:"The word of God tells me in chapter one, verse twenty of the book of Second Corinthians that all the promises of God in Christ are yes, and in Him amen. God does not say maybe. Every promise He made me is a yes.",r:"2 Corinthians 1:20"},
+{n:68,c:"identity",h:"God put His own Spirit in you as a down payment. He doesn't walk away from deposits.",t:"The word of God tells me in chapter one, verses twenty-one and twenty-two of the book of Second Corinthians that God has anointed me, sealed me, and given me His Spirit in my heart as a guarantee. I carry God's down payment inside me. He is coming back for what He paid for.",r:"2 Corinthians 1:21-22"},
+{n:69,c:"victory",h:"'Always' is a strong word. God read it twice and kept it in.",t:"The word of God tells me in chapter two, verse fourteen of the book of Second Corinthians that God always leads me in triumph in Christ. Always is a big word, and God chose it. I am on the winning side every day.",r:"2 Corinthians 2:14"},
+{n:70,c:"identity",h:"You're not stuck. You're mid-transformation, and the Artist doesn't quit halfway.",t:"The word of God tells me in chapter three, verse eighteen of the book of Second Corinthians that I am being transformed into His image from glory to glory by the Spirit of the Lord. I am not stuck. I am moving from glory to glory, one degree at a time.",r:"2 Corinthians 3:18"},
+{n:71,c:"identity",h:"You're not just getting through the week. You're representing a whole Kingdom out there.",t:"The word of God tells me in chapter five, verse twenty of the book of Second Corinthians that I am an ambassador for Christ, as though God were pleading through me. I represent the kingdom everywhere I go. My life speaks for the King.",r:"2 Corinthians 5:20"},
+{n:72,c:"provision",h:"God's supply math has one answer for every category: enough, and then some.",t:"The word of God tells me in chapter nine, verse eight of the book of Second Corinthians that God is able to make all grace abound toward me, so that I always have all sufficiency in all things. All grace. All sufficiency. All things. God does not do halfway.",r:"2 Corinthians 9:8"},
+{n:73,c:"mind",h:"Your thoughts have been running the house long enough. Time they answered to somebody.",t:"The word of God tells me in chapter ten, verses four and five of the book of Second Corinthians that the weapons of my warfare are mighty in God for pulling down strongholds, and I take every thought captive to the obedience of Christ. My thoughts do not run wild. I catch them and line them up with the truth.",r:"2 Corinthians 10:4-5"},
+{n:74,c:"strength",h:"The spot where you're weakest is the exact spot God likes to show off.",t:"The word of God tells me in chapter twelve, verse nine of the book of Second Corinthians that His grace is sufficient for me, and His strength is made perfect in my weakness. My weak spot is where His power shows up strongest. I do not have to hide it.",r:"2 Corinthians 12:9"},
+{n:75,c:"peace",h:"For everyone who's ever cried alone at two in the morning — you weren't as alone as you felt.",t:"The word of God tells me in chapter thirteen, verse five of the book of Hebrews that God has said He will never leave me nor forsake me. Never means never. I am not alone and I never will be.",r:"Hebrews 13:5"},
+{n:76,c:"strength",h:"Whatever's got you scared, check the size of it next to your Helper.",t:"The word of God tells me in chapter thirteen, verse six of the book of Hebrews that I can boldly say the Lord is my helper, and I will not fear what man can do to me. My helper is bigger than my problem. So I say it out loud and I say it bold.",r:"Hebrews 13:6"},
+{n:77,c:"forgiven",h:"The blood doesn't just clean the record. It cleans the part of you that keeps replaying it.",t:"The word of God tells me in chapter nine, verse fourteen of the book of Hebrews that the blood of Christ cleanses my conscience from dead works to serve the living God. The blood does not just clean my record. It cleans my conscience, so the guilt has to go too.",r:"Hebrews 9:14"},
+{n:78,c:"identity",h:"The One who wrote your first chapter of faith hasn't put the pen down.",t:"The word of God tells me in chapter twelve, verse two of the book of Hebrews that Jesus is the author and finisher of my faith. He wrote the first chapter and He will write the last. My faith is in good hands.",r:"Hebrews 12:2"},
+{n:79,c:"forgiven",h:"God can do anything, and here's my favorite: He chooses to forget my confessed sin.",t:"The word of God tells me in chapter eight, verse twelve of the book of Hebrews that God is merciful to my unrighteousness, and my sins and lawless deeds He remembers no more. God chose to forget what the enemy keeps bringing up. I side with God's memory.",r:"Hebrews 8:12"},
+{n:80,c:"forgiven",h:"Silver and gold couldn't cover you. It took blood — and He paid it gladly.",t:"The word of God tells me in chapter one, verses eighteen and nineteen of the book of First Peter that I was not redeemed with silver or gold, but with the precious blood of Christ, a lamb without blemish. My redemption cost more than all the money in the world. That is my price tag.",r:"1 Peter 1:18-19"},
+{n:81,c:"identity",h:"You were born again from seed that cannot rot. This new life is built to last.",t:"The word of God tells me in chapter one, verse twenty-three of the book of First Peter that I have been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever. The seed that made me new cannot rot, cannot die, cannot fail. My new birth is permanent.",r:"1 Peter 1:23"},
+{n:82,c:"healed",h:"This one's past tense. Read it slow, and let that sink all the way in.",t:"The word of God tells me in chapter two, verse twenty-four of the book of First Peter that Jesus bore my sins in His own body on the tree, and by His stripes I was healed. He carried it so I do not have to. Healing is part of what He paid for.",r:"1 Peter 2:24"},
+{n:83,c:"peace",h:"That weight you keep carrying was never rated for your shoulders. Hand it over.",t:"The word of God tells me in chapter five, verse seven of the book of First Peter that I cast all my care upon Him, because He cares for me. I hand over the weight. He actually wants it.",r:"1 Peter 5:7"},
+{n:84,c:"provision",h:"You're not waiting on God to ship what you need. The package already arrived.",t:"The word of God tells me in chapter one, verse three of the book of Second Peter that His divine power has given me everything that pertains to life and godliness. I am not waiting on a delivery. Everything I need has already been given.",r:"2 Peter 1:3"},
+{n:85,c:"identity",h:"God didn't just save you. He shared His own nature with you. Family DNA.",t:"The word of God tells me in chapter one, verse four of the book of Second Peter that through His great and precious promises I am a partaker of the divine nature. God shared His own nature with me. That is who lives on the inside now.",r:"2 Peter 1:4"},
+{n:86,c:"loved",h:"Child of God isn't a nickname or a someday. It's what you are, right now.",t:"The word of God tells me in chapter three, verse one of the book of First John to behold what manner of love the Father has given me, that I should be called a child of God. And that is what I am. Not what I hope to be. What I am.",r:"1 John 3:1"},
+{n:87,c:"victory",h:"Your faith might feel small today. It still overcomes the world. That's the design.",t:"The word of God tells me in chapter five, verse four of the book of First John that whoever is born of God overcomes the world, and this is the victory that overcomes the world, even my faith. I was born to overcome. It is in my spiritual DNA.",r:"1 John 5:4"},
+{n:88,c:"peace",h:"Your prayers are not bouncing off the ceiling. He hears every single one.",t:"The word of God tells me in chapter five, verses fourteen and fifteen of the book of First John that when I ask anything according to His will, He hears me, and I have what I asked of Him. My prayers are not bouncing off the ceiling. My Father hears me.",r:"1 John 5:14-15"},
+{n:89,c:"forgiven",h:"Forgiveness was never riding on your track record. It runs on His name.",t:"The word of God tells me in chapter two, verse twelve of the book of First John that my sins are forgiven for His name's sake. Forgiveness is not about my name or my track record. It is about His name, and His name never fails.",r:"1 John 2:12"},
+{n:90,c:"strength",h:"God doesn't just say fear not. He tells you why: I am with you.",t:"The word of God tells me in chapter forty-one, verse ten of the book of Isaiah to fear not, for God is with me, He strengthens me, He helps me, and He upholds me with His righteous right hand. Four promises in one verse. Fear does not stand a chance against that.",r:"Isaiah 41:10"},
+{n:91,c:"strength",h:"Tired isn't your final condition. Wait on Him, and watch the strength come back.",t:"The word of God tells me in chapter forty, verse thirty-one of the book of Isaiah that when I wait on the Lord, my strength is renewed, and I mount up with wings like an eagle. I run and do not grow weary. I walk and do not faint.",r:"Isaiah 40:31"},
+{n:92,c:"identity",h:"God didn't call your number like the DMV. He called your name.",t:"The word of God tells me in chapter forty-three, verse one of the book of Isaiah to fear not, for He has redeemed me, He has called me by my name, and I am His. God knows my name. I belong to Him, personally.",r:"Isaiah 43:1"},
+{n:93,c:"forgiven",h:"God didn't file your sins away somewhere. He blotted them out Himself, for His own sake.",t:"The word of God tells me in chapter forty-three, verse twenty-five of the book of Isaiah that God blots out my transgressions for His own sake, and He will not remember my sins. Blotted out means gone. God is not keeping a file on me.",r:"Isaiah 43:25"},
+{n:94,c:"peace",h:"Perfect peace isn't a personality type. It's a promise for the mind that stays on Him.",t:"The word of God tells me in chapter twenty-six, verse three of the book of Isaiah that God keeps me in perfect peace when my mind is stayed on Him, because I trust in Him. Perfect peace is not a mood. It is what happens when my mind stays fixed on Him.",r:"Isaiah 26:3"},
+{n:95,c:"healed",h:"Bring God your ashes. He's been making beauty out of worse for a long time.",t:"The word of God tells me in chapter sixty-one, verse three of the book of Isaiah that God gives me beauty for ashes, the oil of joy for mourning, and a garment of praise for the spirit of heaviness. God trades up. He takes my worst and hands me back His best.",r:"Isaiah 61:3"},
+{n:96,c:"provision",h:"Your Shepherd has never lost a sheep, and He's not starting with you.",t:"The word of God tells me in chapter twenty-three, verse one of the book of Psalms that the Lord is my shepherd, and I shall not want. I have a shepherd who never sleeps, never quits, and never loses a sheep. I lack nothing.",r:"Psalm 23:1"},
+{n:97,c:"forgiven",h:"East and west never meet. That's how far your forgiven sins are from you.",t:"The word of God tells me in chapter one hundred three, verse twelve of the book of Psalms that as far as the east is from the west, so far has He removed my transgressions from me. East and west never meet. Neither will me and my old sins.",r:"Psalm 103:12"},
+{n:98,c:"victory",h:"You're still breathing, which means the testimony isn't finished.",t:"The word of God tells me in chapter one hundred eighteen, verse seventeen of the book of Psalms that I shall not die, but live, and declare the works of the Lord. I have a testimony to tell and breath to tell it with. I am still here on purpose.",r:"Psalm 118:17"},
+{n:99,c:"loved",h:"Tonight, somewhere past the ceiling, God is singing. The song is about you.",t:"The word of God tells me in chapter three, verse seventeen of the book of Zephaniah that the Lord my God is in my midst, He is mighty to save, He quiets me with His love, and He rejoices over me with singing. God sings over me. The Father is not disappointed in me. He is singing.",r:"Zephaniah 3:17"},
+{n:100,c:"forgiven",h:"God threw your sins into the deepest part of the sea. He doesn't run diving trips.",t:"The word of God tells me in chapter seven, verse nineteen of the book of Micah that God has compassion on me, He subdues my iniquities, and He casts all my sins into the depths of the sea. My sins are on the bottom of the ocean. And there is no fishing allowed.",r:"Micah 7:19"},
+{n:101,c:"anxiety",h:"Your anxiety doesn't embarrass God. He meets you right in the middle of it.",t:"The word of God tells me in chapter ninety-four, verse nineteen of the book of Psalms that when anxiety was great within me, His consolation brought me joy. God does not scold me for being anxious. He comforts me right in the middle of it.",r:"Psalm 94:19"},
+{n:102,c:"anxiety",h:"You've carried that thing far enough. God's hand is already out for it.",t:"The word of God tells me in chapter fifty-five, verse twenty-two of the book of Psalms to cast my burden on the Lord, and He shall sustain me. He will never permit the righteous to be moved. I do not carry this. I hand it over, and He holds both the weight and me.",r:"Psalm 55:22"},
+{n:103,c:"anxiety",h:"I used to borrow trouble from three Tuesdays from now. God has a better plan for today.",t:"The word of God tells me in chapter six, verse thirty-four of the book of Matthew not to worry about tomorrow, for tomorrow will worry about itself. I only have to live today. God is already standing in tomorrow, and He has never lost a day yet.",r:"Matthew 6:34"},
+{n:104,c:"anxiety",h:"When everything around you shakes, you've got somewhere to run that doesn't.",t:"The word of God tells me in chapter forty-six, verses one and two of the book of Psalms that God is my refuge and strength, a very present help in trouble. Therefore I will not fear, even if the earth gives way. Very present means right here, right now. Not on His way. Here.",r:"Psalm 46:1-2"},
+{n:105,c:"anxiety",h:"The phone can ring with anything. Your heart can stay anchored anyway.",t:"The word of God tells me in chapter one hundred twelve, verse seven of the book of Psalms that I will not be afraid of bad news, because my heart is steadfast, trusting in the Lord. The phone can ring. The letter can come. My heart is anchored to something the news cannot shake.",r:"Psalm 112:7"},
+{n:106,c:"depression",h:"Sometimes you have to talk back to your own soul. David did it too.",t:"The word of God tells me in chapter forty-two, verse eleven of the book of Psalms to ask my own soul, why are you cast down, and then to hope in God, for I shall yet praise Him. Yet means it is coming. The praise is not over. My story has more pages.",r:"Psalm 42:11"},
+{n:107,c:"depression",h:"However heavy last night was, mercy got restocked while you slept.",t:"The word of God tells me in chapter three, verses twenty-two and twenty-three of the book of Lamentations that His mercies are new every morning, and great is His faithfulness. Last night does not get to run today. There is fresh mercy waiting with the sunrise, made new just for me.",r:"Lamentations 3:22-23"},
+{n:108,c:"depression",h:"Grief is real, but it isn't your permanent address. God trades sackcloth for gladness.",t:"The word of God tells me in chapter thirty, verse eleven of the book of Psalms that He has turned my mourning into dancing. He removed my sackcloth and clothed me with gladness. God does wardrobe changes. He takes the grief clothes off and puts joy on me Himself.",r:"Psalm 30:11"},
+{n:109,c:"depression",h:"If all you've got left is a flicker, relax. He doesn't blow out flickers.",t:"The word of God tells me in chapter forty-two, verse three of the book of Isaiah that a bruised reed He will not break, and a smoldering wick He will not snuff out. If all I have left is a flicker, He will not put it out. He cups His hands around it and brings it back to flame.",r:"Isaiah 42:3"},
+{n:110,c:"depression",h:"You will see God's goodness again — not just in heaven. Here. Alive.",t:"The word of God tells me in chapter twenty-seven, verse thirteen of the book of Psalms that I would have lost heart, unless I had believed that I would see the goodness of the Lord in the land of the living. Not just in heaven someday. In the land of the living. In this life. I will see His goodness with my own eyes.",r:"Psalm 27:13"},
+{n:111,c:"mind",h:"Real change doesn't start with trying harder. It starts between your ears.",t:"The word of God tells me in chapter twelve, verse two of the book of Romans to be transformed by the renewing of my mind. My mind is not stuck the way it is. It gets renewed, washed, and rebuilt by the truth, one thought at a time.",r:"Romans 12:2"},
+{n:112,c:"mind",h:"Every thought knocks, but you decide which ones get a room.",t:"The word of God tells me in chapter four, verse eight of the book of Philippians to fix my thoughts on whatever is true, noble, right, pure, lovely, and admirable. I do not have to think every thought that shows up. I choose what stays.",r:"Philippians 4:8"},
+{n:113,c:"mind",h:"Fear was never God's gift to you. Check what He actually gave.",t:"The word of God tells me in chapter one, verse seven of the book of Second Timothy that God did not give me a spirit of fear, but of power, and of love, and of a sound mind. A sound mind is part of my inheritance. Fear is not from my Father, so I do not have to sign for the package.",r:"2 Timothy 1:7"},
+{n:114,c:"mind",h:"Your thoughts will camp wherever you let them. Move the campsite up.",t:"The word of God tells me in chapter three, verse two of the book of Colossians to set my mind on things above, not on things of the earth. My mind has a setting, and I am the one who sets it. Today I point it up.",r:"Colossians 3:2"},
+{n:115,c:"mind",h:"There's a man in the Book who got his whole mind back. That's still on the menu.",t:"The word of God tells me in chapter eight, verse thirty-five of the book of Luke about a man who was tormented out of his mind, and after Jesus got done with him, the people found him sitting at the feet of Jesus, clothed and in his right mind. Jesus restores minds. He did it then. He does it now. Right mind is on the menu.",r:"Luke 8:35"},
+{n:116,c:"recovered",h:"The old you isn't hiding in a back room waiting. He's gone. New has come.",t:"The word of God tells me in chapter five, verse seventeen of the book of Second Corinthians that if anyone is in Christ, he is a new creation. The old has gone, the new has come. I am not the old man in remission. The old man is gone. I am somebody brand new.",r:"2 Corinthians 5:17"},
+{n:117,c:"recovered",h:"The old life still calls sometimes. Here's why you don't have to pick up.",t:"The word of God tells me in chapter six, verse eleven of the book of Romans to count myself dead to sin but alive to God in Christ Jesus. Dead men do not get cravings from the grave. The old me died at the cross, and I do not take orders from a dead man.",r:"Romans 6:11"},
+{n:118,c:"recovered",h:"Read the guest list in this verse — 'and such were some of you.' Were. Past tense.",t:"The word of God tells me in chapter six, verse eleven of the book of First Corinthians that such were some of you, but you were washed, you were sanctified, you were justified in the name of the Lord Jesus. Were. Past tense. That is what I was, not what I am. Heaven changed my paperwork.",r:"1 Corinthians 6:11"},
+{n:119,c:"recovered",h:"You didn't just get forgiven. You got moved — new kingdom, new King, new address.",t:"The word of God tells me in chapter one, verse thirteen of the book of Colossians that God has delivered me from the power of darkness and transferred me into the kingdom of the Son He loves. Transferred means I moved. I do not live at the old address anymore, and I do not have to go back to check the mail.",r:"Colossians 1:13"},
+{n:120,c:"recovered",h:"The life you're living now isn't a solo act. Christ lives it in you.",t:"The word of God tells me in chapter two, verse twenty of the book of Galatians that I have been crucified with Christ, and it is no longer I who live, but Christ lives in me. I do not fight for victory. I fight from it. The battle I used to lose was already won, and the Winner lives on the inside of me.",r:"Galatians 2:20"},
+{n:121,c:"anger",h:"Surprise — the Bible doesn't say don't get angry. It says something smarter.",t:"The word of God tells me in chapter four, verse twenty-six of the book of Ephesians to be angry and do not sin, and to not let the sun go down on my wrath. God is not shocked that I feel anger. He just will not let it keep me overnight. I feel it, I bring it to Him, and I do not build it a bed.",r:"Ephesians 4:26"},
+{n:122,c:"anger",h:"Your short fuse is not your personality. It's a wiring job God is still working on.",t:"The word of God tells me in chapter one, verses nineteen and twenty of the book of James to be quick to listen, slow to speak, and slow to become angry, because my anger does not produce the righteousness of God. My fuse is not who I am. He is rewiring it, and He is patient with the work.",r:"James 1:19-20"},
+{n:123,c:"anger",h:"Anybody can blow up. The strongest man in the room is the one who doesn't.",t:"The word of God tells me in chapter sixteen, verse thirty-two of the book of Proverbs that whoever is slow to anger is better than the mighty, and whoever rules his spirit is greater than one who takes a city. Holding my temper is not weakness. It is the strongest thing a man can do, and God is building that strength in me.",r:"Proverbs 16:32"},
+{n:124,c:"anger",h:"Tonight, take it to the pillow instead of the send button. God handles overnight shifts.",t:"The word of God tells me in chapter four, verse four of the book of Psalms to be angry and not sin, to search my heart on my bed and be still. I do not have to fire back tonight. I can lie down, get honest with God about what burned me, and let Him settle what I cannot.",r:"Psalm 4:4"},
+{n:125,c:"anger",h:"Your next sentence is either water or gasoline. Choose like it matters, because it does.",t:"The word of God tells me in chapter fifteen, verse one of the book of Proverbs that a soft answer turns away wrath, but a harsh word stirs up anger. My mouth can pour water or gasoline. Today I pour water, and God backs the man who does.",r:"Proverbs 15:1"},
+{n:126,c:"anger",h:"Bitterness charges rent and never pays a dime back. Time to evict it.",t:"The word of God tells me in chapter four, verses thirty-one and thirty-two of the book of Ephesians to put away bitterness, rage, and anger, and to forgive as God in Christ forgave me. I am not being asked to fake it. I am being asked to hand it over, and the One asking already forgave me more than I will ever be asked to forgive.",r:"Ephesians 4:31-32"},
+{n:127,c:"anger",h:"Be honest — name one thing rage ever actually fixed. God has a better weapon.",t:"The word of God tells me in chapter thirty-seven, verse eight of the book of Psalms to cease from anger and forsake wrath, and to not fret, because it only causes harm. My anger has never fixed a single thing it promised to fix. So I put the weapon down, and I let God fight what is actually worth fighting.",r:"Psalm 37:8"},
+{n:128,c:"anger",h:"Slow to anger runs in your Father's family. And you've got the family name now.",t:"The word of God tells me in chapter thirty-four, verse six of the book of Exodus that the Lord is merciful and gracious, slow to anger, and abounding in goodness and truth. Slow to anger is what my Father is like. And I am His son, being made into the family resemblance one day at a time.",r:"Exodus 34:6"},
+{n:129,c:"anger",h:"Walking past an insult without picking it up? The Bible calls that your glory.",t:"The word of God tells me in chapter nineteen, verse eleven of the book of Proverbs that good sense makes a man slow to anger, and it is his glory to overlook an offense. Letting it go is not losing. In God's economy, overlooking an offense is a crown, and today I wear it.",r:"Proverbs 19:11"}
 ];
 
 let name="",currentList=[],idx=0,currentCat=null;
@@ -815,7 +873,7 @@ function buildNeeds(){
   wide.innerHTML='<span class="ic">\u2728</span><span>Whatever I need \u2014 surprise me</span>';
   wide.onclick=()=>openList(D.slice(),null);grid.appendChild(wide);
   const present=[...new Set(D.map(d=>d.c))];
-  const order=["recovered","identity","forgiven","free","loved","peace","strength","anxiety","depression","mind","healed","provision","victory"];
+  const order=["recovered","identity","forgiven","free","loved","peace","strength","anxiety","depression","anger","mind","healed","provision","victory"];
   order.filter(k=>present.includes(k)).forEach(key=>{
     const b=document.createElement('button');b.className='need';
     b.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
@@ -914,7 +972,7 @@ function goDeep(){
   show('s-deep');
 }
 
-const SAFETY_TOPICS=["anxiety","depression","mind"];
+const SAFETY_TOPICS=["anxiety","depression","anger","mind"];
 const SAFETY_TEXT="Straight talk: this app prays with you. It does not replace a doctor, a counselor, or crisis help. If you are thinking about ending your life, call or text 988 (US) right now and talk to a real person. We'll be here when you get back.";
 function goTopic(key){
   gcCount('/topic-'+key);
@@ -954,16 +1012,23 @@ function renderPray(){
   const vc=document.getElementById('verseChip');
   if(item.r){vc.textContent=item.r;vc.style.display='inline-block';}
   else{vc.style.display='none';}
-  curHook=HOOKS[Math.floor(Math.random()*HOOKS.length)];
-  document.getElementById('hookLine').textContent=(name?("Hey, "+name+". "):"")+curHook.t;
-  document.getElementById('prayLead').textContent="Say this with me.";
+  document.getElementById('hookLine').textContent=item.h||"";
+  sessionPrayers++;
+  const lead=document.getElementById('prayLead');
+  if(sessionPrayers>=4&&sessionPrayers%4===0){
+    lead.textContent=COACH[Math.floor(sessionPrayers/4-1)%COACH.length];
+    lead.style.fontStyle="italic";
+  }else{
+    lead.textContent=name?(name+", say this with me."):"Say this with me.";
+    lead.style.fontStyle="normal";
+  }
   document.getElementById('prayText').textContent=item.t;
   document.getElementById('prayCount').textContent=(idx+1)+" of "+currentList.length+(currentCat?(" \u00b7 "+cats[currentCat].label):"");
   const chip=document.getElementById('wordChip');
   const hit=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].rx.test(item.t));
   if(hit){currentWord=hit;chip.textContent="Do you know what "+GLOSSARY[hit].word.toLowerCase()+" really means? \u2192";chip.classList.add('on');}
   else{currentWord=null;chip.classList.remove('on');}
-  if(voicePref==="on")speak(item.t,item.n);
+  if(voicePref==="on")speak((item.h?item.h+" ":"")+item.t,item.n);
 }
 let voice=null;
 function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/male|guy|daniel|david/i.test(v.name))||vs.find(v=>/en/i.test(v.lang))||vs[0]||null;}
@@ -971,24 +1036,22 @@ if('speechSynthesis' in window){
   pickVoice();speechSynthesis.onvoiceschanged=pickVoice;
   let vtries=0;const vt=setInterval(function(){pickVoice();vtries++;if(voice||vtries>10)clearInterval(vt);},500);
 }
-// ---- Randomized encouragement hooks (spoken in Loren's voice) ----
-const HOOKS=[
-  {id:"h01",t:"This one's for you."},
-  {id:"h02",t:"Listen to this. Say it slow."},
-  {id:"h03",t:"Here's some good news today."},
-  {id:"h04",t:"Lean in. This one's true."},
-  {id:"h05",t:"Take a breath. Now hear this."},
-  {id:"h06",t:"God already settled this one."},
-  {id:"h07",t:"You need this one today."},
-  {id:"h08",t:"Say this one like you mean it."},
-  {id:"h09",t:"This is what your Father says."},
-  {id:"h10",t:"One more truth for the road."}
+// ---- Session coaching: every 4th prayer this sitting, the lead line becomes a coach line.
+// Lives in a variable only - dies when the app closes. Nothing stored, nothing tracked.
+const COACH=[
+  "Saying these over and over isn't vain \u2014 it's how truth moves the eighteen inches from head to heart.",
+  "Slow this next one down. Stop and start it. Pray it to Jesus, not just at the screen.",
+  "If these are starting to sound familiar \u2014 good. Familiar is one step from memorized.",
+  "You keep showing up. That's the whole secret. Nobody gets transformed in one sitting.",
+  "Take a breath before this one. He's not in a hurry, and neither are you.",
+  "That's the renewing of the mind, working. Come back tonight too \u2014 morning, noon, and night.",
+  "You're not cramming for a test. You're learning who God says you are, one pass at a time.",
+  "Say this one like you're telling it to the enemy. Because you are."
 ];
-let curHook=null;
-let nameClipOk=null; // null = unknown, true/false after first try
-function nameKey(){return (name||"").toLowerCase().replace(/[^a-z]/g,"");}
+let sessionPrayers=0;
 
 // ---- Loren's recorded voice, with robot fallback ----
+// Each declaration's hook is baked into its text and its recording (h field on D).
 const VOICE_BASE="voice/";
 let lorenAudio=null;
 function voiceFileFor(id){
@@ -1005,39 +1068,17 @@ function speak(line,id){
   stopLoren();
   if('speechSynthesis' in window)speechSynthesis.cancel();
   const file=voiceFileFor(id);
-  const hook=(typeof id==="number"&&curHook)?curHook:null;
   if(file){
     const sb=document.getElementById('speakerBtn');
-    const playDecl=()=>{
-      const a=new Audio(file);
-      lorenAudio=a;
-      a.onplay=()=>{if(sb)sb.classList.add('playing');};
-      a.onended=()=>{if(sb)sb.classList.remove('playing');if(lorenAudio===a)lorenAudio=null;};
-      a.onerror=()=>{if(lorenAudio===a){lorenAudio=null;robotSpeak(line);}};
-      a.play().catch(()=>{if(lorenAudio===a){lorenAudio=null;robotSpeak(line);}});
-    };
-    const playHook=()=>{
-      if(!hook){playDecl();return;}
-      const h=new Audio(VOICE_BASE+hook.id+".mp3");
-      lorenAudio=h;
-      h.onplay=()=>{if(sb)sb.classList.add('playing');};
-      h.onended=()=>{if(lorenAudio===h)playDecl();};
-      h.onerror=()=>{if(lorenAudio===h)playDecl();};
-      h.play().catch(()=>{if(lorenAudio===h)playDecl();});
-    };
-    const nk=nameKey();
-    if(hook&&nk&&nameClipOk!==false){
-      const na=new Audio(VOICE_BASE+"n-"+nk+".mp3");
-      lorenAudio=na;
-      na.onplay=()=>{nameClipOk=true;if(sb)sb.classList.add('playing');};
-      na.onended=()=>{if(lorenAudio===na)playHook();};
-      na.onerror=()=>{nameClipOk=false;if(lorenAudio===na)playHook();};
-      na.play().catch(()=>{if(lorenAudio===na)playHook();});
-    }else playHook();
+    const a=new Audio(file);
+    lorenAudio=a;
+    a.onplay=()=>{if(sb)sb.classList.add('playing');};
+    a.onended=()=>{if(sb)sb.classList.remove('playing');if(lorenAudio===a)lorenAudio=null;};
+    a.onerror=()=>{if(lorenAudio===a){lorenAudio=null;robotSpeak(line);}};
+    a.play().catch(()=>{if(lorenAudio===a){lorenAudio=null;robotSpeak(line);}});
     return;
   }
-  const nk2=nameKey();
-  robotSpeak(hook?((nk2?("Hey, "+name+". "):"")+hook.t+" "+line):line);
+  robotSpeak(line);
 }
 function robotSpeak(line){
   if(!('speechSynthesis' in window)){alert("This phone's browser doesn't offer read-aloud. The words still work - say them out loud yourself.");return;}
@@ -1061,7 +1102,7 @@ function toggleSpeak(line,id){
   }
   speak(line,id);
 }
-function replay(){if(currentList.length)toggleSpeak(currentList[idx].t,currentList[idx].n);}
+function replay(){if(currentList.length){const it=currentList[idx];toggleSpeak((it.h?it.h+" ":"")+it.t,it.n);}}
 </script>
 <div class="copyright" id="footExtra2">&copy; 2026 Know God Better Ministries&nbsp;&nbsp;|&nbsp;&nbsp;A Global Project of Ten2 Harvest Media</div>
 <script>
