@@ -281,12 +281,13 @@
       <p class="big" id="greetHi"></p>
       <p class="sub" id="greetLine"></p>
       <button class="ghost" style="margin-top:-8px;margin-bottom:8px;font-size:12px;opacity:.6;" onclick="changeName()">Change name</button>
-      <p class="sub" style="margin-bottom:14px;">Want the prayers read out loud?</p>
-      <button class="primary" onclick="voiceOn()">&#128266; Read them to me</button>
-      <button class="ghost" onclick="voiceOff()">I'll read them quietly</button>
-      <button class="ghost" style="font-size:13px;opacity:.85;" onclick="openGuide()">&#9889; The Power of Guided Prayer</button>
-      <button class="ghost" style="font-size:13px;opacity:.85;" onclick="openBeta()">&#128295; Join the beta &mdash; help me build this</button>
-      <button class="ghost" style="margin-top:20px;" onclick="goReset()">Spun out? Start your day over right now &rarr;</button>
+      <p style="font-weight:700;font-size:18px;margin:6px 0 20px;">The Word, out loud, changes you.</p>
+      <button class="primary breathe" onclick="goNeeds()">Come to the table</button>
+      <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:30px;">
+        <button class="ghost" style="font-size:12.5px;opacity:.7;padding:4px;" onclick="openGuide()">&#9889; How this works</button>
+        <button class="ghost" style="font-size:12.5px;opacity:.7;padding:4px;" onclick="openBeta()">&#128295; Join the beta</button>
+        <button class="ghost" style="font-size:12.5px;opacity:.7;padding:4px;" onclick="goReset()">Spun out? Reset</button>
+      </div>
     </section>
 
     <section id="s-reset" class="screen">
@@ -839,7 +840,7 @@ function goGreet(){
   document.getElementById('greetLine').textContent=lines[p];
   show('s-greet');
 }
-let voicePref="off";
+let voicePref="on";
 let donkeyShown=false, donkeyNext=null;
 function openDonkey(fn){donkeyNext=fn||null;document.getElementById('donkeyModal').classList.add('on');}
 function voiceOn(){
