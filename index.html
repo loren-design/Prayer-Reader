@@ -68,9 +68,11 @@
   .declaration{font-family:Georgia,serif;font-size:21px;line-height:1.55;margin:0 auto 30px;max-width:540px;}
   .counter{color:var(--muted);font-size:13px;letter-spacing:.05em;margin-bottom:26px;}
   .row{display:flex;gap:12px;max-width:360px;margin:0 auto;}
+  .row .primary{padding:16px 18px;font-size:16px;box-shadow:0 6px 18px rgba(201,162,75,.18);}
   .row .primary{max-width:none;}
-  .speaker{background:var(--bg2);border:1px solid var(--line);color:var(--gold-soft);border-radius:999px;width:60px;flex:0 0 60px;
-    font-size:24px;display:flex;align-items:center;justify-content:center;}
+  .speaker{background:var(--bg2);border:1px solid var(--line);color:var(--gold-soft);border-radius:999px;
+    padding:0 22px;flex:0 0 auto;min-height:56px;font-size:16px;font-weight:700;letter-spacing:.02em;
+    display:flex;align-items:center;justify-content:center;white-space:nowrap;}
   .speaker:active,.speaker.playing{border-color:var(--gold);color:var(--gold);}
   .backlink{margin-top:18px;}
   .chip{background:transparent;border:1px dashed #4a4132;color:var(--gold-soft);border-radius:999px;
@@ -94,9 +96,8 @@
   .versechip{display:inline-block;border:1px solid #4a4132;color:var(--gold-soft);border-radius:999px;
     padding:5px 14px;font-size:12.5px;letter-spacing:.06em;margin:0 0 16px;font-weight:600;}
   .taphint{color:var(--muted);font-size:12px;letter-spacing:.03em;margin:10px 0 0;}
-  .sbicon{font-size:20px;}
-  .sbicon.playing{font-size:0;}
-  .sbicon.playing::after{content:"\25A0";font-size:18px;}
+  .sbicon::after{content:"\25B6\00A0\00A0Play";}
+  .sbicon.playing::after{content:"\25A0\00A0\00A0Stop";}
   .betabtn{position:fixed;top:14px;right:14px;z-index:50;background:rgba(27,24,21,.85);border:1px dashed #4a4132;
     color:var(--gold-soft);border-radius:999px;padding:8px 14px;font-size:12px;letter-spacing:.08em;font-weight:700;backdrop-filter:blur(4px);}
   .betabtn:active{border-color:var(--gold);}
@@ -297,7 +298,7 @@
       <p class="lead" id="resetLead">Take a breath.</p>
       <p class="declaration" id="resetText"></p>
       <div class="row">
-        <button class="speaker sbicon" onclick="toggleSpeak(RESET,'reset')">&#9654;</button>
+        <button class="speaker sbicon" onclick="toggleSpeak(RESET,'reset')"></button>
         <button class="primary" onclick="goNeeds()">Now let's pray</button>
       </div>
       <button class="ghost backlink" onclick="goGreet()">Back</button>
@@ -329,7 +330,7 @@
       <p class="counter" id="prayCount"></p>
       <button class="chip" id="wordChip" onclick="goWord()"></button>
       <div class="row">
-        <button class="speaker sbicon" id="speakerBtn" onclick="replay()">&#9654;</button>
+        <button class="speaker sbicon" id="speakerBtn" onclick="replay()"></button>
         <button class="primary" onclick="nextInNeed()">Another one</button>
       </div>
 
@@ -345,7 +346,7 @@
       <p class="grk" id="wordGrk"></p>
       <p class="wordana" id="wordAna"></p>
       <div class="row" style="margin-top:26px;">
-        <button class="speaker sbicon" onclick="speakWord()">&#9654;</button>
+        <button class="speaker sbicon" onclick="speakWord()"></button>
         <button class="primary" onclick="backFromWord()" id="wordBackBtn">Back to the prayer</button>
       </div>
 
