@@ -183,6 +183,13 @@
   .chunk{color:var(--ink);font-size:15.5px;line-height:1.65;max-width:430px;margin:0 auto;text-align:left;}
   .chunk strong{color:var(--gold-soft);}
   .rule{width:54px;height:1px;background:#3a3122;margin:18px auto;}
+  #s-story .rule{width:64px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 6px rgba(230,201,135,.32);animation:rulebreathe 4.5s ease-in-out infinite;}
+  @keyframes rulebreathe{0%,100%{opacity:.45;box-shadow:0 0 4px rgba(230,201,135,.18);}50%{opacity:1;box-shadow:0 0 11px rgba(230,201,135,.5);}}
+  @media (prefers-reduced-motion: reduce){#s-story .rule{animation:none;opacity:.8;}}
+  .chapmark{margin:36px auto 10px;text-align:center;}
+  .chapmark .clab{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .chapmark .cline{width:70px;height:2px;margin:11px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 7px rgba(230,201,135,.4);animation:rulebreathe 4.5s ease-in-out infinite;}
+  @media (prefers-reduced-motion: reduce){.chapmark .cline{animation:none;opacity:.85;}}
   .minidoor{margin:0 auto 6px;}
   .minidoor svg{width:44px;height:44px;}
   .tiers{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:22px auto 6px;}
@@ -521,17 +528,77 @@
       <div class="chunk"><strong>And when I finally quit it, I just pivoted.</strong> I'll only drink. I'll only smoke dope. I'll only take acid and smoke dope. I'll only binge a little cocaine. Nine months of that taught me what takes some people decades: the problem was never the substance. My drug of choice was always <strong>more</strong>.</div>
       <div class="rule"></div>
       <div class="chunk"><strong>An old hippie in AA asked me one question.</strong> "You got a problem with God?" I said no. He said, "Great. Get on your knees every morning and ask God to keep you sober. At night, tell Him thank you." No church background. No religion. I was just desperate enough to follow instructions. That was 1991. I've been sober ever since.</div>
-      <div class="rule"></div>
+      <div class="chapmark"><div class="clab">How I actually met Jesus</div><div class="cline"></div></div>
       <div class="chunk"><strong>God wasn't done &mdash; He was drawing.</strong> Years into walking with Jesus, I finally found the verse that explained my whole story. John 6:44 &mdash; no one can come to Jesus unless the Father draws him. That was me &mdash; nine years in the rooms, rejecting Him, and the Father drawing me anyway.</div>
       <div class="rule"></div>
-      <div class="chunk"><strong>Then came Sidney.</strong> My unborn daughter was diagnosed with a heart defect she wouldn't survive. Losing her broke me wide open. In 2000, I gave my life to Christ &mdash; a heart choice, not a church habit. I carry Sidney's memory with honor, not shame.</div>
+      <div class="chunk"><strong>For years I prayed to a higher power that kept me sober but had no eternity attached to it.</strong> I was even a little offended &mdash; why did I need the Son when I figured I was already talking to the Boss? Then came Sidney. And the only guarantee I'd ever heard that I'd see my little girl again was Jesus. On July 17th, 2000, I surrendered &mdash; not because I had the answers, but because I was desperate for hope.</div>
       <div class="rule"></div>
-      <div class="chunk"><strong>And God kept restoring what life kept breaking.</strong> In 2017 a toxic brain injury scrambled the very mind I'm asking you to renew. Strokes followed in 2023. I'm still here &mdash; thirty-five years sober, mind renewed daily by the same Word that's in this app. Restoration isn't a theory to me. It's my history.</div>
+      <div class="chunk"><strong>Then Sidney showed me what God does with &ldquo;impossible.&rdquo;</strong> The diagnosis came in July &mdash; one chamber in her tiny heart doing the work of four, and no medical reason she'd survive the womb another week. She grew anyway. Through August. Through September. The doctors had no explanation for it. She was born October 2nd, 2000, and she lived five hours. Five hours &mdash; and out of that short little life God launched a ministry that reached tens of thousands of people over the next five, six years. I carry Sidney's memory with honor, not shame. Her heartbeat is the reason I found Jesus, and the reason so many others did too.</div>
+      <div class="chapmark"><div class="clab">The long way back</div><div class="cline"></div></div>
+      <div class="chunk"><strong>And God kept restoring what life kept breaking.</strong> In 2017 a toxic brain injury scrambled the very mind these declarations are built to renew. For three or four years I couldn't think straight, couldn't find my words, couldn't even feel God. That last one was the scariest &mdash; the sense that His presence was just gone. One day I prayed, &ldquo;Jesus, I just don't feel like You're here anymore.&rdquo; No audible voice came back. But something landed deep in my soul, and it was Him: <em>I'm a person, not a feeling. Just because you don't feel Me doesn't mean I'm not here.</em> I wrapped both arms around that and held on.</div>
+      <div class="rule"></div>
+      <div class="chunk"><strong>I held that anchor for four, five years</strong> &mdash; until I finally let go of whatever the injury took. Whatever's gone is gone. I made peace with the man God rebuilt, and I'm fine with who He renewed me to be. Then in 2023 the strokes came &mdash; another test &mdash; and I stood anyway. I'm still here: thirty-five years sober, mind renewed daily by the same Word that's in this app. Restoration isn't a theory to me. It's my history.</div>
       <div class="rule"></div>
       <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
       <p class="topiccount" style="margin-top:18px;">The whole story lives on <a href="https://www.youtube.com/@KnowGodBetterMinistries" target="_blank" rel="noopener" style="color:var(--gold-soft);">the Know God Better YouTube channel</a></p>
       <button class="primary" style="margin-top:14px;" onclick="goNeeds()">Let's pray together</button>
       <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
+    </section>
+
+    <section id="s-learn" class="screen">
+      <div class="kicker sm">Learn</div>
+      <h2>A few things that make it land deeper.</h2>
+      <p class="sub">No rush. Take one at a time &mdash; then come back and pray.</p>
+      <div class="needs">
+        <button class="bucket" onclick="openGuide()"><div class="bq"><span class="bicon">&#9889;</span>How guided prayer works</div><div class="bt">The whole idea, in three cards</div></button>
+        <button class="bucket" onclick="show('s-lesson-written')"><div class="bq"><span class="bicon">&#128214;</span>It Is Written</div><div class="bt">How Jesus used declarations &mdash; Matthew 4</div></button>
+        <button class="bucket" onclick="show('s-lesson-declare')"><div class="bq"><span class="bicon">&#128227;</span>Declarations vs. affirmations</div><div class="bt">Why out loud matters &mdash; Romans 12:2</div></button>
+        <button class="bucket" onclick="goWordBank()"><div class="bq"><span class="bicon">&#128213;</span>What It Really Means</div><div class="bt">Church words, in plain English</div></button>
+        <button class="bucket" onclick="show('s-story')"><div class="bq"><span class="bicon">&#128682;</span>How this started</div><div class="bt">Loren's story</div></button>
+      </div>
+      <button class="ghost backlink" onclick="goNeeds()">&#8592; Back to praying</button>
+    </section>
+
+    <section id="s-lesson-written" class="screen">
+      <div class="kicker sm">It Is Written</div>
+      <h2>How Jesus used declarations.</h2>
+      <div class="gcards">
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">1</span>The enemy waits till you're empty</div>
+          <p>Forty days, no food, worn all the way down &mdash; that's when the enemy showed up on Jesus in the desert. Matthew chapter four. He comes when you're tired, hungry, and alone. Nothing new about that. It happened to Jesus first.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">2</span>Jesus didn't argue. He declared.</div>
+          <p>Three times the enemy pushed. Three times Jesus didn't debate it and didn't white-knuckle it. He said three words &mdash; <strong>&ldquo;It is written&rdquo;</strong> &mdash; and spoke the Word of God out loud, right back at him. He didn't fight with feelings. He fought with what was already written down.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">3</span>That's what you're doing here</div>
+          <p>You don't have to feel strong. You don't have to win the argument in your head. You find what God already said about you, and you say it out loud &mdash; same as Jesus did. <strong>That's a declaration. It is written. So you stand on it.</strong></p>
+        </div>
+      </div>
+      <button class="primary" style="margin-top:8px;" onclick="goNeeds()">Let's pray together</button>
+      <button class="ghost backlink" onclick="show('s-learn')">&#8592; Back to Learn</button>
+    </section>
+
+    <section id="s-lesson-declare" class="screen">
+      <div class="kicker sm">Declarations vs. affirmations</div>
+      <h2>Why out loud matters.</h2>
+      <div class="gcards">
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">1</span>One leans on you. One leans on God.</div>
+          <p>An affirmation says &ldquo;I am enough, I am strong&rdquo; &mdash; and it's asking <em>you</em> to be the power source. A declaration says &ldquo;God already called me His, and the blood already sealed it.&rdquo; One runs on your tank. The other runs on His. That's why one runs out and the other doesn't.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">2</span>Out loud is not a suggestion</div>
+          <p>Romans chapter twelve, verse two says be transformed by the renewing of your mind. Here's the loop: your mouth says it, your ears hear it, and your mind hears it enough times that it finally believes it. Silent skips the loop. Out loud runs it. That's why we speak these &mdash; every time.</p>
+        </div>
+        <div class="gcard">
+          <div class="ghead"><span class="stepnum">3</span>You're not making it true. You're agreeing with it.</div>
+          <p>You're not naming something new into being. God already said it. You're just catching up &mdash; lining your mouth up with what heaven already wrote down. Say it enough, and the mind renews. <strong>That's not hype. That's how God built you.</strong></p>
+        </div>
+      </div>
+      <button class="primary" style="margin-top:8px;" onclick="goNeeds()">Let's pray together</button>
+      <button class="ghost backlink" onclick="show('s-learn')">&#8592; Back to Learn</button>
     </section>
 
     <section id="s-deep" class="screen">
@@ -1088,9 +1155,9 @@ function buildNeeds(){
   const find=document.createElement('button');find.className='need wide';
   find.innerHTML='<span class="ic">\uD83D\uDD0D</span><span>Find a prayer \u2014 search or browse A to Z</span>';
   find.onclick=()=>goFind();grid.appendChild(find);
-  const wb=document.createElement('button');wb.className='need wide';
-  wb.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>What It Really Means \u2014 church words, in plain English</span>';
-  wb.onclick=()=>goWordBank();grid.appendChild(wb);
+  const ln=document.createElement('button');ln.className='need wide';
+  ln.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>Learn \u2014 how this works, church words, and the story</span>';
+  ln.onclick=()=>show('s-learn');grid.appendChild(ln);
 }
 function goWord(){
   if(!currentWord)return;
