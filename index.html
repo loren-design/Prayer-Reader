@@ -65,7 +65,7 @@
   .resetcard{background:#20140f;border:1px solid #4a2c1f;border-radius:20px;padding:22px 20px;margin:0 auto 22px;max-width:400px;}
   .resetcard p{margin:0 0 16px;color:#e9c9b0;font-size:15px;line-height:1.5;}
   .lead{color:var(--gold-soft);font-size:16px;margin:0 0 18px;font-weight:600;}
-  .declaration{font-family:Georgia,serif;font-size:23px;line-height:1.55;margin:0 auto 30px;max-width:540px;}
+  .declaration{font-family:Georgia,serif;font-size:21px;line-height:1.55;margin:0 auto 30px;max-width:540px;}
   .counter{color:var(--muted);font-size:13px;letter-spacing:.05em;margin-bottom:26px;}
   .row{display:flex;gap:12px;max-width:360px;margin:0 auto;}
   .row .primary{max-width:none;}
@@ -159,7 +159,7 @@
   .steps{max-width:300px;margin:0 auto 26px;display:flex;flex-direction:column;gap:11px;text-align:left;}
   .step{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink);}
   .stepnum{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#241d0c;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:0 0 22px;}
-  .hookline2{font-style:italic;color:var(--gold2,#e6c987);font-size:14.5px;margin:0 0 6px;opacity:.9;}
+  .hookline2{font-family:Georgia,serif;font-style:italic;color:var(--gold2,#e6c987);font-size:21px;line-height:1.5;margin:0 auto 14px;max-width:540px;}
   .gcards{display:flex;flex-direction:column;gap:14px;margin:20px auto 22px;max-width:340px;text-align:left;}
   .gcard{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:16px 16px 15px;
     opacity:0;animation:rise .6s ease forwards;}
@@ -318,9 +318,9 @@
     </section>
 
     <section id="s-pray" class="screen">
-      <p class="hookline2" id="hookLine"></p>
       <p class="lead" id="prayLead">Say this with me.</p>
       <div><span class="versechip" id="verseChip" style="display:none;"></span></div>
+      <p class="hookline2" id="hookLine"></p>
       <p class="declaration" id="prayText"></p>
       <p class="counter" id="prayCount"></p>
       <button class="chip" id="wordChip" onclick="goWord()"></button>
