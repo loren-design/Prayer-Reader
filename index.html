@@ -110,6 +110,11 @@
   .fbthanks{display:none;color:var(--gold-soft);font-family:Georgia,serif;font-size:17px;margin:10px 0;}
   .overlay{position:fixed;inset:0;background:rgba(10,9,7,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(3px);}
   .overlay.on{display:flex;}
+  .bucket{grid-column:1 / -1;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+    padding:15px 16px;text-align:left;color:var(--ink);cursor:pointer;}
+  .bucket:active{border-color:var(--gold);background:#221e19;}
+  .bucket .bq{font-family:Georgia,serif;font-size:19px;line-height:1.3;margin-bottom:4px;}
+  .bucket .bt{font-size:12px;color:var(--muted);letter-spacing:.02em;}
   .wbcta{display:inline-block;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#241d0c;
     font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:999px;margin:8px 0 6px;letter-spacing:.02em;}
   #wordGrid{grid-template-columns:repeat(2,1fr);gap:4px 10px;margin-top:14px;}
@@ -327,7 +332,7 @@
 
     <section id="s-needs" class="screen">
       <h2 id="needsHi">What do you need today?</h2>
-      <p class="sub">These are simple prayers. Say them out loud, or quietly to yourself &mdash; either way you&rsquo;re declaring what God already said. Pick what&rsquo;s heavy today.</p>
+      <p class="sub">Simple guided prayers to help you declare what God already said.</p>
       <div class="needs" id="needGrid"></div>
       <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
     </section>
@@ -372,6 +377,13 @@
       </div>
 
       <button class="ghost backlink" onclick="goWordBank()">See what other words really mean</button>
+    </section>
+
+    <section id="s-bucket" class="screen">
+      <p class="topictitle" id="bucketTitle"></p>
+      <p class="sub">Pick the door. The Word is waiting behind it.</p>
+      <div class="needs" id="bucketGrid"></div>
+      <button class="ghost backlink" onclick="goNeeds()">&#8592; Back</button>
     </section>
 
     <section id="s-wordbank" class="screen">
@@ -908,6 +920,25 @@ function goReset(){
   show('s-reset');
   if(voicePref==="on")speak(RESET,"reset");
 }
+const BUCKETS=[
+  {k:"fight", q:"I'm fighting something", topics:["recovered","free","anger"]},
+  {k:"mind",  q:"My mind won't stop", topics:["anxiety","depression","mind","peace"]},
+  {k:"mess",  q:"I keep messing up", topics:["forgiven"]},
+  {k:"who",   q:"I don't know who I am anymore", topics:["identity","loved"]},
+  {k:"heavy", q:"Life is heavy right now", topics:["strength","healed","provision","victory"]}
+];
+function goBucket(k){
+  const b=BUCKETS.find(x=>x.k===k);if(!b)return;
+  if(b.topics.length===1){goTopic(b.topics[0]);return;}
+  document.getElementById('bucketTitle').textContent=b.q;
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";
+  b.topics.forEach(key=>{
+    const btn=document.createElement('button');btn.className='need';
+    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
+    btn.onclick=()=>goTopic(key);grid.appendChild(btn);
+  });
+  show('s-bucket');
+}
 function goHome(){show('s-entry');}
 function goNeeds(){
   document.getElementById('needsHi').textContent=name?("Alright, "+name+". What do you need today?"):"What do you need today?";
@@ -920,12 +951,11 @@ function buildNeeds(){
   const wide=document.createElement('button');wide.className='need wide';
   wide.innerHTML='<span class="ic">\u2728</span><span>Whatever I need \u2014 surprise me</span>';
   wide.onclick=()=>openList(D.slice(),null);grid.appendChild(wide);
-  const present=[...new Set(D.map(d=>d.c))];
-  const order=["recovered","identity","forgiven","free","loved","peace","strength","anxiety","depression","anger","mind","healed","provision","victory"];
-  order.filter(k=>present.includes(k)).forEach(key=>{
-    const b=document.createElement('button');b.className='need';
-    b.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
-    b.onclick=()=>goTopic(key);grid.appendChild(b);
+  BUCKETS.forEach(b=>{
+    const card=document.createElement('button');card.className='bucket';
+    const labels=b.topics.map(k=>cats[k].label).join(" \u00B7 ");
+    card.innerHTML='<div class="bq">'+b.q+'</div><div class="bt">'+labels+'</div>';
+    card.onclick=()=>goBucket(b.k);grid.appendChild(card);
   });
   const wb=document.createElement('button');wb.className='need wide';
   wb.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>What It Really Means \u2014 church words, in plain English</span>';
