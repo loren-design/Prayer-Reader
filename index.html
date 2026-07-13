@@ -321,7 +321,7 @@
       <button class="tcard" onclick="goToday()">
         <div class="tkick">Today's declaration</div>
         <div class="thook" id="todayHook"></div>
-        <div class="tref" id="todayRef"></div>
+        <div class="tref">Tap to pray it &rarr;</div>
       </button>
       <p style="font-weight:700;font-size:18px;margin:6px 0 20px;">The Word, out loud, changes you.</p>
       <button class="primary breathe" onclick="goNeeds()">Let's pray together</button>
@@ -914,7 +914,6 @@ function goGreet(){
   document.getElementById('greetHi').textContent=name?(hi+", "+name+"."):(hi+".");
   const t=todayItem();
   document.getElementById('todayHook').textContent=t.item.h;
-  document.getElementById('todayRef').textContent=t.item.r;
   const lines={
     morning:"Before the noise starts, let's set the day on the right foundation. One truth at a time.",
     afternoon:"However the day's gone so far, you can get back to the table right now. Let's take a breath.",
