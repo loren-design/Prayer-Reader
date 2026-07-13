@@ -363,12 +363,10 @@
 
     <section id="s-support" class="screen">
       <div class="kicker sm">Ten2 Harvest Media</div>
-      <p class="topictitle">One Billion for Jesus.</p>
-      <div class="chunk"><strong>Quick question.</strong> Did this put something back in your hands today? A prayer that landed? A word that finally made sense?</div>
-      <div class="rule"></div>
-      <div class="chunk"><strong>Here's our vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
-      <div class="rule"></div>
-      <div class="chunk"><strong>And here's the mission.</strong> One billion people meeting the real, loving God &mdash; every zip code, every language, everywhere a phone can be held. Almost nobody gets taught how to pray. We build the free tools that teach it, and givers are how the door stays open. If this put something in your hands, help us hand it to the next person. Every number below carries a story.</div>
+      <p class="topictitle">The Word of God Is Always Free.</p>
+      <div class="chunk"><strong>Together, we're building a global community &mdash; one billion people for Jesus.</strong></div>
+      <div class="chunk">If today encouraged you, inspired you, or moved you one step toward freedom from what's been running your life &mdash; you're already one of them. Giving keeps the door open for the next one.</div>
+      <div class="chunk" style="color:var(--muted);font-size:14px;cursor:pointer;" onclick="openMission()"><span style="color:var(--gold-soft);">Read the whole vow and mission &darr;</span></div>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
           <div class="amt">$7 <span>/ month</span></div>
@@ -396,6 +394,11 @@
           <div class="tmean">Any amount, one time. Every dollar puts the Word in somebody's hands.</div>
         </a>
       </div>
+      <details id="missionMore" style="max-width:420px;margin:26px auto 0;text-align:left;">
+        <summary style="cursor:pointer;color:var(--gold-soft);font-size:14px;text-align:center;">More about the mission and the vow &darr;</summary>
+        <div class="chunk" style="margin-top:16px;"><strong>The vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
+        <div class="chunk"><strong>The mission.</strong> One billion people meeting the real, loving God &mdash; every zip code, every language, everywhere a phone can be held. Almost nobody gets taught how to pray. We build the free tools that teach it, and givers are how the door stays open. Every number above carries a story.</div>
+      </details>
       <button class="ghost" onclick="show('s-about')">More about us &#8594;</button>
       <button class="ghost backlink" onclick="goNeeds()">Back to praying</button>
     </section>
@@ -498,6 +501,10 @@ function openBeta(){
   setTimeout(function(){(bn.value?document.getElementById('betaPhone'):bn).focus();},250);
 }
 function closeBeta(){document.getElementById('betaModal').classList.remove('on');}
+function openMission(){
+  const d=document.getElementById('missionMore');
+  if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});}
+}
 function sendBeta(){
   var nm=(document.getElementById('betaName').value||"").trim();
   var ph=(document.getElementById('betaPhone').value||"").trim();
