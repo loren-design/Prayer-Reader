@@ -94,6 +94,9 @@
   .versechip{display:inline-block;border:1px solid #4a4132;color:var(--gold-soft);border-radius:999px;
     padding:5px 14px;font-size:12.5px;letter-spacing:.06em;margin:0 0 16px;font-weight:600;}
   .taphint{color:var(--muted);font-size:12px;letter-spacing:.03em;margin:10px 0 0;}
+  .sbicon{font-size:20px;}
+  .sbicon.playing{font-size:0;}
+  .sbicon.playing::after{content:"\25A0";font-size:18px;}
   .betabtn{position:fixed;top:14px;right:14px;z-index:50;background:rgba(27,24,21,.85);border:1px dashed #4a4132;
     color:var(--gold-soft);border-radius:999px;padding:8px 14px;font-size:12px;letter-spacing:.08em;font-weight:700;backdrop-filter:blur(4px);}
   .betabtn:active{border-color:var(--gold);}
@@ -294,7 +297,7 @@
       <p class="lead" id="resetLead">Take a breath.</p>
       <p class="declaration" id="resetText"></p>
       <div class="row">
-        <button class="speaker" onclick="toggleSpeak(RESET,'reset')">&#128266;</button>
+        <button class="speaker sbicon" onclick="toggleSpeak(RESET,'reset')">&#9654;</button>
         <button class="primary" onclick="goNeeds()">Now let's pray</button>
       </div>
       <button class="ghost backlink" onclick="goGreet()">Back</button>
@@ -326,10 +329,10 @@
       <p class="counter" id="prayCount"></p>
       <button class="chip" id="wordChip" onclick="goWord()"></button>
       <div class="row">
-        <button class="speaker" id="speakerBtn" onclick="replay()">&#128266;</button>
+        <button class="speaker sbicon" id="speakerBtn" onclick="replay()">&#9654;</button>
         <button class="primary" onclick="nextInNeed()">Another one</button>
       </div>
-      <p class="taphint">&#128266; tap to listen &middot; tap again to stop &middot; <a href="#" id="voiceToggle" style="color:var(--gold-soft);" onclick="toggleVoicePref();return false;"></a></p>
+
       <button class="ghost backlink" onclick="backToTopic()">&#8592; Back to this topic</button>
       <button class="ghost" onclick="goNeeds()">All topics</button>
     </section>
@@ -342,10 +345,10 @@
       <p class="grk" id="wordGrk"></p>
       <p class="wordana" id="wordAna"></p>
       <div class="row" style="margin-top:26px;">
-        <button class="speaker" onclick="speakWord()">&#128266;</button>
+        <button class="speaker sbicon" onclick="speakWord()">&#9654;</button>
         <button class="primary" onclick="backFromWord()" id="wordBackBtn">Back to the prayer</button>
       </div>
-      <p class="taphint">&#128266; tap to listen &middot; tap again to stop</p>
+
       <button class="ghost backlink" onclick="goWordBank()">See what other words really mean</button>
     </section>
 
@@ -1029,7 +1032,7 @@ function renderPray(){
   const hit=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].rx.test(item.t));
   if(hit){currentWord=hit;chip.textContent="Do you know what "+GLOSSARY[hit].word.toLowerCase()+" really means? \u2192";chip.classList.add('on');}
   else{currentWord=null;chip.classList.remove('on');}
-  if(voicePref==="on")speak((item.h?item.h+" ":"")+item.t,item.n);
+  // autoplay removed July 2026 - prayers play only on the play button
 }
 let voice=null;
 function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/male|guy|daniel|david/i.test(v.name))||vs.find(v=>/en/i.test(v.lang))||vs[0]||null;}
