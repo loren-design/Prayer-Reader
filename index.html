@@ -211,6 +211,10 @@
   .safety.on{display:block;}
   .supportlink{background:transparent;border:none;color:var(--muted);font-size:12px;letter-spacing:.06em;
     padding:4px 18px 16px;opacity:.85;text-decoration:underline;text-underline-offset:3px;}
+  .hundred{max-width:420px;margin:22px auto 6px;padding:20px 18px;background:#221d15;border:1px solid var(--gold);border-radius:18px;text-align:center;box-shadow:0 0 14px rgba(230,201,135,.14);}
+  .hundred .bignum{font-family:Georgia,serif;font-size:44px;font-weight:700;color:var(--gold-soft);line-height:1;}
+  .hundred .bigline{font-size:15.5px;font-weight:700;line-height:1.5;margin-top:8px;}
+  .hundred .fineline{font-size:13px;color:var(--muted);line-height:1.55;margin-top:10px;}
   .brand{color:var(--ink);font-size:13.5px;letter-spacing:.03em;padding:18px;opacity:.75;font-family:Georgia,serif;font-style:italic;text-align:center;}
   .steps{max-width:300px;margin:0 auto 26px;display:flex;flex-direction:column;gap:11px;text-align:left;}
   .step{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink);}
@@ -356,7 +360,12 @@
       <p class="declaration" id="resetText"></p>
       <div class="row">
         <button class="speaker sbicon" onclick="toggleSpeak(RESET,'reset')"></button>
-        <button class="primary" onclick="goNeeds()">Now let's pray</button>
+      </div>
+      <div class="chapmark"><div class="clab">Now pray this with me</div><div class="cline"></div></div>
+      <p class="lead">Take a breath, and just say it out loud &mdash;</p>
+      <p class="declaration">Father God, I want to turn back around. Right now I confess it. I missed the mark. I've sinned against You. And I want to come back to the table with You. Thank You for meeting me here. Amen.</p>
+      <div class="row">
+        <button class="primary" onclick="goNeeds()">Back to the table</button>
       </div>
       <button class="ghost backlink" onclick="goGreet()">Back</button>
     </section>
@@ -445,6 +454,11 @@
       <p class="topictitle">The Word of God Is Always Free.</p>
       <div class="chunk"><strong>Stuck people aren't searching for Jesus. They're searching for hope. We bring both.</strong> If you found some hope here today, keep the door open for the next one.</div>
       <div class="chunk" style="color:var(--muted);font-size:14px;cursor:pointer;" onclick="openMission()"><span style="color:var(--gold-soft);">Read the whole vow and mission &darr;</span></div>
+      <div class="hundred">
+        <div class="bignum">100%</div>
+        <div class="bigline">Every dollar that comes through here funds the One Billion for Jesus movement &mdash; building free tools like this one and putting the Word in the next person's hands.</div>
+        <div class="fineline">We're not a nonprofit, so gifts are not tax-deductible. This is Kingdom business &mdash; you're not buying a write-off. You're keeping the door open.</div>
+      </div>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
           <div class="amt">$7 <span>/ month</span></div>
@@ -802,7 +816,9 @@ const cats={
   depression:{label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
   anger:{label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
   mind:{label:"The Mind",icon:"\uD83E\uDDE0",title:"About Your Mind",intro:"Your mind is not stuck the way it is. It gets renewed, one thought at a time. It is written."},
-  recovered:{label:"Living Sober-Minded",icon:"\uD83C\uDF31",title:"About Living Sober-Minded",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."}
+  recovered:{label:"Living Sober-Minded",icon:"\uD83C\uDF31",title:"About Living Sober-Minded",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."},
+  rejection:{label:"Rejected",icon:"\uD83E\uDEA8",title:"About Rejection",intro:"People passed you over, shut you out, or hurt you in God's name. None of that was the Father. Don't judge Him by His silly little kids. Here's who He really is \u2014 and what He calls you."},
+  abandonment:{label:"Abandoned",icon:"\uD83E\uDD32",title:"About Abandonment",intro:"Somebody who was supposed to stay didn't. That wound is real \u2014 and it is not the Father's signature. He does not leave. He does not let go. Here's His word on it."}
 };
 
 const D=[
@@ -934,7 +950,27 @@ const D=[
 {n:126,c:"anger",h:"Bitterness charges rent and never pays a dime back. Time to evict it.",t:"The word of God tells me in chapter four, verses thirty-one and thirty-two of the book of Ephesians to put away bitterness, rage, and anger, and to forgive as God in Christ forgave me. I am not being asked to fake it. I am being asked to hand it over, and the One asking already forgave me more than I will ever be asked to forgive.",r:"Ephesians 4:31-32"},
 {n:127,c:"anger",h:"Be honest — name one thing rage ever actually fixed. God has a better weapon.",t:"The word of God tells me in chapter thirty-seven, verse eight of the book of Psalms to cease from anger and forsake wrath, and to not fret, because it only causes harm. My anger has never fixed a single thing it promised to fix. So I put the weapon down, and I let God fight what is actually worth fighting.",r:"Psalm 37:8"},
 {n:128,c:"anger",h:"Slow to anger runs in your Father's family. And you've got the family name now.",t:"The word of God tells me in chapter thirty-four, verse six of the book of Exodus that the Lord is merciful and gracious, slow to anger, and abounding in goodness and truth. Slow to anger is what my Father is like. And I am His son, being made into the family resemblance one day at a time.",r:"Exodus 34:6"},
-{n:129,c:"anger",h:"Walking past an insult without picking it up? The Bible calls that your glory.",t:"The word of God tells me in chapter nineteen, verse eleven of the book of Proverbs that good sense makes a man slow to anger, and it is his glory to overlook an offense. Letting it go is not losing. In God's economy, overlooking an offense is a crown, and today I wear it.",r:"Proverbs 19:11"}
+{n:129,c:"anger",h:"Walking past an insult without picking it up? The Bible calls that your glory.",t:"The word of God tells me in chapter nineteen, verse eleven of the book of Proverbs that good sense makes a man slow to anger, and it is his glory to overlook an offense. Letting it go is not losing. In God's economy, overlooking an offense is a crown, and today I wear it.",r:"Proverbs 19:11"},
+{n:130,c:"rejection",h:"If you feel like nobody wanted you, Jesus knows that exact ache — He lived it first.",t:"The word of God tells me in chapter fifty-three, verse three of the book of Isaiah that Jesus was despised and rejected of men, a man of sorrows, acquainted with grief. The One I'm running to has felt every ounce of what I feel. He doesn't flinch at my wound. He shares it.",r:"Isaiah 53:3"},
+{n:131,c:"rejection",h:"Scared that if you actually came to God, He'd turn you away? Read His own words.",t:"The word of God tells me in chapter six, verse thirty-seven of the book of John that the one who comes to Jesus, He will never cast out. Not once. Not ever. I can come exactly as I am, and the door does not slam. It opens.",r:"John 6:37"},
+{n:132,c:"rejection",h:"The very thing people threw away, God picked up and built everything on.",t:"The word of God tells me in chapter one hundred eighteen, verse twenty-two of the book of Psalms that the stone the builders refused became the head of the corner. What people rejected, God made the cornerstone. Being passed over by them is not the end of my story. It might be the start of His.",r:"Psalm 118:22"},
+{n:133,c:"rejection",h:"People looked you over and moved on. God was looking somewhere they never bothered to check.",t:"The word of God tells me in chapter sixteen, verse seven of the first book of Samuel that man looks on the outside, but the Lord looks on the heart. Others sized me up and passed. God looked deeper and chose me. His eyes see what theirs missed.",r:"1 Samuel 16:7"},
+{n:134,c:"rejection",h:"Turned down by people, hand-picked by God — that's not a downgrade, that's an upgrade.",t:"The word of God tells me in chapter two, verse four of the first book of Peter that I am a living stone, turned down by men but chosen by God and precious to Him. Their 'no' does not cancel His 'chosen.' In His eyes I am valuable, wanted, and set in place on purpose.",r:"1 Peter 2:4"},
+{n:135,c:"rejection",h:"You may have felt like an outsider your whole life. God already closed that gap.",t:"The word of God tells me in chapter one, verse twenty-one of the book of Colossians that I was once alienated and far off, but now He has reconciled me. The distance is gone. I am not on the outside looking in anymore. He brought me all the way home.",r:"Colossians 1:21"},
+{n:136,c:"rejection",h:"You know who you are when you know whose you are. Look what the Father calls you.",t:"The word of God tells me in chapter three, verse one of the first book of John to behold what manner of love the Father has given me, that I should be called a son of God. My identity doesn't come from who accepted me or who didn't. It comes from my Father. I know who I am because I know whose I am.",r:"1 John 3:1"},
+{n:137,c:"rejection",h:"Whatever cast you aside, hear what God says He did instead — the opposite.",t:"The word of God tells me in chapter forty-one, verse nine of the book of Isaiah that God says, I have chosen you and not cast you away. He did not throw me back. He reached to the ends of the earth and claimed me as His own. I am chosen, not discarded.",r:"Isaiah 41:9"},
+{n:138,c:"rejection",h:"If rejection cracked your heart wide open, here's who moves closer instead of away.",t:"The word of God tells me in chapter thirty-four, verse eighteen of the book of Psalms that the Lord is near to the brokenhearted. When people pulled away, God leaned in. My broken heart doesn't push Him back. It draws Him close.",r:"Psalm 34:18"},
+{n:139,c:"abandonment",h:"Even if the two people who were supposed to stay didn't — you were never left without a Father.",t:"The word of God tells me in chapter twenty-seven, verse ten of the book of Psalms that when my father and my mother forsake me, the Lord will take me up. The ones who should have held on may have let go. God bent down and picked me up. I have a Father who stays.",r:"Psalm 27:10"},
+{n:140,c:"abandonment",h:"If your whole life taught you that people leave, God wants to teach you something new.",t:"The word of God tells me in chapter thirty-one, verse six of the book of Deuteronomy that the Lord my God goes with me; He will not fail me nor forsake me. He is not going to quit on me. He is not going to walk out. He goes where I go and He stays.",r:"Deuteronomy 31:6"},
+{n:141,c:"abandonment",h:"Read the promise slow, because it's aimed straight at your deepest fear: being left.",t:"The word of God tells me in chapter thirteen, verse five of the book of Hebrews that He has said, I will never leave you nor forsake you. Never is a strong word, and He meant it. There is no version of my future where God walks away. He is in it, all of it, to the end.",r:"Hebrews 13:5"},
+{n:142,c:"abandonment",h:"You wonder if you're forgettable? God says even a mother's love is a small thing next to His.",t:"The word of God tells me in chapter forty-nine, verse fifteen of the book of Isaiah that a mother may forget her nursing child, yet God will not forget me. Even the strongest human bond can fail. His will not. I am not forgotten. I am held in the memory of God.",r:"Isaiah 49:15"},
+{n:143,c:"abandonment",h:"When you feel invisible, look at where God says He wrote your name.",t:"The word of God tells me in chapter forty-nine, verse sixteen of the book of Isaiah that He has graven me on the palms of His hands. Not written in pencil. Carved in. I am always in front of Him. He cannot look at His own hands without seeing me.",r:"Isaiah 49:16"},
+{n:144,c:"abandonment",h:"If you grew up feeling like an orphan, hear the promise Jesus made on His way out the door.",t:"The word of God tells me in chapter fourteen, verse eighteen of the book of John that Jesus said, I will not leave you as orphans; I will come to you. He did not drop me off and disappear. He came back. He came close. I am not left alone.",r:"John 14:18"},
+{n:145,c:"abandonment",h:"Feeling like you belong to no one? God has a habit of putting the lonely in a family.",t:"The word of God tells me in chapter sixty-eight, verse six of the book of Psalms that God sets the solitary in families. He does not leave people alone on the outside. He builds them a home and a people. He set me in a family, and I belong.",r:"Psalm 68:6"},
+{n:146,c:"abandonment",h:"Some goodbyes never seem to end. Here's one promise that has no expiration date.",t:"The word of God tells me in chapter twenty-eight, verse twenty of the book of Matthew that Jesus said, I am with you always, even to the end of the world. Always means today, tomorrow, and the day I feel most alone. There is no moment His presence runs out.",r:"Matthew 28:20"},
+{n:147,c:"abandonment",h:"You've maybe never been someone's first choice. To God, you're the one He sings over.",t:"The word of God tells me in chapter three, verse seventeen of the book of Zephaniah that the Lord my God is in the midst of me, and He rejoices over me with singing. God is not tolerating me. He is glad I'm His. The One who never leaves also delights in me.",r:"Zephaniah 3:17"},
+{n:148,c:"rejection",h:"If people who claimed God hurt you, meet the Father they misrepresented. Look at Jesus.",t:"The word of God tells me in chapter fourteen, verse nine of the book of John that Jesus said, he that has seen Me has seen the Father. If I want to know what the Father is really like, I don't look at the people who hurt me in His name. I look at Jesus. The Father looks like Jesus — arms open.",r:"John 14:9"},
+{n:149,c:"abandonment",h:"Afraid something will finally pry you loose? Check whose hand is holding you.",t:"The word of God tells me in chapter ten, verse twenty-nine of the book of John that my Father is greater than all, and no one is able to pluck me out of my Father's hand. He will not let go, and nothing can rip me away. I am held — safe in a grip stronger than anything that ever left me.",r:"John 10:29"}
 ];
 
 let name="",currentList=[],idx=0,currentCat=null;
@@ -1050,7 +1086,7 @@ const BUCKETS=[
   {k:"fight", icon:"\u2694\uFE0F", q:"Struggling right now", sub:"Sobriety \u00B7 Anger \u00B7 Stuck", topics:["recovered","anger","free"]},
   {k:"mind",  icon:"\uD83C\uDF00", q:"My mind won't stop", topics:["anxiety","depression","mind","peace"]},
   {k:"mess",  icon:"\uD83D\uDD04", q:"I keep messing up", topics:["forgiven"]},
-  {k:"who",   icon:"\uD83E\uDE9E", q:"I don't know who I am anymore", sub:"Rejected \u00B7 Abandoned \u00B7 Unloved", topics:["identity","loved"]},
+  {k:"who",   icon:"\uD83E\uDE9E", q:"I don't know who I am anymore", sub:"Rejected \u00B7 Abandoned \u00B7 Unloved", topics:["identity","rejection","abandonment","loved"]},
   {k:"heavy", icon:"\u26F0\uFE0F", q:"Life is heavy right now", topics:["strength","healed","provision","victory"]}
 ];
 function goBucket(k){
