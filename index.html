@@ -215,6 +215,20 @@
   .hundred .bignum{font-family:Georgia,serif;font-size:44px;font-weight:700;color:var(--gold-soft);line-height:1;}
   .hundred .bigline{font-size:15.5px;font-weight:700;line-height:1.5;margin-top:8px;}
   .hundred .fineline{font-size:13px;color:var(--muted);line-height:1.55;margin-top:10px;}
+  .doorhi{color:var(--muted);font-size:13px;text-align:center;}
+  .doorhead{font-family:Georgia,serif;color:var(--gold-soft);font-size:25px;text-align:center;margin:2px 0 3px;}
+  .doorsub{color:var(--muted);font-size:12.5px;text-align:center;margin-bottom:6px;}
+  .doorgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:8px;}
+  .door{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;color:var(--ink);font-family:inherit;}
+  .door.gold{border-color:var(--gold);}
+  .door.heavy{border-color:#6b4a3a;}
+  .door .dic{font-size:26px;line-height:1;}
+  .door .dlbl{color:var(--gold-soft);font-size:17px;margin-top:7px;font-family:Georgia,serif;}
+  .door .dsub{color:var(--muted);font-size:11px;margin-top:2px;}
+  .arsenal{width:100%;background:linear-gradient(180deg,#2c2517,#241e12);border:1px solid var(--gold);border-radius:16px;padding:15px 14px;color:var(--gold-soft);font-size:16px;font-weight:700;cursor:pointer;font-family:Georgia,serif;margin:10px 0 2px;}
+  .arsenal:active{transform:translateY(1px);}
+  .arsenal .aic{margin-right:4px;}
+  .arsenal .amuted{color:var(--muted);font-weight:400;font-size:12.5px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;display:block;margin-top:2px;}
   .brand{color:var(--ink);font-size:13.5px;letter-spacing:.03em;padding:18px;opacity:.75;font-family:Georgia,serif;font-style:italic;text-align:center;}
   .steps{max-width:300px;margin:0 auto 26px;display:flex;flex-direction:column;gap:11px;text-align:left;}
   .step{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink);}
@@ -370,6 +384,26 @@
       <button class="ghost backlink" onclick="goGreet()">Back</button>
     </section>
 
+    <section id="s-doors" class="screen">
+      <p class="doorhi" id="doorsHi">Hi there.</p>
+      <h2 class="doorhead">Pray it out loud.</h2>
+      <button class="arsenal" onclick="goFind()"><span class="aic">&#128450;&#65039;</span>Prayer Arsenal<span class="amuted">every guided prayer, A to Z</span></button>
+      <p class="doorsub">or pick your punch &mdash;</p>
+      <div class="doorgrid" id="doorGrid"></div>
+      <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
+    </section>
+
+    <section id="s-thanks" class="screen">
+      <div class="kicker sm">Give God praise</div>
+      <h2>Let's give thanks.</h2>
+      <p class="sub">Praise isn't about how you feel &mdash; it's a weapon and an offering. Take a breath and say this out loud.</p>
+      <p class="declaration">Father, thank You. Before I ask You for a single thing, I stop and thank You. Thank You for the cross. Thank You that I'm forgiven, that I'm Yours, that You never once left. In the good and in the hard, I choose to give You thanks &mdash; because You are good, and Your mercy toward me never runs out. I come into Your gates with thanksgiving and into Your courts with praise. You are worthy. Amen.</p>
+      <div class="chapmark"><div class="clab">More praise is on the way</div><div class="cline"></div></div>
+      <p class="sub" style="font-size:13px;">Full praise and gratitude declarations are being written &mdash; in Loren's voice, coming soon.</p>
+      <button class="primary" style="margin-top:6px;" onclick="goNeeds()">Back to the doors</button>
+      <button class="ghost backlink" onclick="goNeeds()">&#8592; Back</button>
+    </section>
+
     <section id="s-needs" class="screen">
       <h2 id="needsHi">What do you need today?</h2>
       <p class="sub">Here are some simple guided prayers to help you declare what God already said.</p>
@@ -420,7 +454,7 @@
     </section>
 
     <section id="s-find" class="screen">
-      <p class="topictitle">Find a prayer</p>
+      <p class="topictitle">Prayer Arsenal</p>
       <p class="sub">Type what you're feeling, or what you're facing.</p>
       <input id="findBox" type="text" placeholder="anxious, sober, forgiven, sleep..." oninput="runFind()" autocomplete="off" style="max-width:340px;" />
       <div id="findResults" style="max-width:360px;margin:14px auto 0;text-align:left;"></div>
@@ -1177,12 +1211,46 @@ function runFind(){
 }
 function goHome(){show('s-entry');}
 function goNeeds(){
-  document.getElementById('needsHi').textContent=name?("Hi, "+name+"."):"Hi there.";
-  buildNeeds();show('s-needs');
+  document.getElementById('doorsHi').textContent=name?("Hi, "+name+"."):"Hi there.";
+  buildDoors();show('s-doors');
 }
 document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')goGreet();});
 
-function buildNeeds(){
+const DOORS=[
+  {tone:"heavy", icon:"\uD83D\uDEDF", q:"Get Unstuck", sub:"stuck \u00B7 anxious \u00B7 heavy", act:goStuck},
+  {tone:"gold",  icon:"\uD83E\uDE9E", q:"Identity", sub:"who you really are", act:()=>openLane("Identity \u2014 who God says you are",["identity","loved"])},
+  {tone:"gold",  icon:"\uD83D\uDEE1\uFE0F", q:"Fight Back", sub:"tempted \u00B7 attacked", act:()=>openLane("Fight back \u2014 resist the enemy",["victory","free","strength"])},
+  {tone:"gold",  icon:"\uD83D\uDE4C", q:"Praise & Thanks", sub:"grateful \u00B7 thankful", act:()=>show('s-thanks')}
+];
+function buildDoors(){
+  const grid=document.getElementById('doorGrid');grid.innerHTML="";
+  DOORS.forEach(d=>{
+    const card=document.createElement('button');card.className='door '+(d.tone||'gold');
+    card.innerHTML='<div class="dic">'+d.icon+'</div><div class="dlbl">'+d.q+'</div><div class="dsub">'+d.sub+'</div>';
+    card.onclick=d.act;grid.appendChild(card);
+  });
+  const wirm=document.createElement('button');wirm.className='need wide';
+  wirm.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>What It Really Means <span style="color:var(--muted);">(redemption, sin, grace, repentance\u2026)</span> \uD83D\uDE42</span>';
+  wirm.onclick=()=>goWordBank();grid.appendChild(wirm);
+  const ln=document.createElement('button');ln.className='need wide';
+  ln.innerHTML='<span class="ic">\uD83D\uDCA1</span><span>Learn \u2014 how this works &amp; the story</span>';
+  ln.onclick=()=>show('s-learn');grid.appendChild(ln);
+}
+function openLane(title,topics){
+  document.getElementById('bucketTitle').textContent=title;
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";
+  topics.forEach(key=>{
+    const btn=document.createElement('button');btn.className='need';
+    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
+    btn.onclick=()=>goTopic(key);grid.appendChild(btn);
+  });
+  show('s-bucket');
+}
+function goStuck(){
+  document.getElementById('needsHi').textContent="I'm stuck \u2014 where does it hurt?";
+  buildStuck();show('s-needs');
+}
+function buildStuck(){
   const grid=document.getElementById('needGrid');grid.innerHTML="";
   BUCKETS.forEach(b=>{
     const card=document.createElement('button');card.className='bucket';
@@ -1190,12 +1258,6 @@ function buildNeeds(){
     card.innerHTML='<div class="bq"><span class="bicon">'+b.icon+'</span>'+b.q+'</div><div class="bt">'+labels+'</div>';
     card.onclick=()=>goBucket(b.k);grid.appendChild(card);
   });
-  const find=document.createElement('button');find.className='need wide';
-  find.innerHTML='<span class="ic">\uD83D\uDD0D</span><span>Find a prayer \u2014 search or browse A to Z</span>';
-  find.onclick=()=>goFind();grid.appendChild(find);
-  const ln=document.createElement('button');ln.className='need wide';
-  ln.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>Learn \u2014 how this works, church words, and the story</span>';
-  ln.onclick=()=>show('s-learn');grid.appendChild(ln);
 }
 function goWord(){
   if(!currentWord)return;
