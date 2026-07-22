@@ -406,7 +406,7 @@
 
     <section id="s-needs" class="screen">
       <h2 id="needsHi">What do you need today?</h2>
-      <p class="sub">Here are some simple guided prayers to help you declare what God already said.</p>
+      <p class="sub">You don't want to be here, and maybe you're not even sure how to pray about it. Pick what's going on &mdash; I'll hand you the words.</p>
       <div class="needs" id="needGrid"></div>
       <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
     </section>
@@ -1119,11 +1119,11 @@ function goReset(){
   if(voicePref==="on")speak(RESET,"reset");
 }
 const BUCKETS=[
-  {k:"fight", icon:"\u2694\uFE0F", q:"Struggling right now", sub:"Sobriety \u00B7 Anger \u00B7 Stuck", topics:["recovered","anger","free"]},
-  {k:"mind",  icon:"\uD83C\uDF00", q:"My mind won't stop", topics:["anxiety","depression","mind","peace"]},
-  {k:"mess",  icon:"\uD83D\uDD04", q:"I keep messing up", topics:["forgiven"]},
-  {k:"who",   icon:"\uD83E\uDE9E", q:"I don't know who I am anymore", sub:"Rejected \u00B7 Abandoned \u00B7 Unloved", topics:["identity","rejection","abandonment","loved"]},
-  {k:"heavy", icon:"\u26F0\uFE0F", q:"Life is heavy right now", topics:["strength","healed","provision","victory"]}
+  {k:"struggle", icon:"\uD83E\uDD4A", q:"I'm struggling right now", sub:"Sobriety \u00B7 Anger", topics:["recovered","anger"]},
+  {k:"mind",     icon:"\uD83C\uDF00", q:"My mind won't stop", topics:["anxiety","depression","mind","peace"]},
+  {k:"mess",     icon:"\uD83D\uDD04", q:"I keep messing up", topics:["forgiven"]},
+  {k:"lost",     icon:"\uD83E\uDDED", q:"I feel lost", sub:"Rejected \u00B7 Abandoned", topics:["rejection","abandonment"]},
+  {k:"heavy",    icon:"\u26F0\uFE0F", q:"Carrying a lot right now", topics:["healed","provision"]}
 ];
 function goBucket(k){
   const b=BUCKETS.find(x=>x.k===k);if(!b)return;
@@ -1247,7 +1247,7 @@ function openLane(title,topics){
   show('s-bucket');
 }
 function goStuck(){
-  document.getElementById('needsHi').textContent="I'm stuck \u2014 where does it hurt?";
+  document.getElementById('needsHi').textContent="I'm stuck.";
   buildStuck();show('s-needs');
 }
 function buildStuck(){
