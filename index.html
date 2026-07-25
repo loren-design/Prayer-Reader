@@ -297,6 +297,12 @@
 .door.invite .dlbl{font-family:Georgia,serif;font-size:23px;color:var(--gold2,#e6c987);}
 .door.invite .dsub{font-size:13.5px;line-height:1.55;margin-top:6px;max-width:420px;margin-left:auto;margin-right:auto;}
 .door.invite .dtag{font-size:14px;color:var(--gold-soft);margin-top:9px;font-style:italic;}
+
+.needs.duo{grid-template-columns:1fr 1fr;gap:10px;}
+.needs.duo .bucket{grid-column:auto;padding:13px 12px 12px;border-radius:15px;}
+.needs.duo .bq{font-size:15px;line-height:1.35;}
+.needs.duo .bq .bicon{display:block;margin-bottom:4px;}
+.needs.duo .bt{font-size:11px;padding-left:0;margin-top:5px;line-height:1.4;}
 </style>
 </head>
 <body>
@@ -962,15 +968,15 @@ const cats={
   gratitude:{hk:"Go count what He already did.",label:"Gratitude",icon:"\uD83D\uDE4F",title:"About Gratitude",intro:"Gratitude is His hands \u2014 what He has already done. Not a mood you work up. A list you go count."},
   praise:{hk:"It doesn't wait for good news.",label:"Praise",icon:"\uD83D\uDD25",title:"About Praise",intro:"Praise is His face \u2014 who He is when nothing has gone right yet. It does not wait for the fields to fill up."},
   salvation:{hk:"Past tense. Settled.",label:"Saved",icon:"\uD83D\uDEAA",title:"Am I Really Saved?",intro:"If you have never done this, or you did it once and walked away, start here. The door is open and the seat is still yours."},
-  identity:{hk:"The mirror lied. God didn't.",label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
+  identity:{pq:"I don't even know who I am anymore.",hk:"The mirror lied. God didn't.",label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
   forgiven:{hk:"He doesn't bring it back up.",label:"Forgiven",icon:"\u2725",title:"About Forgiveness",intro:"The record is clean and heaven is not keeping a file. Here's what got written down about you."},
-  free:{hk:"The chains don't go back on.",label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
-  loved:{hk:"On your worst day. Still.",label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
+  free:{pq:"I keep going back to it.",hk:"The chains don't go back on.",label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
+  loved:{pq:"Does God even love somebody like me?",hk:"On your worst day. Still.",label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
   peace:{hk:"Your shoulders can come down now.",label:"Peace & Rest",icon:"\uD83D\uDD4A\uFE0F",title:"About Peace & Rest",intro:"Peace is not a mood. It is a Person standing guard at your door. Here's His word on it."},
-  strength:{hk:"Fear doesn't get the last word.",label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
+  strength:{pq:"I'm scared and I can't shake it.",hk:"Fear doesn't get the last word.",label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
   healed:{hk:"By His stripes. Past tense.",label:"Healed",icon:"\u2795",title:"About Healing",intro:"By His stripes. Past tense. Healing is part of what He already paid for."},
   provision:{hk:"He already knows what you need.",label:"Provided For",icon:"\uD83C\uDF3E",title:"About Provision",intro:"Your Father owns it all, and He provides for His kids. Here's His promise."},
-  victory:{hk:"The fight is real. The outcome isn't.",label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
+  victory:{pq:"I'm tired of losing this fight.",hk:"The fight is real. The outcome isn't.",label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
   anxiety:{hk:"When your chest won't loosen.",label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
   depression:{hk:"Light for the gray days.",label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
   anger:{hk:"Put the fire down.",label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
@@ -1404,7 +1410,7 @@ function goBucket(k){
   const b=BUCKETS.find(x=>x.k===k);if(!b)return;
   if(b.topics.length===1){goTopic(b.topics[0]);return;}
   document.getElementById('bucketTitle').textContent=b.q;
-  const grid=document.getElementById('bucketGrid');grid.innerHTML="";
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.remove('duo');
   b.topics.forEach(key=>{
     const btn=document.createElement('button');btn.className='need';
     btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+(cats[key].hk?('<span class="nhk">'+cats[key].hk+'</span>'):'')+'</span>';
@@ -1504,32 +1510,32 @@ const DOORS=[
 
 const ROOMS={
 saved:{title:"Am I Really Saved?",rooms:[
- {t:"He's Looking for You",ic:"\uD83D\uDD26",b:"The God who came out after you.",ns:[250,251,252,253,254,255,256,257,258,259,260,261,262,263,264],link:"loved"},
- {t:"The Trade",ic:"\u2696\uFE0F",b:"What the cross actually did.",ns:[265,266,267,268,269,270,271],link:"healed"},
- {t:"One Door",ic:"\uD83D\uDEAA",b:"Why Jesus \u2014 and why anybody qualifies.",ns:[272,273,274,275,276,277],link:"identity"},
- {t:"How to Come Home",ic:"\uD83D\uDDE3\uFE0F",b:"What you actually do. It's simpler than you think.",ns:[278,279,280,281,282,283,284,285,286,287,288],link:"forgiven"},
- {t:"Saved \u2014 even when I sin?",ic:"\u270D\uFE0F",b:"What just happened to you \u2014 and why it holds.",ns:[289,290,291,292,293,294,295,296,297,298,299],link:"forgiven"}
+ {t:"He's Looking for You",ic:"\uD83D\uDD26",pq:"Would God even want me back?",b:"The God who came out after you.",ns:[250,251,252,253,254,255,256,257,258,259,260,261,262,263,264],link:"loved"},
+ {t:"The Trade",ic:"\u2696\uFE0F",pq:"What did the cross actually change?",b:"He got yours. You got His.",ns:[265,266,267,268,269,270,271],link:"healed"},
+ {t:"One Door",ic:"\uD83D\uDEAA",pq:"Why does it have to be Jesus?",b:"Why Jesus \u2014 and why anybody qualifies.",ns:[272,273,274,275,276,277],link:"identity"},
+ {t:"How to Come Home",ic:"\uD83D\uDDE3\uFE0F",pq:"What do I actually have to do?",b:"What you actually do. It's simpler than you think.",ns:[278,279,280,281,282,283,284,285,286,287,288],link:"forgiven"},
+ {t:"Saved \u2014 even when I sin?",ic:"\u270D\uFE0F",pq:"I blew it again. Am I still saved?",b:"Why it holds.",ns:[289,290,291,292,293,294,295,296,297,298,299],link:"forgiven"}
 ]},
-pt:{title:"Praise & Thanks \u2014 His hands and His face",rooms:[
- {t:"How Do I Even Start?",ic:"\uD83C\uDF31",b:"You don't have to feel it to start.",ns:[150,154,157,158,160,164,169,190,194,195,203,204,214,216,217],link:"peace"},
- {t:"Thankful in the Storm",ic:"\u26C8\uFE0F",b:"Thanks before anything changes.",ns:[153,162,168,193,201,205,207,212],link:"depression"},
- {t:"Go Count the Stones",ic:"\uD83E\uDEA8",b:"Remembering what He's already done.",ns:[151,152,156,159,161,163,165,192,197,198,200,202,206,213,218],link:"provision"},
- {t:"Say It Out Loud",ic:"\uD83D\uDCE3",b:"Thanks that stays in your head isn't finished yet.",ns:[155,166,167,191,196,199,208,209,210,211,215,219],link:"free"},
- {t:"Praise Is a Weapon",ic:"\u2694\uFE0F",b:"Sing before the wall falls.",ns:[171,172,173,175,176,177,182,183,184,187,222,234],link:"victory"},
- {t:"Who He Is",ic:"\uD83D\uDC51",b:"Praise that starts with Him, not with how today went.",ns:[178,179,180,181,185,189,225,226,230,233,237,238,239,249],link:"identity"},
- {t:"Your Part",ic:"\uD83D\uDE4C",b:"Breath, hands, voice. He never said it had to sound good.",ns:[174,186,188,223,228,229,231,232,235,236,242,244,246,247,248],link:"mind"},
- {t:"It Never Stops",ic:"\uD83C\uDF05",b:"The sun never stops coming up. Neither does this.",ns:[170,220,221,224,227,240,241,243,245],link:"loved"}
+pt:{title:"Praise & Thanks \u2014 quiets the storm. Rattles the enemy.",rooms:[
+ {t:"How Do I Even Start?",ic:"\uD83C\uDF31",pq:"I don't feel grateful. At all.",b:"You don't have to feel it to start.",ns:[150,154,157,158,160,164,169,190,194,195,203,204,214,216,217],link:"peace"},
+ {t:"Thankful in the Storm",ic:"\u26C8\uFE0F",pq:"Am I supposed to thank Him for THIS?",b:"Thanks before anything changes.",ns:[153,162,168,193,201,205,207,212],link:"depression"},
+ {t:"Go Count the Stones",ic:"\uD83E\uDEA8",pq:"What has God ever done for me?",b:"Go count. You'll run out of paper.",ns:[151,152,156,159,161,163,165,192,197,198,200,202,206,213,218],link:"provision"},
+ {t:"Say It Out Loud",ic:"\uD83D\uDCE3",pq:"Do I really have to say it out loud?",b:"Thanks nobody hears isn't finished yet.",ns:[155,166,167,191,196,199,208,209,210,211,215,219],link:"free"},
+ {t:"Praise Is a Weapon",ic:"\u2694\uFE0F",pq:"Can praise actually change anything?",b:"Sing before the wall falls.",ns:[171,172,173,175,176,177,182,183,184,187,222,234],link:"victory"},
+ {t:"Who He Is",ic:"\uD83D\uDC51",pq:"Who is He when my life's falling apart?",b:"Praise that starts with Him, not with how today went.",ns:[178,179,180,181,185,189,225,226,230,233,237,238,239,249],link:"identity"},
+ {t:"Your Part",ic:"\uD83D\uDE4C",pq:"I don't know how to worship.",b:"Breath, hands, voice. He never said it had to sound good.",ns:[174,186,188,223,228,229,231,232,235,236,242,244,246,247,248],link:"mind"},
+ {t:"It Never Stops",ic:"\uD83C\uDF05",pq:"How long am I supposed to keep this up?",b:"The sun never stops coming up. Neither does this.",ns:[170,220,221,224,227,240,241,243,245],link:"loved"}
 ]}};
 let currentRoom=null,currentRoomIdx=0,currentDoorKey=null;
 function openRoomLane(dk){
   currentDoorKey=dk;currentRoom=null;
   gcCount('/rooms-'+dk);
   document.getElementById('bucketTitle').textContent=ROOMS[dk].title;
-  const grid=document.getElementById('bucketGrid');grid.innerHTML="";
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.toggle('duo',dk==='pt');
   ROOMS[dk].rooms.forEach((r,i)=>{
-    const btn=document.createElement('button');btn.className='need';
-    btn.innerHTML='<span class="ic">'+r.ic+'</span><span class="lbl">'+r.t+' <span style="color:var(--muted);font-size:12px;">('+r.ns.length+')</span>'+(r.b?('<span class="nhk">'+r.b+'</span>'):'')+'</span>';
-    btn.onclick=()=>goRoom(dk,i);grid.appendChild(btn);
+    const card=document.createElement('button');card.className='bucket';
+    card.innerHTML='<div class="bq"><span class="bicon">'+r.ic+'</span>'+(r.pq||r.t)+'</div><div class="bt">'+r.t+' \u2014 '+r.b+' <span style="color:var(--muted);">\u00B7 '+r.ns.length+'</span></div>';
+    card.onclick=()=>goRoom(dk,i);grid.appendChild(card);
   });
   show('s-bucket');
 }
@@ -1561,11 +1567,18 @@ function buildDoors(){
 }
 function openLane(title,topics){
   document.getElementById('bucketTitle').textContent=title;
-  const grid=document.getElementById('bucketGrid');grid.innerHTML="";
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.remove('duo');
   topics.forEach(key=>{
-    const btn=document.createElement('button');btn.className='need';
-    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+(cats[key].hk?('<span class="nhk">'+cats[key].hk+'</span>'):'')+'</span>';
-    btn.onclick=()=>goTopic(key);grid.appendChild(btn);
+    const c=cats[key];
+    if(c.pq){
+      const card=document.createElement('button');card.className='bucket';
+      card.innerHTML='<div class="bq"><span class="bicon">'+c.icon+'</span>'+c.pq+'</div><div class="bt">'+c.label+(c.hk?(' \u2014 '+c.hk):'')+'</div>';
+      card.onclick=()=>goTopic(key);grid.appendChild(card);
+    }else{
+      const btn=document.createElement('button');btn.className='need';
+      btn.innerHTML='<span class="ic">'+c.icon+'</span><span class="lbl">'+c.label+(c.hk?('<span class="nhk">'+c.hk+'</span>'):'')+'</span>';
+      btn.onclick=()=>goTopic(key);grid.appendChild(btn);
+    }
   });
   show('s-bucket');
 }
