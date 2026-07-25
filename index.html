@@ -244,6 +244,37 @@
   .gcard p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink);}
   .grise{opacity:0;animation:rise .6s ease forwards;animation-delay:2.05s;}
   @media (prefers-reduced-motion: reduce){.gcard,.grise{animation:none;opacity:1;}}
+
+/* --- What It Really Means: living icons --- */
+.wicon{display:inline-block;font-size:30px;vertical-align:-3px;}
+@keyframes an-miss{0%,100%{transform:translateX(0)}35%{transform:translateX(7px) rotate(6deg)}55%{transform:translateX(-3px)}}
+@keyframes an-sprout{0%{transform:scale(.65) translateY(4px)}60%{transform:scale(1.08) translateY(-2px)}100%{transform:scale(1) translateY(0)}}
+@keyframes an-fadeink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes an-heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.18)}28%{transform:scale(1)}42%{transform:scale(1.12)}56%{transform:scale(1)}}
+@keyframes an-unroll{0%{transform:rotate(-10deg) scale(.9)}100%{transform:rotate(0) scale(1)}}
+@keyframes an-bridge{0%,100%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+@keyframes an-between{0%{transform:translateX(-9px);opacity:.4}60%{transform:translateX(2px);opacity:1}100%{transform:translateX(0)}}
+@keyframes an-swing{0%,100%{transform:rotate(0)}30%{transform:rotate(-28deg)}60%{transform:rotate(9deg)}}
+@keyframes an-straighten{0%{transform:skewX(-14deg)}70%{transform:skewX(3deg)}100%{transform:skewX(0)}}
+.an-miss{animation:an-miss 3.2s ease-in-out infinite;}
+.an-sprout{animation:an-sprout 2.6s ease-out infinite alternate;}
+.an-fadeink{animation:an-fadeink 3.8s ease-in-out infinite;}
+.an-heartbeat{animation:an-heartbeat 2.2s ease-in-out infinite;}
+.an-unroll{animation:an-unroll 2.4s ease-out infinite alternate;}
+.an-bridge{animation:an-bridge 3.4s ease-in-out infinite;}
+.an-between{animation:an-between 2.8s ease-out infinite;}
+.an-swing{animation:an-swing 3.6s ease-in-out infinite;}
+.an-straighten{animation:an-straighten 3s ease-out infinite alternate;}
+@media (prefers-reduced-motion: reduce){.wicon{animation:none !important;}}
+
+.wsecbox{grid-column:1 / -1;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+  padding:16px 16px 14px;text-align:left;margin-bottom:4px;}
+.wsbt{font-family:Georgia,serif;font-size:22px;line-height:1.25;color:var(--gold2,#e6c987);margin-bottom:11px;}
+.wsbt .ic{margin-right:9px;font-size:20px;}
+.wchips{display:flex;flex-wrap:wrap;gap:8px;}
+.wchip{font-size:12.5px;padding:7px 13px;border-radius:999px;background:var(--bg);border:1px solid var(--line);
+  color:var(--ink);cursor:pointer;letter-spacing:.02em;}
+.wchip:active{border-color:var(--gold);color:var(--gold-soft);}
 </style>
 </head>
 <body>
@@ -480,6 +511,7 @@
       <p class="topictitle">Church words, in plain English</p>
       <p class="sub">Words we use in church that nobody explains &mdash; made simple, with the Hebrew and Greek behind them.</p>
       <div class="wbcta">Tap a word to learn what it really means</div>
+      <input id="wordFind" type="text" placeholder="Type a word... grace, heir, hallelujah" oninput="buildWordGrid(this.value)" autocomplete="off" style="max-width:340px;" />
       <div class="needs" id="wordGrid"></div>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
     </section>
@@ -761,83 +793,141 @@ const RESET="I can start over right now. Not tomorrow. Not after I clean up. Rig
 
 
 const GLOSSARY={
-repentance:{rx:/\brepent/i,word:"Repentance",
+repentance:{ic:"\uD83D\uDD04",rx:/\brepent/i,word:"Repentance",
 def:"Repentance is not groveling and it is not beating yourself up. It means to turn around and head home. You were going one way. You stop, you turn, you come back.",
 heb:"In Hebrew it's <strong>shuv</strong> \u2014 to turn around and return. It's the word the prophets used every time they called God's people home.",
 grk:"In Greek it's <strong>metanoia</strong> \u2014 a changed mind. New thinking that turns into a new direction.",
 ana:"It is a U-turn, not a courtroom. The same move you made the day you got honest: I was wrong about the direction. Turn the car around."},
-justified:{rx:/\bjustif/i,word:"Justified",
+justified:{ic:"\uD83D\uDD28",rx:/\bjustif/i,word:"Justified",
 def:"Justified means the Judge banged the gavel and said not guilty \u2014 and it is on the books. Your record did not get hidden. It got settled.",
 heb:"In Hebrew it's <strong>tsadaq</strong> \u2014 to be declared in the right. A courtroom word: the verdict comes down in your favor.",
 grk:"In Greek it's <strong>dikaio\u014d</strong> \u2014 to be declared righteous. Not made to feel righteous. Declared. Legally.",
 ana:"Just as if I had never done it. Somebody else paid the whole bill, and the court stamped it paid in full."},
-sanctified:{rx:/\bsanctif/i,word:"Sanctified",
+sanctified:{ic:"\uD83D\uDD6F\uFE0F",rx:/\bsanctif/i,word:"Sanctified",
 def:"Sanctified means set apart. God took you out of general circulation and marked you for Himself. It is about who owns you, not how polished you are.",
 heb:"In Hebrew it's <strong>qadash</strong> \u2014 to be set apart as sacred. The temple tools were qadash: ordinary metal with a holy assignment.",
 grk:"In Greek it's <strong>hagiaz\u014d</strong> \u2014 made holy, set apart for God's own use.",
 ana:"Like your grandmother's good dishes. Not better china \u2014 set apart for something special. That is you."},
-redeemed:{rx:/\bredeem|redempt/i,word:"Redeemed",
+redeemed:{ic:"\uD83C\uDFF7\uFE0F",rx:/\bredeem|redempt/i,word:"Redeemed",
 def:"Redeemed means bought back. You were on the block and Somebody paid the full price and took you home. The deed changed hands.",
 heb:"In Hebrew it's <strong>ga'al</strong> \u2014 the kinsman-redeemer. A family member with the right to buy you back. It's the whole story of Ruth, and it's what Jesus is to you: family who paid.",
 grk:"In Greek it's <strong>exagoraz\u014d</strong> \u2014 bought out of the marketplace. Off the block. Never for sale again.",
 ana:"Like getting something precious out of the pawn shop. It was His, it got lost, and He paid to bring it home. The price was blood."},
-grace:{rx:/\bgrace/i,word:"Grace",
+grace:{ic:"\uD83D\uDC9D",rx:/\bgrace/i,word:"Grace",
 def:"Grace is God giving you what you could never earn and never pay back. It is not a wage. It is a gift.",
 heb:"In Hebrew it's <strong>chen</strong> \u2014 favor you did not work for. Noah found chen in the eyes of the Lord \u2014 he didn't earn it, he found it.",
 grk:"In Greek it's <strong>charis</strong> \u2014 the gift itself, given freely, with joy attached.",
 ana:"Not a paycheck. A present. You do not work for it. You just have the guts to receive it."},
-mercy:{rx:/\bmerc(y|iful|ies)/i,word:"Mercy",
+mercy:{ic:"\uD83E\uDEC2",rx:/\bmerc(y|iful|ies)/i,word:"Mercy",
 def:"Mercy is God not giving you what you did earn. Grace hands you the gift. Mercy tears up the sentence.",
 heb:"In Hebrew it's <strong>chesed</strong> \u2014 loyal covenant love that keeps showing up when it has every reason to quit. The Bible says it's new every morning.",
 grk:"In Greek it's <strong>eleos</strong> \u2014 compassion that doesn't just feel something. It steps in and helps.",
 ana:"You walked in expecting the hammer and walked out with your Father's arm around you. That is mercy."},
-righteousness:{rx:/\brighteous/i,word:"Righteousness",
+righteousness:{ic:"\uD83E\uDD1D",rx:/\brighteous/i,word:"Righteousness",
 def:"Righteousness is not being a goody two shoes. It is right standing with God \u2014 the relationship is right and the account is right \u2014 because of Jesus, not your scorecard.",
 heb:"In Hebrew it's <strong>tsedaqah</strong> \u2014 being truly in the right. Honest scales, straight dealing, nothing crooked between you and God.",
 grk:"In Greek it's <strong>dikaiosyn\u0113</strong> \u2014 right standing. Your position in the family, not your performance for the family.",
 ana:"It is your standing in the house, not a performance chart on the fridge. Sons do not audition to stay in the family."},
-salvation:{rx:/\bsav(ed|es|ing)|salvation/i,word:"Saved",
+salvation:{ic:"\uD83D\uDEDF",rx:/\bsav(ed|es|ing)|salvation/i,word:"Saved",
 def:"One word that means four things at once: rescued, healed, delivered, and made whole. God does not do partial rescues.",
 heb:"In Hebrew it's <strong>yasha</strong> \u2014 to rescue, to deliver. And here's the part that'll stop you: yasha is the root of the name <strong>Yeshua</strong> \u2014 Jesus. His own name literally means: the Lord saves.",
 grk:"In Greek it's <strong>s\u014dz\u014d</strong> \u2014 rescued, healed, delivered, and made whole. All four in one word.",
 ana:"Pulled out of the water, dried off, patched up, and driven home. The whole rescue \u2014 not just the life ring."},
-faith:{rx:/\bfaith/i,word:"Faith",
+faith:{ic:"\u2693",rx:/\bfaith/i,word:"Faith",
 def:"Faith is not a feeling you work up. It is trust with your weight on it \u2014 acting like God told the truth.",
 heb:"In Hebrew it's <strong>emunah</strong> \u2014 steady, faithful trust. Something solid you can lean on that holds. It's the root of the word <strong>amen</strong>: so be it, it stands.",
 grk:"In Greek it's <strong>pistis</strong> \u2014 trust, confidence, conviction you act on.",
 ana:"You do not feel a chair. You sit in it. Faith is sitting down on what God said."},
-confess:{rx:/\bconfess/i,word:"Confess",
+confess:{ic:"\uD83D\uDDE3\uFE0F",rx:/\bconfess/i,word:"Confess",
 def:"Confess means to agree with God out loud \u2014 about what you did, and about who you are now.",
 heb:"In Hebrew it's <strong>yadah</strong> \u2014 to own it out loud with your hands thrown up. The same word is used for praise. Owning your stuff and praising God are closer cousins than you think.",
 grk:"In Greek it's <strong>homologe\u014d</strong> \u2014 literally, to say the same thing. You say about it what God says about it.",
 ana:"It is the admitted step in one word. Get it out of the dark and into the light, and it loses its grip."},
-atonement:{rx:/\baton/i,word:"Atonement",
+atonement:{ic:"\uD83E\uDE78",rx:/\baton/i,word:"Atonement",
 def:"Atonement means the covering. The debt gets covered so completely it is like it was never on the books.",
 heb:"In Hebrew it's <strong>kaphar</strong> \u2014 to cover. It's where Yom Kippur, the Day of Atonement, gets its name: the day the whole nation's debt got covered.",
 grk:"In Greek it's <strong>hilasmos</strong> \u2014 the sacrifice that satisfies. The payment that closes the case for good.",
 ana:"Somebody walked into the bank and paid off a loan you could not touch. Covered means covered."},
-holy:{rx:/\bhol(y|iness)/i,word:"Holy",
+holy:{ic:"\uD83C\uDF7D\uFE0F",rx:/\bhol(y|iness)/i,word:"Holy",
 def:"Holy does not mean stuffy. It means set apart \u2014 one of a kind, on purpose, for a purpose.",
 heb:"In Hebrew it's <strong>qadosh</strong> \u2014 set apart, unlike anything else. When the angels cry qadosh, qadosh, qadosh, they're saying: there is nothing and no one like Him.",
 grk:"In Greek it's <strong>hagios</strong> \u2014 set apart for God. Same word that gives us saints: the set-apart ones.",
 ana:"Not better than everybody. Different assignment. A tool set aside for the Master's own hand."},
-gospel:{rx:/\bgospel/i,word:"Gospel",
+gospel:{ic:"\uD83D\uDCE3",rx:/\bgospel/i,word:"Gospel",
 def:"Gospel just means good news \u2014 the announcement that the war is over and the King already won.",
-heb:"The Old Testament root is <strong>basar</strong> \u2014 to carry good news. Isaiah 52 paints it: the runner coming over the mountains, feet flying, shouting that peace has come.",
+heb:"The Old Testament root is <strong>basar</strong> \u2014 to carry good news. Isaiah fifty-two paints it: the runner coming over the mountains, feet flying, shouting that peace has come.",
 grk:"In Greek it's <strong>euangelion</strong> \u2014 the victory announcement. The word they used when a battle was won and a runner brought word back to the city.",
 ana:"Not good advice. Good news. Advice tells you what to do. News tells you what has been done."},
-reconciled:{rx:/\breconcil/i,word:"Reconciled",
+reconciled:{ic:"\uD83D\uDC9E",rx:/\breconcil/i,word:"Reconciled",
 def:"Reconciled means the relationship got restored. The fight between you and God is over \u2014 and He is the one who ended it.",
 heb:"The Hebrew idea is <strong>shalam</strong> \u2014 the root of shalom. Made whole. Peace restored. Nothing missing, nothing broken between you.",
 grk:"In Greek it's <strong>katallass\u014d</strong> \u2014 enemies brought back to the same table. The exchange that makes two parties one again.",
 ana:"The amends got made. Except God made them toward you first, while you were still mad at Him."},
-covenant:{rx:/\bcovenant/i,word:"Covenant",
+covenant:{ic:"\u270D\uFE0F",rx:/\bcovenant/i,word:"Covenant",
 def:"A covenant is stronger than a contract. Contracts have exit clauses. Covenants are cut in blood and do not expire.",
 heb:"In Hebrew it's <strong>berith</strong> \u2014 a covenant you cut, not one you sign. Blood sealed it, because it was meant to hold for life.",
 grk:"In Greek it's <strong>diath\u0113k\u0113</strong> \u2014 a testament. A will. It goes into effect through a death \u2014 and Jesus supplied the death that put yours into effect.",
 ana:"A contract says: as long as you hold up your end. A covenant says: even if you do not. God cut a covenant."}
+,sin:{rx:/\bsin(s|ned|ning|ner|ners)?\b/i,word:"Sin",ic:"\uD83C\uDFAF",an:"an-miss",
+def:"Missing what you were made for. Not a list of bad habits \u2014 a direction that leads away from God.",
+heb:"In Hebrew it's <strong>chata</strong> \u2014 to miss the mark. An archer's word. The arrow flew; it just didn't land where it was aimed.",
+grk:"In Greek it's <strong>hamartia</strong> \u2014 same picture, same miss. Every archer in the ancient world knew this word before church ever borrowed it.",
+ana:"Nobody wakes up aiming for the ditch. You aim at happy, at numb, at anywhere-but-here \u2014 and the arrow keeps landing in the same hay bale. The problem was never the aim. It's the archer. That's why He offers you new hands."}
+,bornagain:{rx:/born again|born anew/i,word:"Born Again",ic:"\uD83C\uDF31",an:"an-sprout",
+def:"Starting over from actual zero. Not turning over a new leaf \u2014 getting a new tree.",
+heb:"In Hebrew it's <strong>chadash</strong> \u2014 new. The word in Ezekiel where God says, I will give you a new heart. Not repaired. Replaced.",
+grk:"In Greek it's <strong>gennao anothen</strong> \u2014 born from above. Nicodemus heard again and asked how a grown man re-enters the womb. Jesus meant: this birth doesn't come from your mother. It comes from Heaven.",
+ana:"You can't self-improve a dead engine. At some point you stop rebuilding the carburetor and accept the brand-new motor \u2014 free, installed, warrantied forever."}
+,remission:{rx:/remission/i,word:"Remission",ic:"\uD83E\uDDFE",an:"an-fadeink",
+def:"The debt isn't filed away or suspended. It's sent away. Gone like it never posted.",
+heb:"In Hebrew it's <strong>deror</strong> \u2014 liberty. The Jubilee word. Every fifty years Israel blew a trumpet, debts died, and slaves walked home. God put a debt-cancellation party on the calendar.",
+grk:"In Greek it's <strong>aphesis</strong> \u2014 release. To send away. The same word for letting a prisoner walk out the front door in daylight.",
+ana:"Not we'll defer your payments. Not reduced interest. The account doesn't exist. You keep trying to log in to check the balance, and the bank keeps saying: what account?"}
+,eternallife:{rx:/(everlasting|eternal) life/i,word:"Eternal Life",ic:"\uD83D\uDC93",an:"an-heartbeat",
+def:"Not just life that runs long \u2014 life of a different kind, and it starts now, not at the funeral.",
+heb:"In Hebrew it's <strong>chayim</strong> \u2014 life, and it's plural in Hebrew. Lives. As if one word couldn't hold all of it.",
+grk:"In Greek it's <strong>zoe aionios</strong> \u2014 the life of the age to come. Jesus defined it Himself in John seventeen: this is eternal life, that they may know You. It's a relationship with a pulse, not a duration.",
+ana:"Everybody thinks it's about the odometer. It's about the engine. He doesn't hand you more miles of the old life \u2014 He swaps in a life that doesn't run on the same fuel."}
+,heir:{rx:/\bheirs?\b|joint-heir/i,word:"Heir",ic:"\uD83D\uDCDC",an:"an-unroll",
+def:"Someone written into the will. Not staff. Not a guest. Family, with a name on the paperwork.",
+heb:"In Hebrew it's <strong>nachalah</strong> \u2014 the allotted portion. Every tribe in Israel got a marked-out piece of land with their name on it. Nobody scrambled for scraps.",
+grk:"In Greek it's <strong>kleronomos</strong> \u2014 the one who receives the lot. Paul stacks it higher: heirs of God, joint-heirs with Christ. You don't split the estate with Jesus \u2014 you share His whole claim.",
+ana:"The prodigal came home rehearsing a job application: make me a hired servant. Dad wasn't hiring. There's a difference between working at the house and being in the will \u2014 and the Father keeps refusing your resume."}
+,uttermost:{rx:/uttermost/i,word:"Uttermost",ic:"\uD83C\uDF09",an:"an-bridge",
+def:"All the way. Completely. To the far edge of far gone.",
+heb:"In Hebrew it's <strong>tamid</strong> \u2014 continual. The altar fire that never went out, morning and evening, every day, no holidays. That's the rhythm behind a Savior who never clocks out.",
+grk:"In Greek it's <strong>panteles</strong> \u2014 entirely, to the very end. Hebrews says He saves to the uttermost those who come \u2014 meaning there is no part of you past His reach.",
+ana:"Every one of us has a basement level we think the rescue doesn't reach. Uttermost means the rope is longer than the hole. You cannot out-dig it. Believe me, some of us tested this thoroughly."}
+,intercession:{rx:/intercession|intercede/i,word:"Intercession",ic:"\uD83D\uDE4F",an:"an-between",
+def:"Standing between. Speaking up for someone who can't speak for themselves.",
+heb:"In Hebrew it's <strong>paga</strong> \u2014 to press in, to reach, to meet. Isaiah fifty-three: He made intercession for the transgressors. He pressed Himself into the space between you and what was coming.",
+grk:"In Greek it's <strong>entygchano</strong> \u2014 to appeal on someone's behalf. Right now, Hebrews says, Jesus lives to do this for you. That's His current full-time job.",
+ana:"It's the friend who walks into the courtroom, stands next to you, and says I'm with him \u2014 except this Friend is the Judge's Son, He's never lost a case, and He took your sentence before the trial started."}
+,backsliding:{rx:/backslid/i,word:"Backsliding",ic:"\uD83E\uDDED",an:"an-swing",
+def:"A church word for going back to it. Sliding toward what you already left.",
+heb:"In Hebrew it's <strong>meshubah</strong> \u2014 a turning back. Built on shuv, the same root as returning home. The road runs both directions \u2014 which is exactly why He keeps the porch light on.",
+grk:"In Greek it's <strong>planao</strong> \u2014 to wander off. James says when somebody wanders from the truth, go get them. Wanderers get retrieved, not written off.",
+ana:"Hosea's whole life was this word: his wife went back, and God sent him to buy her home again. Backsliding isn't the end of your story. He knows you went back. The offer's still on the table. Ask me how I know."}
+,transgression:{rx:/transgress|iniquit/i,word:"Transgressions & Iniquities",ic:"\u26A1",an:"an-straighten",
+def:"Two old words, same neighborhood. Transgression is crossing a line you knew was there. Iniquity is the crooked thing inside that keeps you crossing it.",
+heb:"In Hebrew it's <strong>pesha</strong> \u2014 rebellion, stepping over the boundary on purpose. And <strong>avon</strong> \u2014 twisted, bent. One's the act. The other's the bend in the wood.",
+grk:"In Greek it's <strong>paraptoma</strong> \u2014 a false step, a slip across the line. Isaiah fifty-three carries both: wounded for our transgressions, bruised for our iniquities. He paid for the deeds and the bent that produced them.",
+ana:"Getting your record cleared is one thing. Getting the crooked thing inside straightened is another. Most programs stop at the first. The cross covers both \u2014 the file and the factory."}
+,
+thanksgiving:{rx:/thanksgiving/i,word:"Thanksgiving",ic:"\uD83D\uDE4C",def:"Not the November holiday. It means telling God thank you for what He actually did. Specific. Out loud. Counting real things, not being vaguely positive."},
+sacrificeofpraise:{rx:/sacrifice of (praise|thanksgiving)/i,word:"Sacrifice of praise",ic:"\uD83D\uDD25",def:"Praise that costs you something. When you don't feel it and you say it anyway. The Bible calls this the strongest kind \u2014 not the weakest \u2014 because you're giving something up to say it."},
+inhabits:{rx:/\binhabit/i,word:"Inhabits",ic:"\uD83C\uDFE0",def:"Lives in. Not visits. When people praise, God moves in and stays. Same word you'd use for where somebody lives."},
+lovingkindness:{rx:/lovingkindness/i,word:"Lovingkindness",ic:"\uD83D\uDC97",def:"One word in Hebrew \u2014 chesed. It means love that keeps its promises. Love that doesn't quit when you give it a reason to. Loyal love."},
+supplication:{rx:/supplication/i,word:"Supplication",ic:"\uD83E\uDD32",def:"Asking God for something you really need. That's it. It's just an old word for a serious ask."},
+worthy:{rx:/\bworthy\b/i,word:"Worthy",ic:"\uD83D\uDC51",def:"Deserving it. Not a compliment we pay God \u2014 a fact about Him. Like saying water is wet."},
+unspeakable:{rx:/unspeakable/i,word:"Unspeakable",ic:"\uD83E\uDD2F",def:"Too big for words. Not \"shouldn't be spoken\" \u2014 can't be. Paul ran out of language trying to describe what God gave and just said so."},
+exalt:{rx:/\bexalt/i,word:"Exalt",ic:"\uD83C\uDFD4\uFE0F",def:"Lift high. Put in the highest place. Not making God bigger \u2014 recognizing where He already is."},
+omnipotent:{rx:/omnipotent/i,word:"Omnipotent",ic:"\uD83D\uDCAA",def:"All-powerful. There's no situation with more power in it than Him."},
+hallelujah:{rx:/hallelujah|alleluia/i,word:"Hallelujah",ic:"\uD83C\uDF89",def:"Two Hebrew words stuck together \u2014 praise and Yah, short for the Lord's name. It literally means \"praise the Lord.\" Same word in almost every language on earth."},
+sanctuary:{rx:/sanctuary/i,word:"Sanctuary",ic:"\uD83D\uDD4A\uFE0F",def:"The place set apart for God. Originally the temple. Now, wherever His people gather \u2014 and wherever you are when you turn toward Him."},
+royalpriesthood:{rx:/royal priesthood/i,word:"Royal priesthood",ic:"\uD83C\uDF96\uFE0F",def:"Two jobs in one title. Royal \u2014 you belong to the King's family. Priesthood \u2014 you have direct access to God and you bring others with you. No middleman needed."}
 };
-let currentWord=null, wordReturn="pray";
+let currentWord=null, currentWordKey=null, wordReturn="pray";
 
 const cats={
   gratitude:{label:"Gratitude",icon:"\uD83D\uDE4F",title:"About Gratitude",intro:"Gratitude is His hands \u2014 what He has already done. Not a mood you work up. A list you go count."},
@@ -1472,27 +1562,54 @@ function goWord(){
   wordReturn="pray";renderWord(currentWord);
 }
 function renderWord(key){
-  const g=GLOSSARY[key];
-  document.getElementById('wordTitle').textContent=g.word;
+  const g=GLOSSARY[key];currentWordKey=key;
+  document.getElementById('wordTitle').innerHTML=(g.ic?('<span class="wicon '+(g.an||'')+'">'+g.ic+'</span> '):'')+g.word;
   document.getElementById('wordDef').textContent=g.def;
-  document.getElementById('wordHeb').innerHTML=g.heb;
-  document.getElementById('wordGrk').innerHTML=g.grk;
-  document.getElementById('wordAna').textContent=g.ana;
+  const _hb=document.getElementById('wordHeb'),_gk=document.getElementById('wordGrk'),_an=document.getElementById('wordAna');
+  if(g.heb){_hb.innerHTML=g.heb;_hb.style.display="";}else{_hb.innerHTML="";_hb.style.display="none";}
+  if(g.grk){_gk.innerHTML=g.grk;_gk.style.display="";}else{_gk.innerHTML="";_gk.style.display="none";}
+  if(g.ana){_an.textContent=g.ana;_an.style.display="";}else{_an.textContent="";_an.style.display="none";}
   document.getElementById('wordBackBtn').textContent=wordReturn==="pray"?"Back to the prayer":"Back to the words";
   show('s-word');
 }
 function backFromWord(){show(wordReturn==="pray"?"s-pray":"s-wordbank");}
 function goWordBank(){
   wordReturn="bank";
-  const grid=document.getElementById('wordGrid');grid.innerHTML="";
-  Object.keys(GLOSSARY).forEach(k=>{
-    const g=GLOSSARY[k];
-    const b=document.createElement('button');b.className='wbword';
-    b.innerHTML=g.word;
-    b.onclick=()=>{wordReturn="bank";renderWord(k);};
-    grid.appendChild(b);
-  });
+  const wf=document.getElementById('wordFind');if(wf)wf.value="";
+  buildWordGrid("");
   show('s-wordbank');
+}
+function buildWordGrid(q){
+  const grid=document.getElementById('wordGrid');grid.innerHTML="";
+  q=(q||"").trim().toLowerCase();
+  const SEC=[
+   {t:"Coming Home",ic:"\uD83D\uDEAA",keys:["salvation","sin","repentance","confess","bornagain","backsliding","transgression","remission","gospel"]},
+   {t:"What Jesus Did",ic:"\u2696\uFE0F",keys:["redeemed","atonement","grace","mercy","justified","righteousness","reconciled","intercession","uttermost","covenant"]},
+   {t:"Who You Are Now in Christ",ic:"\uD83D\uDC51",keys:["sanctified","holy","heir","eternallife","faith","royalpriesthood"]},
+   {t:"Praise & Thanks Words",ic:"\uD83D\uDE4C",keys:["hallelujah","thanksgiving","sacrificeofpraise","lovingkindness","supplication","inhabits","worthy","exalt","omnipotent","sanctuary","unspeakable"]}
+  ];
+  let shown=0;
+  SEC.forEach(sec=>{
+    const hits=sec.keys.filter(k=>GLOSSARY[k]&&(!q||GLOSSARY[k].word.toLowerCase().indexOf(q)>=0||k.indexOf(q)>=0));
+    if(!hits.length)return;
+    const box=document.createElement('div');box.className='wsecbox';
+    const h=document.createElement('div');h.className='wsbt';
+    h.innerHTML='<span class="ic">'+sec.ic+'</span>'+sec.t;
+    box.appendChild(h);
+    const wrap=document.createElement('div');wrap.className='wchips';
+    hits.forEach(k=>{
+      const b=document.createElement('button');b.className='wchip';
+      b.textContent=GLOSSARY[k].word;
+      b.onclick=()=>{wordReturn="bank";renderWord(k);};
+      wrap.appendChild(b);shown++;
+    });
+    box.appendChild(wrap);grid.appendChild(box);
+  });
+  if(!shown){
+    const p=document.createElement('p');p.className='sub';
+    p.textContent="No match yet \u2014 but if a church word has you stumped, tell us in feedback and we'll add it.";
+    grid.appendChild(p);
+  }
 }
 function speakWord(){
   if(!donkeyShown){openDonkey(speakWord);return;}
@@ -1501,12 +1618,11 @@ function speakWord(){
     if('speechSynthesis' in window)speechSynthesis.cancel();
     return;
   }
-  const key=document.getElementById('wordTitle').textContent;
-  const wk=Object.keys(GLOSSARY).find(k=>GLOSSARY[k].word===key);
+  const wk=currentWordKey;
   const entry=wk?GLOSSARY[wk]:null;
   if(!entry)return;
-  const strip=h=>h.replace(/<[^>]+>/g,"");
-  const line=entry.word+". "+entry.def+" "+strip(entry.heb)+" "+strip(entry.grk)+" "+entry.ana;
+  const strip=h=>(h||"").replace(/<[^>]+>/g,"");
+  const line=[entry.word+".",entry.def,strip(entry.heb),strip(entry.grk),entry.ana||""].filter(Boolean).join(" ");
   speak(line,"w-"+wk);
 }
 
