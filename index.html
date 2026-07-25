@@ -277,6 +277,22 @@
 .wchip{font-size:12.5px;padding:7px 13px;border-radius:999px;background:var(--bg);border:1px solid var(--line);
   color:var(--ink);cursor:pointer;letter-spacing:.02em;}
 .wchip:active{border-color:var(--gold);color:var(--gold-soft);}
+
+.need .nhk{display:block;font-size:11.5px;color:var(--muted);font-weight:400;margin-top:3px;letter-spacing:.02em;}
+
+.toolrow{display:flex;gap:9px;margin:2px 0 16px;}
+.toolbtn{flex:1;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:11px 4px 9px;
+  color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.toolbtn:active{border-color:var(--gold);}
+.toolbtn .tic{font-size:19px;}
+.toolbtn .tlb{font-size:12.5px;font-weight:700;letter-spacing:.02em;}
+.toolbtn .tsb{font-size:10.5px;color:var(--muted);}
+
+.door.invite{grid-column:1 / -1;border-color:var(--gold);padding:20px 18px 18px;}
+.door.invite .dic{font-size:30px;}
+.door.invite .dlbl{font-family:Georgia,serif;font-size:23px;color:var(--gold2,#e6c987);}
+.door.invite .dsub{font-size:13.5px;line-height:1.55;margin-top:6px;max-width:420px;margin-left:auto;margin-right:auto;}
+.door.invite .dtag{font-size:14px;color:var(--gold-soft);margin-top:9px;font-style:italic;}
 </style>
 </head>
 <body>
@@ -374,7 +390,8 @@
       </div>
       <button class="primary grise" id="guideBtn" onclick="guideNext()">Show me</button>
       <button class="ghost grise" style="font-size:13px;opacity:.8;" onclick="show('s-install')">&#128241; Put this on your phone &mdash; come back all day</button>
-    </section>
+      <button class="ghost backlink" id="guideBackLink" style="display:none;" onclick="guideBack=false;this.style.display='none';goNeeds()">&#8592; Back to praying</button>
+      </section>
 
     <section id="s-name" class="screen">
       <h2>First — what do I call you?</h2>
@@ -420,7 +437,11 @@
     <section id="s-doors" class="screen">
       <p class="doorhi" id="doorsHi">Hi there.</p>
       <h2 class="doorhead">Pray it out loud.</h2>
-      <button class="arsenal" onclick="goFind()"><span class="aic">&#128450;&#65039;</span>Prayer Arsenal<span class="amuted">every guided prayer, A to Z</span></button>
+      <div class="toolrow">
+        <button class="toolbtn" onclick="goFind()"><span class="tic">&#128450;&#65039;</span><span class="tlb">Prayer Arsenal</span><span class="tsb">A to Z</span></button>
+        <button class="toolbtn" onclick="goWordBank()"><span class="tic">&#128214;</span><span class="tlb">Church Words</span><span class="tsb">plain English</span></button>
+        <button class="toolbtn" onclick="show('s-learn')"><span class="tic">&#128161;</span><span class="tlb">How &amp; Why</span><span class="tsb">and the story</span></button>
+      </div>
       <p class="doorsub">or pick your punch &mdash;</p>
       <div class="doorgrid" id="doorGrid"></div>
       <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
@@ -598,7 +619,7 @@
       <div class="rule"></div>
       <div class="chunk"><strong>The mission is One Billion for Jesus.</strong> Every zip code. Every language. Every mailable address on earth &mdash; and everywhere a phone can be held, the Word can be handed. Know God Better Ministries &mdash; A Global Project of Ten2 Harvest Media.</div>
       <p class="topiccount" style="margin-top:22px;">Pray always &mdash; Ephesians 6:18</p>
-      <button class="ghost" style="margin-top:6px;" onclick="show('s-story')">How this started &mdash; Loren's story &#8594;</button>
+      <button class="ghost" style="margin-top:6px;" onclick="openStory('about')">How this started &mdash; Loren's story &#8594;</button>
       <button class="primary" style="margin-top:10px;" onclick="show('s-support')">Help us build it</button>
       <button class="ghost backlink" onclick="goNeeds()">Back to the table</button>
     </section>
@@ -628,7 +649,7 @@
       <div class="chunk"><strong>That's exactly how this app works.</strong> One honest prayer at a time. If you're where I was &mdash; broken, out of options, no church language &mdash; you're the reason this exists. The door is open. Come on in. You're welcome anytime.</div>
       <p class="topiccount" style="margin-top:18px;">The whole story lives on <a href="https://www.youtube.com/@KnowGodBetterMinistries" target="_blank" rel="noopener" style="color:var(--gold-soft);">the Know God Better YouTube channel</a></p>
       <button class="primary" style="margin-top:14px;" onclick="goNeeds()">Let's pray together</button>
-      <button class="ghost backlink" onclick="show('s-about')">&#8592; Back</button>
+      <button class="ghost backlink" onclick="backFromStory()">&#8592; Back</button>
     </section>
 
     <section id="s-learn" class="screen">
@@ -640,7 +661,7 @@
         <button class="bucket" onclick="show('s-lesson-written')"><div class="bq"><span class="bicon">&#128214;</span>It Is Written</div><div class="bt">How Jesus used declarations &mdash; Matthew 4</div></button>
         <button class="bucket" onclick="show('s-lesson-declare')"><div class="bq"><span class="bicon">&#128227;</span>Declarations vs. affirmations</div><div class="bt">Why out loud matters &mdash; Romans 12:2</div></button>
         <button class="bucket" onclick="goWordBank()"><div class="bq"><span class="bicon">&#128213;</span>What It Really Means</div><div class="bt">Church words, in plain English</div></button>
-        <button class="bucket" onclick="show('s-story')"><div class="bq"><span class="bicon">&#128682;</span>How this started</div><div class="bt">Loren's story</div></button>
+        <button class="bucket" onclick="openStory('learn')"><div class="bq"><span class="bicon">&#128682;</span>How this started</div><div class="bt">Loren's story</div></button>
       </div>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; Back to praying</button>
     </section>
@@ -933,25 +954,25 @@ royalpriesthood:{rx:/royal priesthood/i,word:"Royal priesthood",ic:"\uD83C\uDF96
 let currentWord=null, currentWordKey=null, wordReturn="pray";
 
 const cats={
-  gratitude:{label:"Gratitude",icon:"\uD83D\uDE4F",title:"About Gratitude",intro:"Gratitude is His hands \u2014 what He has already done. Not a mood you work up. A list you go count."},
-  praise:{label:"Praise",icon:"\uD83D\uDD25",title:"About Praise",intro:"Praise is His face \u2014 who He is when nothing has gone right yet. It does not wait for the fields to fill up."},
-  salvation:{label:"Saved",icon:"\uD83D\uDEAA",title:"Am I Really Saved?",intro:"If you have never done this, or you did it once and walked away, start here. The door is open and the seat is still yours."},
-  identity:{label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
-  forgiven:{label:"Forgiven",icon:"\u2725",title:"About Forgiveness",intro:"The record is clean and heaven is not keeping a file. Here's what got written down about you."},
-  free:{label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
-  loved:{label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
-  peace:{label:"Peace & Rest",icon:"\uD83D\uDD4A\uFE0F",title:"About Peace & Rest",intro:"Peace is not a mood. It is a Person standing guard at your door. Here's His word on it."},
-  strength:{label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
-  healed:{label:"Healed",icon:"\u2795",title:"About Healing",intro:"By His stripes. Past tense. Healing is part of what He already paid for."},
-  provision:{label:"Provided For",icon:"\uD83C\uDF3E",title:"About Provision",intro:"Your Father owns it all, and He provides for His kids. Here's His promise."},
-  victory:{label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
-  anxiety:{label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
-  depression:{label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
-  anger:{label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
-  mind:{label:"The Mind",icon:"\uD83E\uDDE0",title:"About Your Mind",intro:"Your mind is not stuck the way it is. It gets renewed, one thought at a time. It is written."},
-  recovered:{label:"Living Sober-Minded",icon:"\uD83C\uDF31",title:"About Living Sober-Minded",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."},
-  rejection:{label:"Rejected",icon:"\uD83E\uDEA8",title:"About Rejection",intro:"People passed you over, shut you out, or hurt you in God's name. None of that was the Father. Don't judge Him by His silly little kids. Here's who He really is \u2014 and what He calls you."},
-  abandonment:{label:"Abandoned",icon:"\uD83E\uDD32",title:"About Abandonment",intro:"Somebody who was supposed to stay didn't. That wound is real \u2014 and it is not the Father's signature. He does not leave. He does not let go. Here's His word on it."}
+  gratitude:{hk:"Go count what He already did.",label:"Gratitude",icon:"\uD83D\uDE4F",title:"About Gratitude",intro:"Gratitude is His hands \u2014 what He has already done. Not a mood you work up. A list you go count."},
+  praise:{hk:"It doesn't wait for good news.",label:"Praise",icon:"\uD83D\uDD25",title:"About Praise",intro:"Praise is His face \u2014 who He is when nothing has gone right yet. It does not wait for the fields to fill up."},
+  salvation:{hk:"Past tense. Settled.",label:"Saved",icon:"\uD83D\uDEAA",title:"Am I Really Saved?",intro:"If you have never done this, or you did it once and walked away, start here. The door is open and the seat is still yours."},
+  identity:{hk:"The mirror lied. God didn't.",label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
+  forgiven:{hk:"He doesn't bring it back up.",label:"Forgiven",icon:"\u2725",title:"About Forgiveness",intro:"The record is clean and heaven is not keeping a file. Here's what got written down about you."},
+  free:{hk:"The chains don't go back on.",label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
+  loved:{hk:"On your worst day. Still.",label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
+  peace:{hk:"Your shoulders can come down now.",label:"Peace & Rest",icon:"\uD83D\uDD4A\uFE0F",title:"About Peace & Rest",intro:"Peace is not a mood. It is a Person standing guard at your door. Here's His word on it."},
+  strength:{hk:"Fear doesn't get the last word.",label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
+  healed:{hk:"By His stripes. Past tense.",label:"Healed",icon:"\u2795",title:"About Healing",intro:"By His stripes. Past tense. Healing is part of what He already paid for."},
+  provision:{hk:"He already knows what you need.",label:"Provided For",icon:"\uD83C\uDF3E",title:"About Provision",intro:"Your Father owns it all, and He provides for His kids. Here's His promise."},
+  victory:{hk:"The fight is real. The outcome isn't.",label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
+  anxiety:{hk:"When your chest won't loosen.",label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
+  depression:{hk:"Light for the gray days.",label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
+  anger:{hk:"Put the fire down.",label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
+  mind:{hk:"Renewed one thought at a time.",label:"The Mind",icon:"\uD83E\uDDE0",title:"About Your Mind",intro:"Your mind is not stuck the way it is. It gets renewed, one thought at a time. It is written."},
+  recovered:{hk:"Fight from victory, not for it.",label:"Living Sober-Minded",icon:"\uD83C\uDF31",title:"About Living Sober-Minded",intro:"Not the old man in remission. The old man is dead, and a new man is standing here. You fight from victory. Keep your supports, and stand on this."},
+  rejection:{hk:"They passed you over. He didn't.",label:"Rejected",icon:"\uD83E\uDEA8",title:"About Rejection",intro:"People passed you over, shut you out, or hurt you in God's name. None of that was the Father. Don't judge Him by His silly little kids. Here's who He really is \u2014 and what He calls you."},
+  abandonment:{hk:"He doesn't leave. Period.",label:"Abandoned",icon:"\uD83E\uDD32",title:"About Abandonment",intro:"Somebody who was supposed to stay didn't. That wound is real \u2014 and it is not the Father's signature. He does not leave. He does not let go. Here's His word on it."}
 };
 
 const D=[
@@ -1285,9 +1306,9 @@ window.addEventListener('popstate',function(e){
 function partOfDay(){const h=new Date().getHours();if(h>=5&&h<12)return"morning";if(h>=12&&h<17)return"afternoon";return"evening";}
 
 let guideBack=false;
-function openGuide(){guideBack=true;const b=document.getElementById('guideBtn');if(b)b.textContent="Got it";show('s-guide');}
+function openGuide(){guideBack=true;const b=document.getElementById('guideBtn');if(b)b.textContent="Got it";const gl=document.getElementById('guideBackLink');if(gl)gl.style.display="inline-block";show('s-guide');}
 function guideNext(){
-  if(guideBack){guideBack=false;const b=document.getElementById('guideBtn');if(b)b.textContent="Show me";show('s-greet');return;}
+  if(guideBack){guideBack=false;const b=document.getElementById('guideBtn');if(b)b.textContent="Show me";const gl=document.getElementById('guideBackLink');if(gl)gl.style.display="none";goNeeds();return;}
   goName();
 }
 function enterApp(){
@@ -1379,7 +1400,7 @@ function goBucket(k){
   const grid=document.getElementById('bucketGrid');grid.innerHTML="";
   b.topics.forEach(key=>{
     const btn=document.createElement('button');btn.className='need';
-    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
+    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+(cats[key].hk?('<span class="nhk">'+cats[key].hk+'</span>'):'')+'</span>';
     btn.onclick=()=>goTopic(key);grid.appendChild(btn);
   });
   show('s-bucket');
@@ -1471,7 +1492,7 @@ const DOORS=[
   {tone:"gold",  icon:"\uD83E\uDE9E", q:"Identity", sub:"who you really are", act:()=>openLane("Identity \u2014 who God says you are",["identity","loved"])},
   {tone:"gold",  icon:"\uD83D\uDEE1\uFE0F", q:"Fight Back", sub:"tempted \u00B7 attacked", act:()=>openLane("Fight back \u2014 resist the enemy",["victory","free","strength"])},
   {tone:"gold",  icon:"\uD83D\uDE4C", q:"Praise & Thanks", sub:"grateful \u00B7 thankful \u00B7 even in the storm", act:()=>openRoomLane("pt")},
-  {tone:"gold",  icon:"\uD83D\uDEAA", q:"Am I Really Saved?", sub:"what it means to be saved \u00B7 new or coming back", act:()=>openRoomLane("saved")}
+  {tone:"invite", icon:"\uD83D\uDEAA", q:"Am I Really Saved?", sub:"For the backslider. For the one who keeps blowing it. For the prodigal who figures the door\u2019s been shut a long time.", tag:"It hasn\u2019t. Come see what He says.", act:()=>openRoomLane("saved")}
 ];
 
 const ROOMS={
@@ -1500,7 +1521,7 @@ function openRoomLane(dk){
   const grid=document.getElementById('bucketGrid');grid.innerHTML="";
   ROOMS[dk].rooms.forEach((r,i)=>{
     const btn=document.createElement('button');btn.className='need';
-    btn.innerHTML='<span class="ic">'+r.ic+'</span><span class="lbl">'+r.t+' <span style="color:var(--muted);font-size:12px;">('+r.ns.length+')</span></span>';
+    btn.innerHTML='<span class="ic">'+r.ic+'</span><span class="lbl">'+r.t+' <span style="color:var(--muted);font-size:12px;">('+r.ns.length+')</span>'+(r.b?('<span class="nhk">'+r.b+'</span>'):'')+'</span>';
     btn.onclick=()=>goRoom(dk,i);grid.appendChild(btn);
   });
   show('s-bucket');
@@ -1527,22 +1548,16 @@ function buildDoors(){
   const grid=document.getElementById('doorGrid');grid.innerHTML="";
   DOORS.forEach(d=>{
     const card=document.createElement('button');card.className='door '+(d.tone||'gold');
-    card.innerHTML='<div class="dic">'+d.icon+'</div><div class="dlbl">'+d.q+'</div><div class="dsub">'+d.sub+'</div>';
+    card.innerHTML='<div class="dic">'+d.icon+'</div><div class="dlbl">'+d.q+'</div><div class="dsub">'+d.sub+'</div>'+(d.tag?('<div class="dtag">'+d.tag+'</div>'):'');
     card.onclick=d.act;grid.appendChild(card);
   });
-  const wirm=document.createElement('button');wirm.className='need wide';
-  wirm.innerHTML='<span class="ic">\uD83D\uDCD6</span><span>What It Really Means <span style="color:var(--muted);">(redemption, sin, grace, repentance\u2026)</span> \uD83D\uDE42</span>';
-  wirm.onclick=()=>goWordBank();grid.appendChild(wirm);
-  const ln=document.createElement('button');ln.className='need wide';
-  ln.innerHTML='<span class="ic">\uD83D\uDCA1</span><span>Learn \u2014 how this works &amp; the story</span>';
-  ln.onclick=()=>show('s-learn');grid.appendChild(ln);
 }
 function openLane(title,topics){
   document.getElementById('bucketTitle').textContent=title;
   const grid=document.getElementById('bucketGrid');grid.innerHTML="";
   topics.forEach(key=>{
     const btn=document.createElement('button');btn.className='need';
-    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+'</span>';
+    btn.innerHTML='<span class="ic">'+cats[key].icon+'</span><span class="lbl">'+cats[key].label+(cats[key].hk?('<span class="nhk">'+cats[key].hk+'</span>'):'')+'</span>';
     btn.onclick=()=>goTopic(key);grid.appendChild(btn);
   });
   show('s-bucket');
@@ -1564,6 +1579,9 @@ function goWord(){
   if(!currentWord)return;
   wordReturn="pray";renderWord(currentWord);
 }
+let storyFrom='about';
+function openStory(f){storyFrom=f;show('s-story');}
+function backFromStory(){show(storyFrom==='learn'?'s-learn':'s-about');}
 function prayWord(){
   const g=GLOSSARY[currentWordKey];if(!g)return;
   gcCount('/wordpray-'+currentWordKey);
