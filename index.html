@@ -135,7 +135,7 @@
   .bucket .bicon{margin-right:10px;font-size:19px;}
   .bucket .bt{font-size:12.5px;color:var(--muted);letter-spacing:.02em;padding-left:33px;}
   .wbcta{display:inline-block;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#241d0c;
-    font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:999px;margin:8px 0 6px;letter-spacing:.02em;}
+    font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:999px;margin:0 0 18px;letter-spacing:.02em;}
   #wordGrid{grid-template-columns:repeat(2,1fr);gap:4px 10px;margin-top:14px;}
   .wbword{background:none;border:none;color:var(--gold2,#e6c987);font-family:Georgia,serif;font-size:21px;
     padding:13px 6px;text-decoration:underline;text-underline-offset:5px;
@@ -271,6 +271,8 @@
   padding:16px 16px 14px;text-align:left;margin-bottom:4px;}
 .wsbt{font-family:Georgia,serif;font-size:22px;line-height:1.25;color:var(--gold2,#e6c987);margin-bottom:11px;}
 .wsbt .ic{margin-right:9px;font-size:20px;}
+.wemph{border-bottom:2px solid var(--gold);padding-bottom:1px;}
+.wsbs{font-size:12.5px;color:var(--muted);font-style:italic;margin:-6px 0 11px;letter-spacing:.02em;}
 .wchips{display:flex;flex-wrap:wrap;gap:8px;}
 .wchip{font-size:12.5px;padding:7px 13px;border-radius:999px;background:var(--bg);border:1px solid var(--line);
   color:var(--ink);cursor:pointer;letter-spacing:.02em;}
@@ -482,7 +484,8 @@
         <button class="primary" onclick="backFromWord()" id="wordBackBtn">Back to the prayer</button>
       </div>
 
-      <button class="ghost backlink" onclick="goWordBank()">See what other words really mean</button>
+      <button class="primary" id="wordPrayBtn" style="display:none;margin-top:10px;" onclick="prayWord()"></button>
+       <button class="ghost backlink" onclick="goWordBank()">See what other words really mean</button>
     </section>
 
     <section id="s-find" class="screen">
@@ -508,9 +511,9 @@
 
     <section id="s-wordbank" class="screen">
       <div class="kicker sm">What It Really Means</div>
-      <p class="topictitle">Church words, in plain English</p>
-      <p class="sub">Words we use in church that nobody explains &mdash; made simple, with the Hebrew and Greek behind them.</p>
-      <div class="wbcta">Tap a word to learn what it really means</div>
+      <p class="topictitle">Know what you're praying</p>
+      <p class="sub" style="font-size:16px;margin:0 0 18px;">Church words nobody explains &mdash; made plain, with the Hebrew and Greek stories behind them. Because when you understand what God actually said, you can say it back out loud like you mean it. That's not vocabulary. That's ammunition.</p>
+      <div class="wbcta breathe">Tap a word. Learn it. Then go pray it.</div>
       <input id="wordFind" type="text" placeholder="Type a word... grace, heir, hallelujah" oninput="buildWordGrid(this.value)" autocomplete="off" style="max-width:340px;" />
       <div class="needs" id="wordGrid"></div>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; All topics</button>
@@ -1561,6 +1564,14 @@ function goWord(){
   if(!currentWord)return;
   wordReturn="pray";renderWord(currentWord);
 }
+function prayWord(){
+  const g=GLOSSARY[currentWordKey];if(!g)return;
+  gcCount('/wordpray-'+currentWordKey);
+  currentRoom=null;
+  const list=D.filter(d=>g.rx.test(d.t)||g.rx.test(d.h||""));
+  if(!list.length)return;
+  openList(list,null);
+}
 function renderWord(key){
   const g=GLOSSARY[key];currentWordKey=key;
   document.getElementById('wordTitle').innerHTML=(g.ic?('<span class="wicon '+(g.an||'')+'">'+g.ic+'</span> '):'')+g.word;
@@ -1570,6 +1581,10 @@ function renderWord(key){
   if(g.grk){_gk.innerHTML=g.grk;_gk.style.display="";}else{_gk.innerHTML="";_gk.style.display="none";}
   if(g.ana){_an.textContent=g.ana;_an.style.display="";}else{_an.textContent="";_an.style.display="none";}
   document.getElementById('wordBackBtn').textContent=wordReturn==="pray"?"Back to the prayer":"Back to the words";
+  const pb=document.getElementById('wordPrayBtn');
+  const hits=D.filter(d=>g.rx.test(d.t)||g.rx.test(d.h||""));
+  if(hits.length){pb.textContent="Now pray it out loud \u2014 "+hits.length+(hits.length===1?" prayer uses it \u2192":" prayers use it \u2192");pb.style.display="inline-block";}
+  else{pb.style.display="none";}
   show('s-word');
 }
 function backFromWord(){show(wordReturn==="pray"?"s-pray":"s-wordbank");}
@@ -1583,10 +1598,10 @@ function buildWordGrid(q){
   const grid=document.getElementById('wordGrid');grid.innerHTML="";
   q=(q||"").trim().toLowerCase();
   const SEC=[
-   {t:"Coming Home",ic:"\uD83D\uDEAA",keys:["salvation","sin","repentance","confess","bornagain","backsliding","transgression","remission","gospel"]},
-   {t:"What Jesus Did",ic:"\u2696\uFE0F",keys:["redeemed","atonement","grace","mercy","justified","righteousness","reconciled","intercession","uttermost","covenant"]},
-   {t:"Who You Are Now in Christ",ic:"\uD83D\uDC51",keys:["sanctified","holy","heir","eternallife","faith","royalpriesthood"]},
-   {t:"Praise & Thanks Words",ic:"\uD83D\uDE4C",keys:["hallelujah","thanksgiving","sacrificeofpraise","lovingkindness","supplication","inhabits","worthy","exalt","omnipotent","sanctuary","unspeakable"]}
+   {t:"He Wants You Back",sub:"The seat is still yours.",ic:"\uD83D\uDEAA",keys:["salvation","sin","repentance","confess","bornagain","backsliding","transgression","remission","gospel"]},
+   {t:'What <span class="wemph">His</span> Blood Bought',sub:"Paid in full. No balance due.",ic:"\u2696\uFE0F",keys:["redeemed","atonement","grace","mercy","justified","righteousness","reconciled","intercession","uttermost","covenant"]},
+   {t:"What He Calls You Now",sub:"The old names don't stick.",ic:"\uD83D\uDC51",keys:["sanctified","holy","heir","eternallife","faith","royalpriesthood"]},
+   {t:"Living Grateful",sub:"It's hard to be hateful when you're living grateful.",ic:"\uD83D\uDE4C",keys:["hallelujah","thanksgiving","sacrificeofpraise","lovingkindness","supplication","inhabits","worthy","exalt","omnipotent","sanctuary","unspeakable"]}
   ];
   let shown=0;
   SEC.forEach(sec=>{
@@ -1596,6 +1611,7 @@ function buildWordGrid(q){
     const h=document.createElement('div');h.className='wsbt';
     h.innerHTML='<span class="ic">'+sec.ic+'</span>'+sec.t;
     box.appendChild(h);
+    if(sec.sub){const sb=document.createElement('div');sb.className='wsbs';sb.textContent=sec.sub;box.appendChild(sb);}
     const wrap=document.createElement('div');wrap.className='wchips';
     hits.forEach(k=>{
       const b=document.createElement('button');b.className='wchip';
