@@ -553,15 +553,22 @@
     </section>
 
     <section id="s-support" class="screen">
-      <div class="kicker sm">Ten2 Harvest Media</div>
-      <p class="topictitle">The Word of God Is Always Free.</p>
-      <div class="chunk"><strong>Stuck people aren't searching for Jesus. They're searching for hope. We bring both.</strong> If you found some hope here today, keep the door open for the next one.</div>
-      <div class="chunk" style="color:var(--muted);font-size:14px;cursor:pointer;" onclick="openMission()"><span style="color:var(--gold-soft);">Read the whole vow and mission &darr;</span></div>
-      <div class="hundred">
-        <div class="bignum">100%</div>
-        <div class="bigline">Every dollar that comes through here funds the One Billion for Jesus movement &mdash; building free tools like this one and putting the Word in the next person's hands.</div>
-        <div class="fineline">We're not a nonprofit, so gifts are not tax-deductible. This is Kingdom business &mdash; you're not buying a write-off. You're keeping the door open.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;max-width:420px;margin:0 auto;">
+        <button class="ghost" style="font-size:20px;padding:6px 10px;margin:0;" onclick="goNeeds()" aria-label="Back">&#8592;</button>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 21V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17"></path><path d="M12 7v6" stroke="var(--gold-soft)" stroke-width="2"></path><path d="M9.5 9.5h5" stroke="var(--gold-soft)" stroke-width="2"></path><path d="M4 21h16"></path></svg>
+        <span style="width:42px;"></span>
       </div>
+      <p class="topictitle" style="margin-top:22px;">This app is free.<br><span style="color:var(--gold-soft);">Forever. For everyone.</span></p>
+      <div class="chunk" style="color:var(--muted);">There's no paywall on the Word of God &mdash; we checked with the Author.</div>
+      <div class="chunk"><strong style="color:var(--gold-soft);">Seven dollars a month</strong> keeps it that way &mdash; every declaration, every voice, every door, free for the next person who finds one at 2 AM.</div>
+      <a href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener" style="display:block;max-width:420px;margin:18px auto 0;background:#221d15;border:2px solid var(--gold);border-radius:18px;padding:18px 16px;text-align:center;text-decoration:none;color:var(--ink);box-shadow:0 0 14px rgba(230,201,135,.14);">
+        <div style="font-family:Georgia,serif;font-size:30px;font-weight:700;color:var(--gold-soft);">$7 <span style="font-size:13px;font-weight:400;color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">/ month</span></div>
+        <div style="font-weight:700;font-size:16px;margin-top:2px;">Keep the door open</div>
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--gold-soft);margin-top:4px;">JOIN THE DOORKEEPERS</div>
+      </a>
+      <div style="font-size:13px;color:var(--muted);font-style:italic;margin:10px auto 0;max-width:420px;">"I would rather be a doorkeeper in the house of my God." &mdash; Psalm 84</div>
+      <details style="max-width:420px;margin:16px auto 0;">
+        <summary style="cursor:pointer;color:var(--gold-soft);font-size:14.5px;font-weight:700;text-align:center;">Choose a different amount &darr;</summary>
       <div class="tiers">
         <a class="tier" href="https://buy.stripe.com/fZuaEX3Ab93f6yfcng9IQ02" target="_blank" rel="noopener">
           <div class="amt">$7 <span>/ month</span></div>
@@ -589,20 +596,23 @@
           <div class="tmean">Any amount, one time. Every dollar puts the Word in somebody's hands.</div>
         </a>
       </div>
-      <div class="statwide" style="margin-top:28px;cursor:pointer;" onclick="openMission()">
-        <div class="statwidename">What is the One Billion for Jesus Movement?</div>
-        <div class="statlab" style="text-transform:none;font-size:13px;letter-spacing:0;">A global community of people committed to starting one billion conversations about Jesus through digital evangelism and discipleship &mdash; every zip code, every language, everywhere a phone can be held. Tap to read more.</div>
-      </div>
-      <details id="missionMore" style="max-width:420px;margin:14px auto 0;text-align:left;">
-        <summary style="cursor:pointer;color:var(--gold-soft);font-size:14px;text-align:center;">More about the mission and the vow &darr;</summary>
-        <div class="chunk" style="margin-top:18px;">Whether you've walked with Jesus for thirty years or you're not even sure about Him yet &mdash; if this app encouraged you, inspired you, or moved you one step toward freedom, you're already one of the billion.</div>
-        <div class="rule"></div>
-        <div class="chunk"><strong>The vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
-        <div class="rule"></div>
-        <div class="chunk"><strong>The mission.</strong> We build the free tools that start the conversations &mdash; for the stuck, the addicted, the hurting, and the believer thirty years in who still needs healing &mdash; and the Father does the drawing. Givers are how the door stays open. Every number above carries a story.</div>
       </details>
-      <button class="ghost" onclick="show('s-about')">More about us &#8594;</button>
-      <button class="ghost backlink" onclick="goNeeds()">Back to praying</button>
+      <div style="font-size:14px;color:var(--muted);margin:12px 0 0;">Rather give once? <a href="https://buy.stripe.com/eVqcN5daLbbn9Krevo9IQ06" target="_blank" rel="noopener" style="color:var(--gold-soft);font-weight:700;">Give any amount, one time &#8594;</a></div>
+      <div class="hundred">
+        <div class="bignum">100%</div>
+        <div class="bigline">Every dollar funds One Billion for Jesus: free tools like this one, and the Word in the next person's hands.</div>
+        <div class="fineline">Not a nonprofit. Gifts aren't tax-deductible. This is Kingdom business.</div>
+      </div>
+      <details id="missionMore" style="max-width:420px;margin:18px auto 0;text-align:left;">
+        <summary style="cursor:pointer;color:var(--gold-soft);font-size:14px;text-align:center;">The vow, the mission, and the billion &darr;</summary>
+        <div class="chunk" style="margin-top:14px;"><strong>The vow.</strong> Everything digital we build &mdash; this app, every app after it, every tool &mdash; is free. Forever. For everyone. There's no paywall on the Word of God &mdash; we checked with the Author.</div>
+        <div class="rule"></div>
+        <div class="chunk"><strong>Stuck people aren't searching for Jesus. They're searching for hope. We bring both.</strong> If you found some hope here today, keep the door open for the next one.</div>
+        <div class="chunk"><strong>The mission.</strong> We build the free tools that start the conversations &mdash; for the stuck, the addicted, the hurting, and the believer thirty years in who still needs healing &mdash; and the Father does the drawing. Givers are how the door stays open. Every number above carries a story.</div>
+        <div class="rule"></div>
+        <div class="chunk"><strong>What is the One Billion for Jesus Movement?</strong> A global community of people committed to starting one billion conversations about Jesus through digital evangelism and discipleship &mdash; every zip code, every language, everywhere a phone can be held.</div>
+        <div class="chunk">Whether you've walked with Jesus for thirty years or you're not even sure about Him yet &mdash; if this app encouraged you, inspired you, or moved you one step toward freedom, you're already one of the billion.</div>
+      </details>
     </section>
 
     <section id="s-about" class="screen">
