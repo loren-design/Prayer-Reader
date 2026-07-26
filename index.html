@@ -303,6 +303,7 @@
 .needs.duo .bq{font-size:15px;line-height:1.35;}
 .needs.duo .bq .bicon{display:block;margin-bottom:4px;}
 .needs.duo .bt{font-size:11px;padding-left:0;margin-top:5px;line-height:1.4;}
+#wordPrayBtn{white-space:nowrap;font-size:clamp(12px,4.5vw,16px);padding-left:14px;padding-right:14px;overflow:hidden;text-overflow:clip;}
 </style>
 </head>
 <body>
@@ -1755,7 +1756,7 @@ function renderWord(key){
   document.getElementById('wordBackBtn').textContent=wordReturn==="pray"?"Back to the prayer":"Back to the words";
   const pb=document.getElementById('wordPrayBtn');
   const hits=D.filter(d=>g.rx.test(d.t)||g.rx.test(d.h||""));
-  if(hits.length){pb.textContent="\u26A1 Get empowered. Pray it out loud.";pb.style.display="inline-block";}
+  if(hits.length){pb.textContent="Want power? Pray it out LOUD \uD83D\uDCE3";pb.style.display="inline-block";}
   else{pb.style.display="none";}
   show('s-word');
 }
