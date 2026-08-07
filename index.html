@@ -443,6 +443,10 @@
       <div class="row">
         <button class="primary" onclick="goNeeds()">Back to the table</button>
       </div>
+      <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:26px;">
+        <button class="ghost" style="font-size:13px;" onclick="goRoom('saved',3)">I want to know this Jesus &#8594;</button>
+        <button class="ghost" style="font-size:13px;" onclick="openGuide()">How does all this work? &#8594;</button>
+      </div>
       <button class="ghost backlink" onclick="goGreet()">Back</button>
     </section>
 
@@ -2110,7 +2114,7 @@ window.kgbEvent = function(name){
 window.addEventListener('load', function(){
   try{
     var h = (location.hash||'').toLowerCase();
-    if(h === '#saved'){ goReset(); kgbEvent('deeplink_saved'); }
+    if(h === '#saved'){ openRoomLane('saved'); kgbEvent('deeplink_saved'); }
     else if(h === '#story'){ openStory('about'); kgbEvent('deeplink_story'); }
   }catch(e){}
 });
