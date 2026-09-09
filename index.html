@@ -454,11 +454,11 @@
       <p class="doorhi" id="doorsHi">Hi there.</p>
       <h2 class="doorhead">Pray it out loud.</h2>
       <div class="toolrow">
-        <button class="toolbtn" onclick="goFind()"><span class="tic">&#128450;&#65039;</span><span class="tlb">Prayer Arsenal</span><span class="tsb">A to Z</span></button>
-        <button class="toolbtn" onclick="goWordBank()"><span class="tic">&#128214;</span><span class="tlb">Church Words</span><span class="tsb">plain English</span></button>
+        <button class="toolbtn" onclick="goFind()"><span class="tic">&#128450;&#65039;</span><span class="tlb">Find a Prayer</span><span class="tsb">A to Z</span></button>
+        <button class="toolbtn" onclick="goWordBank()"><span class="tic">&#128214;</span><span class="tlb">What It Really Means</span><span class="tsb">Bible words in plain English 😊</span></button>
         <button class="toolbtn" onclick="show('s-learn')"><span class="tic">&#128161;</span><span class="tlb">How &amp; Why</span><span class="tsb">and the story</span></button>
       </div>
-      <p class="doorsub">or pick your punch &mdash;</p>
+      <p class="doorsub">What brings you in?</p>
       <div class="doorgrid" id="doorGrid"></div>
       <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
     </section>
@@ -476,7 +476,7 @@
 
     <section id="s-needs" class="screen">
       <h2 id="needsHi">What do you need today?</h2>
-      <p class="sub">You don't want to be here, and maybe you're not even sure how to pray about it. Pick what's going on &mdash; I'll hand you the words.</p>
+      <p class="sub">God has a word for exactly this. Pick what's going on &mdash; I'll hand you the words to say out loud.</p>
       <div class="needs" id="needGrid"></div>
       <button class="ghost backlink" onclick="goReset()">Spun out? Start over &#8594;</button>
     </section>
@@ -526,7 +526,7 @@
     </section>
 
     <section id="s-find" class="screen">
-      <p class="topictitle">Prayer Arsenal</p>
+      <p class="topictitle">Find a Prayer</p>
       <p class="sub">Type what you're feeling, or what you're facing.</p>
       <input id="findBox" type="text" placeholder="anxious, sober, forgiven, sleep..." oninput="runFind()" autocomplete="off" style="max-width:340px;" />
       <div id="findResults" style="max-width:360px;margin:14px auto 0;text-align:left;"></div>
@@ -541,7 +541,7 @@
 
     <section id="s-bucket" class="screen">
       <p class="topictitle" id="bucketTitle"></p>
-      <p class="sub">Pick the door. The Word is waiting behind it.</p>
+      <p class="sub" id="bucketSub">Pick the door. The Word is waiting behind it.</p>
       <div class="needs" id="bucketGrid"></div>
       <button class="ghost backlink" onclick="goNeeds()">&#8592; Back</button>
     </section>
@@ -978,15 +978,15 @@ const cats={
   gratitude:{hk:"Go count what He already did.",label:"Gratitude",icon:"\uD83D\uDE4F",title:"About Gratitude",intro:"Gratitude is His hands \u2014 what He has already done. Not a mood you work up. A list you go count."},
   praise:{hk:"It doesn't wait for good news.",label:"Praise",icon:"\uD83D\uDD25",title:"About Praise",intro:"Praise is His face \u2014 who He is when nothing has gone right yet. It does not wait for the fields to fill up."},
   salvation:{hk:"Past tense. Settled.",label:"Saved",icon:"\uD83D\uDEAA",title:"Am I Really Saved?",intro:"If you have never done this, or you did it once and walked away, start here. The door is open and the seat is still yours."},
-  identity:{pq:"I don't even know who I am anymore.",hk:"The mirror lied. God didn't.",label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
+  identity:{pq:"God already settled who you are.",hk:"The mirror lied. God didn't.",label:"My Identity in Christ",icon:"\uD83E\uDEAA",title:"About Who You Are",intro:"Who does God say you are? Not who the mirror says. Not who your history says. Who He says. That's the only vote that counts."},
   forgiven:{hk:"He doesn't bring it back up.",label:"Forgiven",icon:"\u2725",title:"About Forgiveness",intro:"The record is clean and heaven is not keeping a file. Here's what got written down about you."},
-  free:{pq:"I keep going back to it.",hk:"The chains don't go back on.",label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
-  loved:{pq:"Does God even love somebody like me?",hk:"On your worst day. Still.",label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
+  free:{pq:"What the Son sets free stays free.",hk:"The chains don't go back on.",label:"Free",icon:"\uD83D\uDD13",title:"About Freedom",intro:"The chains came off at the cross, and they do not go back on. Here's the paperwork."},
+  loved:{pq:"Loved. On your worst day. Still.",hk:"On your worst day. Still.",label:"Loved",icon:"\u2764\uFE0F\u200D\uD83D\uDD25",title:"About His Love",intro:"Not tolerated. Loved. The same love the Father has for the Son, He has for you."},
   peace:{hk:"Your shoulders can come down now.",label:"Peace & Rest",icon:"\uD83D\uDD4A\uFE0F",title:"About Peace & Rest",intro:"Peace is not a mood. It is a Person standing guard at your door. Here's His word on it."},
-  strength:{pq:"I'm scared and I can't shake it.",hk:"Fear doesn't get the last word.",label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
+  strength:{pq:"Courage you can speak out loud.",hk:"Fear doesn't get the last word.",label:"Not Afraid",icon:"\uD83D\uDEE1\uFE0F",title:"About Fear & Strength",intro:"Fear does not get a vote. Your helper is bigger than your problem. It is written."},
   healed:{hk:"By His stripes. Past tense.",label:"Healed",icon:"\u2795",title:"About Healing",intro:"By His stripes. Past tense. Healing is part of what He already paid for."},
   provision:{hk:"He already knows what you need.",label:"Provided For",icon:"\uD83C\uDF3E",title:"About Provision",intro:"Your Father owns it all, and He provides for His kids. Here's His promise."},
-  victory:{pq:"I'm tired of losing this fight.",hk:"The fight is real. The outcome isn't.",label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
+  victory:{pq:"You fight from victory, not for it.",hk:"The fight is real. The outcome isn't.",label:"Victory",icon:"\uD83C\uDFC6",title:"About Victory",intro:"You fight from victory, not for it. The scoreboard is already settled."},
   anxiety:{hk:"When your chest won't loosen.",label:"Anxiety",icon:"\uD83C\uDF2C\uFE0F",title:"About Anxiety",intro:"God does not scold you for being anxious. He comforts you right in the middle of it. Here's what He says."},
   depression:{hk:"Light for the gray days.",label:"Depression",icon:"\uD83C\uDF05",title:"About Depression",intro:"If all you have left is a flicker, He will not put it out. He cups His hands around it. Here's His word."},
   anger:{hk:"Put the fire down.",label:"Anger",icon:"\uD83D\uDD25",title:"About Anger",intro:"Anger is not the sin. Even God's word says to be angry. It is what anger does when it takes the wheel that wrecks us. These words teach your mouth to take the wheel back."},
@@ -1704,15 +1704,48 @@ function goNeeds(){
 document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')goGreet();});
 
 const DOORS=[
-  {tone:"invite", icon:"\uD83D\uDC51", q:"Who Is God?", sub:"the question everybody's asking", tag:"Come meet the Father. He\u2019s nothing like the rumor.", act:()=>openRoomLane("whoisgod")},
-  {tone:"heavy", icon:"\uD83D\uDEDF", q:"Get Unstuck", sub:"stuck \u00B7 anxious \u00B7 heavy", act:goStuck},
-  {tone:"gold",  icon:"\uD83E\uDE9E", q:"Identity", sub:"who you really are", act:()=>openLane("Identity \u2014 who God says you are",["identity","loved"])},
-  {tone:"gold",  icon:"\uD83D\uDEE1\uFE0F", q:"Fight Back", sub:"tempted \u00B7 attacked", act:()=>openLane("Fight back \u2014 resist the enemy",["victory","free","strength"])},
-  {tone:"gold",  icon:"\uD83D\uDE4C", q:"Praise & Thanks", sub:"grateful \u00B7 thankful \u00B7 even in the storm", act:()=>openRoomLane("pt")},
-  {tone:"gold",  icon:"\uD83E\uDE79", q:"Does God Still Heal?", sub:"sick \u00B7 hurting \u00B7 tired of waiting", act:()=>openRoomLane("heal")},
-  {tone:"gold",  icon:"\u26D3\uFE0F", q:"The Chains Come Off", sub:"for the thing that keeps coming back", act:()=>openRoomLane("chains")},
-  {tone:"invite", icon:"\uD83D\uDEAA", q:"Am I Really Saved?", sub:"For the backslider. For the one who keeps blowing it. For the prodigal who figures the door\u2019s been shut a long time.", tag:"It hasn\u2019t. Come see what He says.", act:()=>openRoomLane("saved")}
+  {tone:"invite", icon:"\u271D\uFE0F", q:"I want to know Jesus", sub:"who He is \u00B7 am I saved \u00B7 how to pray", act:goKnowJesus},
+  {tone:"gold",  icon:"\uD83C\uDF05", q:"I need encouragement", sub:"strength \u00B7 peace \u00B7 a better day", act:goEncourage},
+  {tone:"gold",  icon:"\u2764\uFE0F", q:"I love Jesus", sub:"praise \u00B7 thanks \u00B7 worship", act:()=>openRoomLane("pt")},
+  {tone:"gold",  icon:"\uD83E\uDE9E", q:"Who does God say I am?", sub:"identity \u00B7 loved \u00B7 brand new", act:()=>openLane("Who does God say I am?",["identity","loved"],"Not who you feel like today. Who He says you are. Pick one and say it out loud \u2014 with your name in it.")}
 ];
+
+function goKnowJesus(){
+  gcCount('/door-knowjesus');
+  document.getElementById('bucketTitle').textContent="I want to know Jesus";
+  setBucketSub("This is where you meet Him for real. Pick a question \u2014 I'll hand you His answer to speak out loud.");
+  const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.remove('duo');
+  [
+   {ic:"\uD83D\uDC51", pq:"Who is God, really?", b:"Come meet the Father. He's nothing like the rumor.", go:()=>openRoomLane("whoisgod")},
+   {ic:"\uD83D\uDEAA", pq:"Am I really saved?", b:"The seat is still yours. Come see what He says.", go:()=>openRoomLane("saved")},
+   {ic:"\uD83D\uDDE3\uFE0F", pq:"How do I pray out loud?", b:"Three steps. Simpler than you think.", go:()=>openGuide()}
+  ].forEach(r=>{
+    const card=document.createElement('button');card.className='bucket';
+    card.innerHTML='<div class="bq"><span class="bicon">'+r.ic+'</span>'+r.pq+'</div><div class="bt">'+r.b+'</div>';
+    card.onclick=r.go;grid.appendChild(card);
+  });
+  show('s-bucket');
+}
+
+function goEncourage(){
+  gcCount('/door-encouragement');
+  document.getElementById('needsHi').textContent="What's the heaviest thing right now?";
+  const grid=document.getElementById('needGrid');grid.innerHTML="";
+  [
+   {ic:"\uD83C\uDF00", q:"My mind won't stop", sub:"anxious \u00B7 heavy \u00B7 racing", go:()=>openLane("My mind won't stop",["anxiety","depression","mind","peace"],"Peace you speak out loud. Pick what fits.")},
+   {ic:"\uD83D\uDD04", q:"I keep messing up", sub:"forgiveness \u00B7 a fresh start", go:()=>goTopic("forgiven")},
+   {ic:"\uD83E\uDE79", q:"I'm sick or hurting", sub:"healing \u00B7 the promise still stands", go:()=>openRoomLane("heal")},
+   {ic:"\uD83D\uDD13", q:"Something keeps pulling me back", sub:"freedom that lasts", go:()=>openRoomLane("chains")},
+   {ic:"\uD83D\uDC9B", q:"I feel alone", sub:"rejected \u00B7 abandoned \u00B7 loved", go:()=>openLane("I feel alone",["rejection","abandonment","loved"],"You are not alone. Here is what He says \u2014 say it out loud.")},
+   {ic:"\u2600\uFE0F", q:"One day at a time", sub:"sobriety \u00B7 a clear head", go:()=>openLane("One day at a time",["recovered","anger"],"Kept \u2014 not white-knuckling. Speak it over today.")},
+   {ic:"\u26F0\uFE0F", q:"Carrying a lot right now", sub:"strength \u00B7 provision \u00B7 victory", go:()=>openLane("Carrying a lot right now",["strength","provision","victory","free"],"His strength, out loud. Pick what you need.")}
+  ].forEach(b=>{
+    const card=document.createElement('button');card.className='bucket';
+    card.innerHTML='<div class="bq"><span class="bicon">'+b.ic+'</span>'+b.q+'</div><div class="bt">'+b.sub+'</div>';
+    card.onclick=b.go;grid.appendChild(card);
+  });
+  show('s-needs');
+}
 
 const ROOMS={
 whoisgod:{title:"Who Is God?",rooms:[
@@ -1722,7 +1755,7 @@ whoisgod:{title:"Who Is God?",rooms:[
  {t:"He Keeps His Word",ic:"\u2693",pq:"Can I actually trust what He said?",b:"Impossible for God to lie. Not one word has failed.",ns:[446,447,448,449,450,451,452,453,454,455,456,457],link:"healed"},
  {t:"He Sent the Comforter",ic:"\ud83d\udd4a\ufe0f",pq:"Am I doing this alone?",b:"The Comforter and the Trainer \u2014 the same Person, living in you.",ns:[458,459,460,461,462,463,464,465,466,467,468,469],link:"peace"},
  {t:"He Is the Judge",ic:"\u2696\ufe0f",pq:"What about the wrath and the judgment?",b:"The courtroom that makes the pardon mean something.",ns:[470,471,472,473,474,475,476,477,478,479,480,481],link:"forgiven"},
- {t:"God's Enemy",ic:"\u2694\ufe0f",pq:"Is the devil even real?",b:"Who he is, what he's up to, and how his story ends.",ns:[482,483,484,485,486,487,488,489,490,491,492,493],link:"victory"}
+ {t:"How the Enemy's Story Ends",ic:"\u2694\ufe0f",pq:"Is the devil even real?",b:"Who he is, what he's up to, and how his story ends.",ns:[482,483,484,485,486,487,488,489,490,491,492,493],link:"victory"}
 ]},
 saved:{title:"Am I Really Saved?",rooms:[
  {t:"He's Looking for You",ic:"\uD83D\uDD26",pq:"Would God even want me back?",b:"The God who came out after you.",ns:[250,251,252,253,254,255,256,257,258,259,260,261,262,263,264],link:"loved"},
@@ -1738,29 +1771,37 @@ heal:{title:"Does God Still Heal? \u2014 He hasn't changed. Neither has the prom
  {t:"While I'm Still Waiting",ic:"\u23F3",pq:"Why am I still sick?",b:"Standing on the promise before anything changes.",ns:[330,331,332,333,334,335,336,337,338,339],link:"strength"},
  {t:"It's Literally His Name",ic:"\u2764\uFE0F",pq:"Who is God when I'm hurting?",b:"I am the LORD who heals you. Who He is, not just what He does.",ns:[340,341,342,343,344,345,346,347,348,349],link:"peace"}
 ]},
-chains:{title:"The Chains Come Off \u2014 what the Son sets free stays free.",rooms:[
+chains:{title:"Walk Out Free \u2014 what the Son sets free stays free.",rooms:[
  {t:"Use the Name",ic:"\uD83D\uDDDD\uFE0F",pq:"Do I have any power here at all?",b:"Jesus handed you the right. His name in your mouth.",ns:[350,351,352,353,354,355,356,357,358,359],link:"victory"},
- {t:"Your Weapons Are Loaded",ic:"\uD83E\uDE78",pq:"What actually beats the enemy?",b:"The blood of the Lamb and the word of your testimony.",ns:[360,361,362,363,364,365,366,367,368,369],link:"victory"},
- {t:"Lock the Old Doors",ic:"\uD83D\uDD12",pq:"Why does it keep coming back?",b:"His door stays open. The enemy's get locked.",ns:[370,371,372,373,374,375,376,377,378,379],link:"forgiven"},
- {t:"The Line Stops Here",ic:"\u270B",pq:"Is my family just cursed?",b:"Christ became the curse so you don't carry it.",ns:[380,381,382,383,384,385,386,387,388,389],link:"free"},
- {t:"Fear Has to Go",ic:"\uD83C\uDF19",pq:"I can't sleep. I can't breathe.",b:"God didn't give you that spirit.",ns:[390,391,392,393,394,395,396,397,398,399],link:"peace"},
- {t:"Don't Leave It Empty",ic:"\uD83C\uDFE0",pq:"How do I STAY free?",b:"Swept clean isn't enough. Filled is.",ns:[400,401,402,403,404,405,406,407,408,409],link:"recovered"}
+ {t:"How You Overcome",ic:"\uD83E\uDE78",pq:"What actually beats the enemy?",b:"The blood of the Lamb and the word of your testimony.",ns:[360,361,362,363,364,365,366,367,368,369],link:"victory"},
+ {t:"His Door Stays Open",ic:"\uD83D\uDD12",pq:"Why does it keep coming back?",b:"His door stays open. The enemy's get locked.",ns:[370,371,372,373,374,375,376,377,378,379],link:"forgiven"},
+ {t:"A New Line Starts With You",ic:"\u270B",pq:"Is my family just cursed?",b:"Christ became the curse so you don't carry it.",ns:[380,381,382,383,384,385,386,387,388,389],link:"free"},
+ {t:"You Can Sleep Tonight",ic:"\uD83C\uDF19",pq:"I can't sleep. I can't breathe.",b:"God didn't give you that spirit.",ns:[390,391,392,393,394,395,396,397,398,399],link:"peace"},
+ {t:"How You Stay Free",ic:"\uD83C\uDFE0",pq:"How do I STAY free?",b:"Swept clean isn't enough. Filled is.",ns:[400,401,402,403,404,405,406,407,408,409],link:"recovered"}
 ]},
-pt:{title:"Praise & Thanks \u2014 quiets the storm. Rattles the enemy.",rooms:[
- {t:"How Do I Even Start?",ic:"\uD83C\uDF31",pq:"I don't feel grateful. At all.",b:"You don't have to feel it to start.",ns:[150,154,157,158,160,164,169,190,194,195,203,204,214,216,217],link:"peace"},
- {t:"Thankful in the Storm",ic:"\u26C8\uFE0F",pq:"Am I supposed to thank Him for THIS?",b:"Thanks before anything changes.",ns:[153,162,168,193,201,205,207,212],link:"depression"},
- {t:"Go Count the Stones",ic:"\uD83E\uDEA8",pq:"What has God ever done for me?",b:"Go count. You'll run out of paper.",ns:[151,152,156,159,161,163,165,192,197,198,200,202,206,213,218],link:"provision"},
- {t:"Say It Out Loud",ic:"\uD83D\uDCE3",pq:"Do I really have to say it out loud?",b:"Thanks nobody hears isn't finished yet.",ns:[155,166,167,191,196,199,208,209,210,211,215,219],link:"free"},
- {t:"Praise Is a Weapon",ic:"\u2694\uFE0F",pq:"Can praise actually change anything?",b:"Sing before the wall falls.",ns:[171,172,173,175,176,177,182,183,184,187,222,234],link:"victory"},
- {t:"Who He Is",ic:"\uD83D\uDC51",pq:"Who is He when my life's falling apart?",b:"Praise that starts with Him, not with how today went.",ns:[178,179,180,181,185,189,225,226,230,233,237,238,239,249],link:"identity"},
- {t:"Your Part",ic:"\uD83D\uDE4C",pq:"I don't know how to worship.",b:"Breath, hands, voice. He never said it had to sound good.",ns:[174,186,188,223,228,229,231,232,235,236,242,244,246,247,248],link:"mind"},
- {t:"It Never Stops",ic:"\uD83C\uDF05",pq:"How long am I supposed to keep this up?",b:"The sun never stops coming up. Neither does this.",ns:[170,220,221,224,227,240,241,243,245],link:"loved"}
+pt:{title:"I love Jesus",rooms:[
+ {t:"The Power of a Thank You",ic:"\uD83C\uDF31",pq:"One thank you can change the whole day.",b:"Start with the coffee if you have to. Out loud. Small counts.",ns:[150,154,157,158,160,164,169,190,194,195,203,204,214,216,217],link:"peace"},
+ {t:"Thanks in the Middle of It",ic:"\uD83C\uDF08",pq:"In everything \u2014 not for everything.",b:"That's not denial. That's position. You can say thank you in the storm and mean it.",ns:[153,162,168,193,201,205,207,212],link:"depression"},
+ {t:"Go Count the Stones",ic:"\uD83E\uDEA8",pq:"Your track record with God is longer than you think.",b:"Go count. You'll run out of paper.",ns:[151,152,156,159,161,163,165,192,197,198,200,202,206,213,218],link:"provision"},
+ {t:"Say It Out Loud",ic:"\uD83D\uDCE3",pq:"Your own ears need to hear it.",b:"Gratitude you never say is just a nice thought you had once.",ns:[155,166,167,191,196,199,208,209,210,211,215,219],link:"free"},
+ {t:"Praise Goes Ahead of You",ic:"\uD83C\uDFBA",pq:"Praise moves before the breakthrough does.",b:"Jehoshaphat sent the singers out ahead of the army. That wasn't a mistake.",ns:[171,172,173,175,176,177,182,183,184,187,222,234],link:"victory"},
+ {t:"Who He Is",ic:"\uD83D\uDC51",pq:"Start with Him, and everything gets its right size.",b:"Praise that starts with Him, not with how today went.",ns:[178,179,180,181,185,189,225,226,230,233,237,238,239,249],link:"identity"},
+ {t:"Your Part",ic:"\uD83D\uDE4C",pq:"If you're breathing, you qualify.",b:"Breath, hands, voice. He never said it had to sound good.",ns:[174,186,188,223,228,229,231,232,235,236,242,244,246,247,248],link:"mind"},
+ {t:"New Every Morning",ic:"\uD83C\uDF05",pq:"There's strength in this. Real strength.",b:"Joy isn't the reward for having strength. Joy is where it comes from.",ns:[170,220,221,224,227,240,241,243,245],link:"loved"}
 ]}};
+const DOORSUBS={
+  whoisgod:"Come meet Him for real \u2014 not the rumor. Pick a question. Then speak His answer out loud.",
+  saved:"Straight answers from His own mouth. Pick your question \u2014 then say what He says about you.",
+  heal:"He still heals. Pick a room and put His promise in your mouth \u2014 out loud, every day.",
+  chains:"Freedom you speak, not just feel. Pick a room and say the words out loud.",
+  pt:"You love Him \u2014 so tell Him. These are praise prompts: words to speak out loud until your heart catches up. Pick a room and say it with me."
+};
+function setBucketSub(t){const el=document.getElementById('bucketSub');if(el)el.textContent=t||"Pick the door. The Word is waiting behind it.";}
 let currentRoom=null,currentRoomIdx=0,currentDoorKey=null;
 function openRoomLane(dk){
   currentDoorKey=dk;currentRoom=null;
   gcCount('/rooms-'+dk);
-  document.getElementById('bucketTitle').textContent=ROOMS[dk].title;
+  document.getElementById('bucketTitle').textContent=ROOMS[dk].title;setBucketSub(DOORSUBS[dk]);
   const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.toggle('duo',dk==='pt');
   ROOMS[dk].rooms.forEach((r,i)=>{
     const card=document.createElement('button');card.className='bucket';
@@ -1802,8 +1843,8 @@ function buildDoors(){
     card.onclick=d.act;grid.appendChild(card);
   });
 }
-function openLane(title,topics){
-  document.getElementById('bucketTitle').textContent=title;
+function openLane(title,topics,sub){
+  document.getElementById('bucketTitle').textContent=title;setBucketSub(sub);
   const grid=document.getElementById('bucketGrid');grid.innerHTML="";grid.classList.remove('duo');
   topics.forEach(key=>{
     const c=cats[key];
