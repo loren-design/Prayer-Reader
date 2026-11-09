@@ -1562,8 +1562,8 @@ function linkFor(){
 }
 function shareTitleText(){
   const id=currentScreen;
-  if(id==="s-pray"&&currentList[idx]){const it=currentList[idx];return {title:(it.h||"Pray it out loud"),text:(it.h?it.h+"\n\n":"")+it.t+(it.r?"\n\u2014 "+it.r:"")};}
-  if(id==="s-topic"){const t=document.getElementById('topicTitle').textContent;return {title:t,text:t+" \u2014 the Word, out loud."};}
+  if(id==="s-pray"&&currentList[idx]){const it=currentList[idx];const first=(it.t||"").split(/(?<=[.!?])\s/)[0];return {title:"Pray it out loud",text:(it.h||first||"Pray it out loud.")+(it.r?" ("+it.r+")":"")};}
+  if(id==="s-topic"){const t=document.getElementById('topicTitle').textContent;return {title:"Pray it out loud",text:t+" \u2014 the Word, out loud."};}
   if(id==="s-word"&&currentWordKey){const g=GLOSSARY[currentWordKey];return {title:g.word+" \u2014 what it really means",text:g.word+": "+g.def};}
   if(id==="s-bucket"&&currentDoorKey)return {title:ROOMS[currentDoorKey].title,text:ROOMS[currentDoorKey].title+" \u2014 pray it out loud."};
   if(id==="s-lesson-talksback")return {title:"How He talks back",text:"Not to your ears \u2014 to your heart. A two-minute read on how God actually answers."};
