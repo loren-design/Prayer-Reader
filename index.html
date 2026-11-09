@@ -14,8 +14,14 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M14 58 V30 a18 18 0 0 1 36 0 V58' fill='none' stroke='%23c9a24b' stroke-width='4' stroke-linecap='round'/%3E%3Crect x='29.5' y='22' width='5' height='36' rx='2.5' fill='%23e6c987'/%3E%3Crect x='22' y='34' width='20' height='5' rx='2.5' fill='%23e6c987'/%3E%3C/svg%3E" />
 <meta name="description" content="For everyone who was never taught how to pray - and wants to. Free scripture declarations, read out loud, from Know God Better." />
 <meta property="og:title" content="Pray Out Loud — Know God Better" />
-<meta property="og:description" content="For everyone who was never taught how to pray — and wants to. Free scripture declarations, read out loud. The door is open." />
+<meta property="og:description" content="Prayer is just a conversation. You talk. He listens. He talks back. Free scripture declarations, read out loud. The door is open." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://pray.knowgodbetter.org/" />
+<meta property="og:image" content="https://pray.knowgodbetter.org/share-card.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://pray.knowgodbetter.org/share-card.jpg" />
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%20%22Pray%20Out%20Loud%20-%20Know%20God%20Better%22%2C%20%22short_name%22%3A%20%22Pray%20Out%20Loud%22%2C%20%22start_url%22%3A%20%22.%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22background_color%22%3A%20%22%2312100e%22%2C%20%22theme_color%22%3A%20%22%2312100e%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A//www.w3.org/2000/svg%2527%2520viewBox%253D%25270%25200%252064%252064%2527%253E%253Crect%2520width%253D%252764%2527%2520height%253D%252764%2527%2520rx%253D%252714%2527%2520fill%253D%2527%252312100e%2527/%253E%253Cpath%2520d%253D%2527M18%252052%2520V30%2520a14%252014%25200%25200%25201%252028%25200%2520V52%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523c9a24b%2527%2520stroke-width%253D%25274%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Crect%2520x%253D%252729.8%2527%2520y%253D%252724%2527%2520width%253D%25274.4%2527%2520height%253D%252728%2527%2520rx%253D%25272.2%2527%2520fill%253D%2527%2523e6c987%2527/%253E%253Crect%2520x%253D%252724%2527%2520y%253D%252734%2527%2520width%253D%252716%2527%2520height%253D%25274.4%2527%2520rx%253D%25272.2%2527%2520fill%253D%2527%2523e6c987%2527/%253E%253C/svg%253E%22%2C%20%22sizes%22%3A%20%22any%22%2C%20%22type%22%3A%20%22image/svg%2Bxml%22%2C%20%22purpose%22%3A%20%22any%22%7D%5D%7D" />
 <meta name="theme-color" content="#12100e" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -93,8 +99,7 @@
   .hookline span{opacity:0;display:inline-block;animation:wordin .5s ease forwards;}
   @keyframes wordin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion: reduce){.hookline span{animation:none;opacity:1;}}
-  .hookline .chairs{width:120px;height:48px;display:block;margin:0 auto 14px;opacity:0;animation:wordin .8s ease .2s forwards;}
-  .hookline .talkback{margin-top:16px;font-size:14px;color:var(--gold-soft);opacity:0;animation:wordin .6s ease 3.9s forwards;}
+  .hookline .talkback{background:none;border:0;padding:0;margin-top:4px;font:inherit;font-style:italic;color:var(--gold-soft);cursor:pointer;opacity:0;animation:wordin .6s ease 2.5s forwards;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(230,201,135,.4);}
   .versechip{display:inline-block;border:1px solid #4a4132;color:var(--gold-soft);border-radius:999px;
     padding:5px 14px;font-size:12.5px;letter-spacing:.06em;margin:0 0 16px;font-weight:600;}
   .taphint{color:var(--muted);font-size:12px;letter-spacing:.03em;margin:10px 0 0;}
@@ -387,17 +392,9 @@
       <button class="ghost" style="font-size:13px;opacity:.75;" onclick="show('s-install')">&#128241; Put this on your phone</button>
       <p class="sub" style="font-size:12.5px;opacity:.7;margin-top:14px;">Anonymous. No account. No tracking. No judgment.</p>
       <div class="hookline">
-        <svg class="chairs" viewBox="0 0 120 48" aria-hidden="true">
-          <g fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 10v26M14 24h20M34 10v26M18 36v8M30 36v8"/>
-            <path d="M86 10v26M86 24h20M106 10v26M90 36v8M102 36v8"/>
-          </g>
-          <circle cx="60" cy="18" r="2.5" fill="#e6c987"/><circle cx="60" cy="27" r="2.5" fill="#e6c987" opacity=".6"/><circle cx="60" cy="36" r="2.5" fill="#e6c987" opacity=".3"/>
-        </svg>
         <div><span style="animation-delay:0.50s">Prayer</span> <span style="animation-delay:0.62s">is</span> <span style="animation-delay:0.74s">just</span> <span style="animation-delay:0.86s">a</span> <span style="animation-delay:0.98s">conversation.</span></div>
         <div><span style="animation-delay:1.30s">You</span> <span style="animation-delay:1.42s">talk.</span> <span style="animation-delay:1.58s">He</span> <span style="animation-delay:1.70s">listens.</span> <span style="animation-delay:1.86s">He</span> <span style="animation-delay:1.98s">talks</span> <span style="animation-delay:2.10s">back.</span></div>
-        <div class="l2"><span style="animation-delay:2.50s">You</span> <span style="animation-delay:2.62s">don't</span> <span style="animation-delay:2.74s">have</span> <span style="animation-delay:2.86s">to</span> <span style="animation-delay:2.98s">be</span> <span style="animation-delay:3.10s">&ldquo;saved&rdquo;</span> <span style="animation-delay:3.22s">to</span> <span style="animation-delay:3.34s">sit</span> <span style="animation-delay:3.46s">down.</span></div>
-        <button class="ghost talkback" onclick="openTalksBack('entry')">Wait &mdash; how does He talk back? &rarr;</button>
+        <div class="l2"><button class="talkback" onclick="openTalksBack('entry')">How to hear God's voice &rarr;</button></div>
       </div>
     </section>
 
