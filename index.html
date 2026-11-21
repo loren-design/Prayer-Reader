@@ -1557,6 +1557,7 @@ function linkFor(){
   if(id==="s-learn")return "#learn";
   if(id==="s-lesson-talksback")return "#talksback";
   if(id==="s-install")return "#install";
+  if(id==="s-support")return "#give";
   if(id==="s-deep"&&currentCat)return "#deep/"+currentCat;
   return "";
 }
@@ -1599,6 +1600,7 @@ function routeHash(){
     if(h==="learn"){show('s-learn');return true;}
     if(h==="talksback"){openTalksBack('learn');return true;}
     if(h==="install"){show('s-install');return true;}
+    if(h==="give"||h==="donate"){show('s-support');return true;}
     if(h==="words"){goWordBank();return true;}
     if(h==="find"){goFind();return true;}
     if(h==="today"){goToday();return true;}
